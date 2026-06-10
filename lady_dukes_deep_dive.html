@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WPA Lady Dukes 10U — Deep Dive</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:system-ui,sans-serif;background:#f9f9f7;color:#1a1a1a;padding:1rem;}
+h1{font-size:20px;font-weight:600;margin-bottom:4px;}
+.subtitle{font-size:13px;color:#666;margin-bottom:1.25rem;}
+.tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:1.25rem;}
+.tab{background:#fff;border:1px solid #ddd;border-radius:6px;padding:5px 13px;font-size:12px;cursor:pointer;color:#555;}
+.tab.active{border-color:#185FA5;color:#185FA5;background:#EBF4FD;}
+.section{display:none;}
+.section.active{display:block;}
+table{width:100%;font-size:12px;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07);}
+thead tr{background:#f4f4f2;}
+thead tr th{text-align:right;padding:7px 8px;font-weight:600;font-size:11px;color:#555;border-bottom:1px solid #e5e5e3;}
+thead tr th:first-child{text-align:left;}
+tbody tr td{text-align:right;padding:6px 8px;border-bottom:1px solid #f0f0ee;}
+tbody tr td:first-child{text-align:left;font-weight:500;}
+tbody tr:hover{background:#fafaf8;}
+.metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:1.25rem;}
+.metric{background:#fff;border-radius:8px;padding:12px 14px;box-shadow:0 1px 3px rgba(0,0,0,.07);}
+.metric .label{font-size:11px;color:#666;margin-bottom:3px;}
+.metric .value{font-size:22px;font-weight:600;}
+.metric .sub{font-size:10px;color:#888;margin-top:2px;}
+h3{font-size:14px;font-weight:600;margin-bottom:0.75rem;margin-top:1.25rem;}
+h3:first-child{margin-top:0;}
+.bar-row{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
+.bar-label{font-size:11px;min-width:130px;color:#1a1a1a;}
+.bar-track{flex:1;background:#f0f0ee;border-radius:3px;height:15px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:3px;display:flex;align-items:center;padding-left:5px;font-size:10px;font-weight:600;color:#fff;}
+.good{color:#0F6E56;font-weight:600;}
+.ok{color:#185FA5;font-weight:600;}
+.warn{color:#BA7517;font-weight:600;}
+.bad{color:#A32D2D;font-weight:600;}
+.chart-wrap{position:relative;width:100%;background:#fff;border-radius:8px;padding:1rem;box-shadow:0 1px 3px rgba(0,0,0,.07);margin-bottom:1rem;}
+select{width:100%;padding:7px 10px;font-size:13px;border:1px solid #ddd;border-radius:6px;background:#fff;color:#1a1a1a;margin-bottom:1rem;}
+.legend{display:flex;gap:12px;font-size:11px;color:#666;flex-wrap:wrap;margin-bottom:8px;}
+.legend-item{display:flex;align-items:center;gap:4px;}
+.legend-dot{width:9px;height:9px;border-radius:2px;}
+.split-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+.card{background:#fff;border:1px solid #e5e5e3;border-radius:8px;padding:1rem;}
+.note{font-size:12px;color:#555;line-height:1.8;background:#fff;border-radius:8px;padding:1rem;box-shadow:0 1px 3px rgba(0,0,0,.07);}
+</style>
+</head>
+<body>
+<h1>WPA Lady Dukes 10U — Deep Dive</h1>
+<p class="subtitle">74 games · Sep 2025 – Jun 2026 · Record: 39-32-3</p>
+
+<div class="tabs">
+  <button class="tab active" onclick="show('trends',this)">Batting trends</button>
+  <button class="tab" onclick="show('splits',this)">Win/loss splits</button>
+  <button class="tab" onclick="show('pitching',this)">Pitcher deep dive</button>
+  <button class="tab" onclick="show('nemesis',this)">Nemesis matchups</button>
+  <button class="tab" onclick="show('rates',this)">Plate discipline</button>
+  <button class="tab" onclick="show('momentum',this)">Momentum</button>
+</div>
+
+<!-- BATTING TRENDS -->
+<div class="section active" id="trends">
+  <select onchange="updateTrend(this.value)">
+    <option value="Maddie Porter">Maddie Porter</option>
+    <option value="Ava Glomb">Ava Glomb</option>
+    <option value="Rylan LaFever">Rylan LaFever</option>
+    <option value="Autumn Dantry">Autumn Dantry</option>
+    <option value="Violet Rocco">Violet Rocco</option>
+    <option value="Brooklyn Schmidt">Brooklyn Schmidt</option>
+    <option value="Camille McWilliams">Camille McWilliams</option>
+    <option value="Sophia Chimino">Sophia Chimino</option>
+    <option value="Silvia Tortorice">Silvia Tortorice</option>
+    <option value="Brianna Marple">Brianna Marple</option>
+  </select>
+  <div class="legend">
+    <span class="legend-item"><span class="legend-dot" style="background:#1D9E75;"></span>BA</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#185FA5;"></span>OBP (dashed)</span>
+  </div>
+  <div class="chart-wrap" style="height:220px;"><canvas id="trendChart"></canvas></div>
+  <table style="margin-top:.75rem;">
+    <thead><tr><th>Month</th><th>H/AB</th><th>BA</th><th>OBP</th><th>RBI</th><th>BB</th></tr></thead>
+    <tbody id="trendBody"></tbody>
+  </table>
+</div>
+
+<!-- WIN/LOSS SPLITS -->
+<div class="section" id="splits">
+  <h3>Batting average: wins vs. losses</h3>
+  <p style="font-size:12px;color:#555;margin-bottom:.75rem;">Every player hits better in wins — but the drop-off varies widely.</p>
+  <table>
+    <thead><tr><th>Player</th><th>Win BA</th><th>Loss BA</th><th>Drop-off</th><th>Win OBP</th><th>Loss OBP</th><th>Win H/AB</th><th>Loss H/AB</th></tr></thead>
+    <tbody id="splitBody"></tbody>
+  </table>
+  <h3>Home vs. away</h3>
+  <table>
+    <thead><tr><th>Player</th><th>Home BA</th><th>Away BA</th><th>Diff</th><th>Home OBP</th><th>Away OBP</th></tr></thead>
+    <tbody id="haBody"></tbody>
+  </table>
+</div>
+
+<!-- PITCHER DEEP DIVE -->
+<div class="section" id="pitching">
+  <div class="metric-grid">
+    <div class="metric"><div class="label">Total pitches</div><div class="value">5,674</div><div class="sub">staff combined</div></div>
+    <div class="metric"><div class="label">Glomb innings</div><div class="value">94.0</div><div class="sub">most on staff</div></div>
+    <div class="metric"><div class="label">Porter ERA</div><div class="value" style="color:#0F6E56;">3.09</div><div class="sub">best on staff</div></div>
+    <div class="metric"><div class="label">Rocco K/inn</div><div class="value" style="color:#185FA5;">0.48</div><div class="sub">highest rate</div></div>
+  </div>
+  <h3>Monthly ERA trends</h3>
+  <div class="legend">
+    <span class="legend-item"><span class="legend-dot" style="background:#1D9E75;"></span>Porter</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#185FA5;"></span>Glomb</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#BA7517;"></span>Rocco</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#A32D2D;"></span>Dantry</span>
+  </div>
+  <div class="chart-wrap" style="height:220px;"><canvas id="eraMonthChart"></canvas></div>
+
+  <h3>ERA when team wins vs. loses</h3>
+  <table>
+    <thead><tr><th>Pitcher</th><th>Win ERA</th><th>Loss ERA</th><th>Win IP</th><th>Loss IP</th><th>Total pitches</th><th>Avg/outing</th></tr></thead>
+    <tbody>
+      <tr><td>Maddie Porter</td><td class="good">2.13</td><td class="warn">4.91</td><td>46.6</td><td>25.2</td><td>1,415</td><td>43</td></tr>
+      <tr><td>Ava Glomb</td><td class="good">1.76</td><td class="bad">7.24</td><td>51.5</td><td>38.5</td><td>1,822</td><td>49</td></tr>
+      <tr><td>Violet Rocco</td><td class="good">1.62</td><td class="bad">9.55</td><td>30.1</td><td>14.5</td><td>1,031</td><td>40</td></tr>
+      <tr><td>Autumn Dantry</td><td class="ok">2.83</td><td class="bad">6.92</td><td>29.2</td><td>29.1</td><td>1,406</td><td>48</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Pitcher workload (innings pitched)</h3>
+  <div id="workloadBars" style="margin-top:.5rem;"></div>
+
+  <div class="note" style="margin-top:1rem;">
+    <strong>Key late-season trend:</strong> Dantry's ERA spiked to 11.55 in May and 21.00 in June (small sample). Glomb improved significantly — 2.90 ERA in June. Porter was elite Sep–Nov (sub-2.00 ERA) but has been less sharp in spring/summer 2026. Rocco's high K/inn rate (0.48) makes her the best pure strikeout option despite a heavier walk load.
+  </div>
+</div>
+
+<!-- NEMESIS MATCHUPS -->
+<div class="section" id="nemesis">
+  <div class="metric-grid">
+    <div class="metric"><div class="label">vs. Pittsburgh Tigers</div><div class="value" style="color:#A32D2D;">0-4</div><div class="sub">RS:1.5 RA:3.0 avg</div></div>
+    <div class="metric"><div class="label">vs. All American-Red</div><div class="value" style="color:#A32D2D;">0-5-1</div><div class="sub">RS:2.3 RA:5.7 avg</div></div>
+    <div class="metric"><div class="label">vs. FP Select</div><div class="value" style="color:#BA7517;">1-3-1</div><div class="sub">RS:3.2 RA:4.0 avg</div></div>
+  </div>
+
+  <h3>Player BA vs. nemesis opponents</h3>
+  <table>
+    <thead><tr><th>Player</th><th>vs Tigers</th><th>H/AB</th><th>vs All-American</th><th>H/AB</th><th>vs FP Select</th><th>H/AB</th></tr></thead>
+    <tbody id="nemesisBody"></tbody>
+  </table>
+
+  <div class="note" style="margin-top:1rem;">
+    <strong>vs. Pittsburgh Tigers (0-4):</strong> Porter 0/6, Chimino 0/6, Tortorice 0/8 — offense completely shuts down. Team avg ~.127 combined.<br><br>
+    <strong>vs. All American-Red (0-5-1):</strong> Nobody squares them up. RA of 5.7/game means pitching struggles too. This is the most lopsided matchup.<br><br>
+    <strong>vs. FP Select (1-3-1):</strong> Most beatable of the three. LaFever (.500), Porter (.444), and Glomb (.333) handle them at the top. The bottom half of the order — Chimino, Tortorice, Marple — goes 0-for-everything against them. Fix the bottom of the order and this matchup flips.
+  </div>
+</div>
+
+<!-- PLATE DISCIPLINE -->
+<div class="section" id="rates">
+  <h3>Strikeout rate (SO/AB) — lower is better</h3>
+  <div id="kBars"></div>
+  <h3>Walk rate (BB/PA) — higher is better</h3>
+  <div id="bbBars"></div>
+  <h3>Stolen bases per game</h3>
+  <div id="sbBars"></div>
+  <h3>RBI per AB (run production rate)</h3>
+  <div id="rbiBars"></div>
+  <div class="note" style="margin-top:1rem;">
+    <strong>Marple (78.8% K rate):</strong> Makes contact ~1 in 5 ABs. High BB rate (21%) provides some value but she's struggling to put the bat on the ball.<br><br>
+    <strong>Schmidt (56.1% K rate):</strong> Has power potential (2 HR) but contact is a major concern at 56%.<br><br>
+    <strong>Porter (22% K rate):</strong> Best contact rate on the team by far — elite.<br><br>
+    <strong>LaFever + Glomb:</strong> The speed engines — combined 151 SBs in 74 games (2+ per game between them).
+  </div>
+</div>
+
+<!-- MOMENTUM -->
+<div class="section" id="momentum">
+  <div class="metric-grid">
+    <div class="metric"><div class="label">Longest win streak</div><div class="value" style="color:#0F6E56;">8</div></div>
+    <div class="metric"><div class="label">Longest loss streak</div><div class="value" style="color:#A32D2D;">3</div></div>
+    <div class="metric"><div class="label">Best 10-game stretch</div><div class="value" style="color:#0F6E56;">8-2</div><div class="sub">Games 51-60 (Mar-Apr)</div></div>
+    <div class="metric"><div class="label">Current streak</div><div class="value" style="color:#A32D2D;">L×1</div></div>
+  </div>
+
+  <h3>Rolling 10-game record</h3>
+  <div class="legend">
+    <span class="legend-item"><span class="legend-dot" style="background:#1D9E75;"></span>Wins</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#FAC775;"></span>Ties</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#F09595;"></span>Losses</span>
+  </div>
+  <div class="chart-wrap" style="height:220px;"><canvas id="rollingChart"></canvas></div>
+
+  <div class="split-grid">
+    <div class="card">
+      <div style="font-size:12px;font-weight:600;color:#0F6E56;margin-bottom:8px;">Top 5 wins by margin</div>
+      <div style="font-size:12px;line-height:2.2;color:#555;">
+        Nov 21: <strong style="color:#1a1a1a;">20-0</strong> vs Diamond Divas<br>
+        Mar 29: <strong style="color:#1a1a1a;">17-3</strong> vs Devil Dogs<br>
+        Sep 13: <strong style="color:#1a1a1a;">15-1</strong> vs Ohio Storm<br>
+        Nov 14: <strong style="color:#1a1a1a;">14-0</strong> vs Corry Posse<br>
+        Sep 27: <strong style="color:#1a1a1a;">14-1</strong> vs Smash Palmer
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-size:12px;font-weight:600;color:#A32D2D;margin-bottom:8px;">Top 5 losses by margin</div>
+      <div style="font-size:12px;line-height:2.2;color:#555;">
+        Sep 27: <strong style="color:#1a1a1a;">0-13</strong> vs Queen Bee Hewitt<br>
+        Feb 07: <strong style="color:#1a1a1a;">1-13</strong> vs All American-Red<br>
+        Sep 28: <strong style="color:#1a1a1a;">1-9</strong> vs Queen Bee Hewitt<br>
+        Apr 19: <strong style="color:#1a1a1a;">1-9</strong> vs Pgh Power Mattone<br>
+        Jan 17: <strong style="color:#1a1a1a;">0-7</strong> vs Silver Creek
+      </div>
+    </div>
+  </div>
+
+  <h3>Runs scored vs. allowed per game (monthly)</h3>
+  <div class="legend">
+    <span class="legend-item"><span class="legend-dot" style="background:#1D9E75;"></span>RS/game</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#E24B4A;"></span>RA/game</span>
+  </div>
+  <div class="chart-wrap" style="height:200px;"><canvas id="runEnvChart"></canvas></div>
+</div>
+
+<script>
+function show(id, btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+const playerData={
+  'Maddie Porter':{months:['Sep 25','Oct 25','Nov 25','Jan 26','Feb 26','Mar 26','Apr 26','May 26','Jun 26'],ba:[.567,.545,.421,.250,.333,.562,.474,.333,.667],obp:[.577,.567,.444,.333,.750,.611,.500,.444,.667],rbi:[10,14,8,1,0,8,6,3,3],bb:[1,1,2,1,5,5,2,3,0],hab:['17/30','12/22','8/19','2/8','1/3','9/16','9/19','4/12','8/12']},
+  'Ava Glomb':{months:['Sep 25','Oct 25','Nov 25','Jan 26','Feb 26','Mar 26','Apr 26','May 26','Jun 26'],ba:[.333,.438,.385,.333,.333,.444,.304,.462,.667],obp:[.426,.550,.500,.333,.556,.500,.419,.500,.692],rbi:[5,5,7,2,0,5,9,7,2],bb:[4,6,4,0,4,3,3,1,1],hab:['7/21','7/16','5/13','5/15','2/6','8/18','7/23','6/13','8/12']},
+  'Rylan LaFever':{months:['Sep 25','Oct 25','Nov 25','Jan 26','Feb 26','Mar 26','Apr 26','May 26'],ba:[.529,.316,.632,.200,.091,.444,.522,.375],obp:[.600,.421,.700,.357,.200,.571,.636,.500],rbi:[4,5,11,2,0,5,10,2],bb:[3,4,4,4,2,4,4,5],hab:['9/17','6/19','12/19','2/10','1/11','8/18','12/23','3/8']},
+  'Autumn Dantry':{months:['Sep 25','Oct 25','Nov 25','Jan 26','Feb 26','Mar 26','Apr 26','May 26','Jun 26'],ba:[.333,.235,.526,.500,.333,.333,.529,.385,.455],obp:[.368,.353,.611,.571,.556,.611,.647,.438,.500],rbi:[7,2,11,2,1,2,2,3,3],bb:[1,3,2,2,4,8,6,2,1],hab:['6/18','4/17','10/19','4/8','2/6','3/9','9/17','5/13','5/11']},
+  'Violet Rocco':{months:['Sep 25','Oct 25','Nov 25','Jan 26','Feb 26','Mar 26','Apr 26'],ba:[.235,.375,.500,.125,.125,.294,.176],obp:[.480,.500,.600,.500,.333,.500,.176],rbi:[4,1,9,3,1,4,5],bb:[8,4,5,5,2,4,0],hab:['4/17','6/16','7/14','1/8','1/8','5/17','3/17']},
+  'Brooklyn Schmidt':{months:['Sep 25','Oct 25','Nov 25','Jan 26','Feb 26','Mar 26','Apr 26','May 26','Jun 26'],ba:[.429,.222,.286,.222,.000,.111,.167,.167,.100],obp:[.500,.333,.400,.500,.375,.111,.286,.286,.250],rbi:[7,2,1,1,0,1,1,5,0],bb:[3,1,4,4,3,0,4,2,2],hab:['12/28','4/18','4/14','2/9','0/5','1/9','3/18','2/12','1/10']},
+  'Camille McWilliams':{months:['Sep 25','Oct 25','Nov 25','Jan 26','Feb 26','Mar 26','Apr 26','May 26','Jun 26'],ba:[.296,.158,.533,.231,.125,.235,.167,.000,.400],obp:[.367,.263,.643,.286,.273,.375,.333,.154,.400],rbi:[5,3,11,2,1,2,4,0,2],bb:[3,2,6,1,2,4,6,2,0],hab:['8/27','3/19','8/15','3/13','1/8','4/17','3/18','0/11','4/10']},
+  'Sophia Chimino':{months:['Sep 25','Oct 25','Nov 25','Jan 26','Feb 26','Mar 26','Apr 26','May 26','Jun 26'],ba:[.286,.357,.100,.000,.000,.250,.385,.111,.182],obp:[.500,.500,.200,.308,.333,.250,.538,.214,.267],rbi:[0,3,0,1,0,1,0,1,2],bb:[6,4,2,4,2,0,5,2,1],hab:['4/14','5/14','1/10','0/9','0/4','2/8','10/26','1/9','2/11']},
+  'Silvia Tortorice':{months:['Sep 25','Oct 25','Nov 25','Jan 26','Feb 26','Mar 26','Apr 26','May 26','Jun 26'],ba:[.222,.263,.167,.091,.222,.200,.227,.083,.222],obp:[.259,.316,.267,.182,.308,.267,.250,.154,.364],rbi:[4,5,6,2,1,3,3,2,3],bb:[2,0,4,2,2,1,1,2,3],hab:['6/27','5/19','3/18','1/11','2/9','3/15','5/22','1/12','2/9']},
+  'Brianna Marple':{months:['Sep 25','Oct 25','Nov 25','Jan 26','Feb 26','Mar 26','Apr 26','May 26','Jun 26'],ba:[.150,.000,.222,.143,.250,.071,.235,.091,.000],obp:[.273,.333,.333,.417,.450,.350,.350,.091,.000],rbi:[3,0,4,0,1,1,1,0,0],bb:[2,5,3,5,5,6,2,0,0],hab:['3/20','0/13','2/9','1/7','1/4','1/14','4/17','1/11','0/9']}
+};
+
+let trendChart=null;
+function updateTrend(player){
+  const d=playerData[player]||playerData['Maddie Porter'];
+  const ctx=document.getElementById('trendChart');
+  if(trendChart)trendChart.destroy();
+  trendChart=new Chart(ctx,{type:'line',data:{labels:d.months,datasets:[{label:'BA',data:d.ba,borderColor:'#1D9E75',backgroundColor:'rgba(29,158,117,.1)',tension:.3,fill:true,pointRadius:4},{label:'OBP',data:d.obp,borderColor:'#185FA5',backgroundColor:'transparent',tension:.3,borderDash:[4,2],pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:1,ticks:{callback:v=>v.toFixed(3)}},x:{grid:{display:false}}}}});
+  const body=document.getElementById('trendBody');
+  body.innerHTML='';
+  d.months.forEach((m,i)=>{
+    const ba=d.ba[i],obp=d.obp[i];
+    const bc=ba>=.400?'#0F6E56':ba>=.300?'#185FA5':ba>=.200?'#BA7517':'#A32D2D';
+    body.innerHTML+=`<tr><td>${m}</td><td>${d.hab[i]||'-'}</td><td style="color:${bc};font-weight:600;">${ba.toFixed(3)}</td><td>${typeof obp==='number'?obp.toFixed(3):'-'}</td><td>${d.rbi[i]}</td><td>${d.bb[i]}</td></tr>`;
+  });
+}
+updateTrend('Maddie Porter');
+
+const wlData=[
+  {n:'Maddie Porter',wba:.602,lba:.346,wobp:.632,lobp:.444,whab:'50/83',lhab:'18/52'},
+  {n:'Ava Glomb',wba:.462,lba:.333,wobp:.552,lobp:.429,whab:'36/78',lhab:'18/54'},
+  {n:'Rylan LaFever',wba:.575,lba:.188,wobp:.646,lobp:.298,whab:'42/73',lhab:'9/48'},
+  {n:'Autumn Dantry',wba:.548,lba:.171,wobp:.611,lobp:.345,whab:'40/73',lhab:'7/41'},
+  {n:'Violet Rocco',wba:.358,lba:.100,wobp:.482,lobp:.325,whab:'24/67',lhab:'3/30'},
+  {n:'Brooklyn Schmidt',wba:.311,lba:.114,wobp:.416,lobp:.250,whab:'23/74',lhab:'5/44'},
+  {n:'Camille McWilliams',wba:.346,lba:.111,wobp:.443,lobp:.226,whab:'28/81',lhab:'6/54'},
+  {n:'Sophia Chimino',wba:.375,lba:.083,wobp:.486,lobp:.237,whab:'21/56',lhab:'4/48'},
+  {n:'Silvia Tortorice',wba:.250,lba:.135,wobp:.351,lobp:.196,whab:'21/84',lhab:'7/52'},
+  {n:'Brianna Marple',wba:.203,lba:.000,wobp:.366,lobp:.239,whab:'13/64',lhab:'0/35'},
+];
+const sb=document.getElementById('splitBody');
+wlData.forEach(p=>{
+  const drop=p.wba-p.lba;
+  const dc=drop>.250?'#A32D2D':drop>.150?'#BA7517':'#0F6E56';
+  sb.innerHTML+=`<tr><td>${p.n}</td><td class="good">${p.wba.toFixed(3)}</td><td class="bad">${p.lba.toFixed(3)}</td><td style="color:${dc};">-${drop.toFixed(3)}</td><td>${p.wobp.toFixed(3)}</td><td>${p.lobp.toFixed(3)}</td><td>${p.whab}</td><td>${p.lhab}</td></tr>`;
+});
+
+const haData=[
+  {n:'Maddie Porter',hba:.561,aba:.440,hobp:.620,aobp:.482},
+  {n:'Ava Glomb',hba:.414,aba:.392,hobp:.514,aobp:.473},
+  {n:'Rylan LaFever',hba:.483,aba:.369,hobp:.570,aobp:.475},
+  {n:'Autumn Dantry',hba:.457,aba:.375,hobp:.603,aobp:.434},
+  {n:'Violet Rocco',hba:.278,aba:.279,hobp:.409,aobp:.475},
+  {n:'Brooklyn Schmidt',hba:.271,aba:.203,hobp:.343,aobp:.362},
+  {n:'Camille McWilliams',hba:.212,aba:.278,hobp:.325,aobp:.398},
+  {n:'Sophia Chimino',hba:.354,aba:.140,hobp:.483,aobp:.301},
+  {n:'Silvia Tortorice',hba:.286,aba:.127,hobp:.357,aobp:.225},
+  {n:'Brianna Marple',hba:.146,aba:.107,hobp:.344,aobp:.275},
+];
+const hab=document.getElementById('haBody');
+haData.forEach(p=>{
+  const diff=p.hba-p.aba;
+  const dc=diff>.100?'#0F6E56':Math.abs(diff)<.050?'#888':diff<-.050?'#A32D2D':'#BA7517';
+  const sign=diff>=0?'+':'';
+  hab.innerHTML+=`<tr><td>${p.n}</td><td>${p.hba.toFixed(3)}</td><td>${p.aba.toFixed(3)}</td><td style="color:${dc};">${sign}${diff.toFixed(3)}</td><td>${p.hobp.toFixed(3)}</td><td>${p.aobp.toFixed(3)}</td></tr>`;
+});
+
+const nemData=[
+  {n:'Maddie Porter',tba:.000,tab:'0/6',aba:.250,aab:'3/12',fba:.444,fab:'4/9'},
+  {n:'Ava Glomb',tba:.286,tab:'2/7',aba:.250,aab:'3/12',fba:.333,fab:'3/9'},
+  {n:'Rylan LaFever',tba:.111,tab:'1/9',aba:.250,aab:'2/8',fba:.500,fab:'4/8'},
+  {n:'Autumn Dantry',tba:.250,tab:'1/4',aba:.167,aab:'1/6',fba:.250,fab:'2/8'},
+  {n:'Violet Rocco',tba:.200,tab:'1/5',aba:.000,aab:'0/5',fba:.000,fab:'0/4'},
+  {n:'Brooklyn Schmidt',tba:.333,tab:'2/6',aba:.125,aab:'1/8',fba:.125,fab:'1/8'},
+  {n:'Camille McWilliams',tba:.167,tab:'1/6',aba:.000,aab:'0/9',fba:.100,fab:'1/10'},
+  {n:'Sophia Chimino',tba:.000,tab:'0/6',aba:.200,aab:'1/5',fba:.000,fab:'0/8'},
+  {n:'Silvia Tortorice',tba:.000,tab:'0/8',aba:.154,aab:'2/13',fba:.100,fab:'1/10'},
+  {n:'Brianna Marple',tba:.000,tab:'0/4',aba:.000,aab:'0/5',fba:.000,fab:'0/4'},
+];
+const nb=document.getElementById('nemesisBody');
+nemData.forEach(p=>{
+  function bc(v){return v>=.400?'#0F6E56':v>=.250?'#185FA5':v>=.150?'#BA7517':'#A32D2D';}
+  nb.innerHTML+=`<tr><td>${p.n}</td><td style="color:${bc(p.tba)};font-weight:600;">${p.tba.toFixed(3)}</td><td style="color:#888;font-size:11px;">${p.tab}</td><td style="color:${bc(p.aba)};font-weight:600;">${p.aba.toFixed(3)}</td><td style="color:#888;font-size:11px;">${p.aab}</td><td style="color:${bc(p.fba)};font-weight:600;">${p.fba.toFixed(3)}</td><td style="color:#888;font-size:11px;">${p.fab}</td></tr>`;
+});
+
+const kData=[{n:'Maddie Porter',v:.220},{n:'Ava Glomb',v:.277},{n:'Autumn Dantry',v:.322},{n:'Silvia Tortorice',v:.324},{n:'Rylan LaFever',v:.336},{n:'Violet Rocco',v:.433},{n:'Camille McWilliams',v:.449},{n:'Sophia Chimino',v:.457},{n:'Brooklyn Schmidt',v:.561},{n:'Brianna Marple',v:.788}];
+const kb=document.getElementById('kBars');
+kData.forEach(p=>{const pct=Math.round(p.v*100);const c=p.v<.300?'#1D9E75':p.v<.450?'#BA7517':'#A32D2D';kb.innerHTML+=`<div class="bar-row"><div class="bar-label">${p.n}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${c};">${(p.v*100).toFixed(1)}%</div></div></div>`;});
+
+const bbData=[{n:'Violet Rocco',v:.224},{n:'Brianna Marple',v:.211},{n:'Sophia Chimino',v:.195},{n:'Autumn Dantry',v:.192},{n:'Rylan LaFever',v:.189},{n:'Ava Glomb',v:.158},{n:'Camille McWilliams',v:.158},{n:'Brooklyn Schmidt',v:.156},{n:'Maddie Porter',v:.122},{n:'Silvia Tortorice',v:.107}];
+const bbb=document.getElementById('bbBars');
+bbData.forEach(p=>{const pct=Math.min(100,Math.round(p.v*400));const c=p.v>=.200?'#1D9E75':p.v>=.150?'#185FA5':'#BA7517';bbb.innerHTML+=`<div class="bar-row"><div class="bar-label">${p.n}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${c};">${(p.v*100).toFixed(1)}%</div></div></div>`;});
+
+const sbData=[{n:'Rylan LaFever',v:1.20},{n:'Ava Glomb',v:1.03},{n:'Sophia Chimino',v:.73},{n:'Maddie Porter',v:.72},{n:'Violet Rocco',v:.62},{n:'Camille McWilliams',v:.56},{n:'Autumn Dantry',v:.46},{n:'Brooklyn Schmidt',v:.42},{n:'Silvia Tortorice',v:.19},{n:'Brianna Marple',v:.18}];
+const sbEl=document.getElementById('sbBars');
+sbData.forEach(p=>{const pct=Math.round((p.v/1.2)*100);sbEl.innerHTML+=`<div class="bar-row"><div class="bar-label">${p.n}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:#185FA5;">${p.v.toFixed(2)}/g</div></div></div>`;});
+
+const rbiData=[{n:'Maddie Porter',v:.376},{n:'Rylan LaFever',v:.312},{n:'Ava Glomb',v:.307},{n:'Autumn Dantry',v:.280},{n:'Violet Rocco',v:.278},{n:'Camille McWilliams',v:.217},{n:'Silvia Tortorice',v:.204},{n:'Brooklyn Schmidt',v:.146},{n:'Brianna Marple',v:.096},{n:'Sophia Chimino',v:.076}];
+const rbiEl=document.getElementById('rbiBars');
+rbiData.forEach(p=>{const pct=Math.round((p.v/.376)*100);const c=p.v>=.280?'#1D9E75':p.v>=.200?'#185FA5':'#BA7517';rbiEl.innerHTML+=`<div class="bar-row"><div class="bar-label">${p.n}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${c};">${p.v.toFixed(3)}</div></div></div>`;});
+
+const wlBars=[{n:'Ava Glomb',ip:94.0,outings:37},{n:'Maddie Porter',ip:74.8,outings:33},{n:'Autumn Dantry',ip:62.3,outings:29},{n:'Violet Rocco',ip:44.6,outings:26}];
+const wlEl=document.getElementById('workloadBars');
+wlBars.forEach(p=>{const pct=Math.round((p.ip/94.0)*100);wlEl.innerHTML+=`<div class="bar-row"><div class="bar-label">${p.n}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:#378ADD;">${p.ip} IP / ${p.outings} outings</div></div></div>`;});
+
+new Chart(document.getElementById('eraMonthChart'),{type:'line',data:{labels:['Sep 25','Oct 25','Nov 25','Jan 26','Feb 26','Mar 26','Apr 26','May 26','Jun 26'],datasets:[{label:'Porter',data:[5.25,1.47,0.00,2.33,3.23,1.05,1.62,5.91,5.04],borderColor:'#1D9E75',tension:.3,pointRadius:3},{label:'Glomb',data:[6.22,1.50,0.00,3.36,5.88,5.44,4.61,5.25,2.90],borderColor:'#185FA5',borderDash:[4,2],tension:.3,pointRadius:3},{label:'Rocco',data:[5.07,15.75,0.00,4.57,8.40,1.17,5.25,null,null],borderColor:'#BA7517',tension:.3,pointRadius:3},{label:'Dantry',data:[3.94,4.74,0.00,0.00,0.00,3.00,4.31,11.55,21.00],borderColor:'#A32D2D',borderDash:[2,2],tension:.3,pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:16},x:{grid:{display:false}}}}});
+
+new Chart(document.getElementById('rollingChart'),{type:'bar',data:{labels:['G1-10','G6-15','G11-20','G16-25','G21-30','G26-35','G31-40','G36-45','G41-50','G46-55','G51-60','G56-65','G61-70'],datasets:[{label:'W',data:[4,4,5,5,7,7,5,5,5,7,8,5,4],backgroundColor:'#1D9E75',stack:'a'},{label:'T',data:[1,1,0,0,0,0,0,0,0,0,0,1,2],backgroundColor:'#FAC775',stack:'a'},{label:'L',data:[5,5,5,5,3,3,5,5,5,3,2,4,4],backgroundColor:'#F09595',stack:'a'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:9}}},y:{stacked:true,max:10,min:0}}}});
+
+const rs=[80,51,76,22,17,41,61,31,31],ra=[71,38,4,16,31,21,32,35,24],gams=[13,10,8,6,6,8,12,6,5];
+new Chart(document.getElementById('runEnvChart'),{type:'line',data:{labels:['Sep 25','Oct 25','Nov 25','Jan 26','Feb 26','Mar 26','Apr 26','May 26','Jun 26'],datasets:[{label:'RS/g',data:rs.map((v,i)=>parseFloat((v/gams[i]).toFixed(1))),borderColor:'#1D9E75',tension:.3,fill:false,pointRadius:4},{label:'RA/g',data:ra.map((v,i)=>parseFloat((v/gams[i]).toFixed(1))),borderColor:'#E24B4A',tension:.3,fill:false,pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true},x:{grid:{display:false}}}}});
+</script>
+</body>
+</html>
