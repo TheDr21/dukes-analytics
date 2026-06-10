@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lady Dukes Analytics</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:   #0B1E35;
+    --navy2:  #152B47;
+    --gold:   #E8A020;
+    --gold2:  #C8841A;
+    --offwhite: #F2EFE8;
+    --muted:  #8A97A6;
+    --border: rgba(255,255,255,0.08);
+    --card-bg: rgba(255,255,255,0.04);
+    --card-hover: rgba(255,255,255,0.08);
+    --green:  #2DB87C;
+    --red:    #E24B4A;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--navy);
+    color: var(--offwhite);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── top bar ── */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    height: 56px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--navy);
+    z-index: 100;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .logo-diamond {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+  }
+  .logo-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--offwhite);
+    letter-spacing: 0.02em;
+  }
+  .logo-text span {
+    color: var(--gold);
+  }
+  .topbar-meta {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ── hero ── */
+  .hero {
+    padding: 4rem 2rem 3rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .season-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+    border: 1px solid rgba(232,160,32,0.3);
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+  .season-tag::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  .hero h1 {
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+  .hero h1 .accent {
+    color: var(--gold);
+  }
+  .hero-sub {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 520px;
+    margin-bottom: 2.5rem;
+  }
+
+  /* ── stat strip ── */
+  .stat-strip {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 3.5rem;
+  }
+  .stat-item {
+    flex: 1;
+    padding: 1rem 1.25rem;
+    border-right: 1px solid var(--border);
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-num {
+    font-size: 26px;
+    font-weight: 600;
+    font-family: 'DM Mono', monospace;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-lbl {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .up { color: var(--green); }
+  .gold { color: var(--gold); }
+  .red { color: var(--red); }
+
+  /* ── section label ── */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 1rem;
+    padding-bottom: .5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── dashboard grid ── */
+  .dash-section {
+    max-width: 900px;
+    margin: 0 auto 3rem;
+    padding: 0 2rem;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .dash-card {
+    background: var(--navy2);
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+    transition: background .15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .dash-card:hover {
+    background: #1c3352;
+  }
+  .dash-card::after {
+    content: '↗';
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    font-size: 14px;
+    color: var(--muted);
+    opacity: 0;
+    transition: opacity .15s, transform .15s;
+    transform: translate(-3px, 3px);
+  }
+  .dash-card:hover::after {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  .card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .icon-gold  { background: rgba(232,160,32,0.12); }
+  .icon-green { background: rgba(45,184,124,0.12); }
+  .icon-blue  { background: rgba(55,138,221,0.12); }
+  .icon-red   { background: rgba(226,75,74,0.12); }
+  .icon-purple{ background: rgba(127,119,221,0.12); }
+  .card-title {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  .card-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    flex: 1;
+  }
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 4px;
+  }
+  .tag {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  /* ── featured card (2-col span) ── */
+  .dash-card.featured {
+    grid-column: span 2;
+    background: linear-gradient(135deg, #152B47 0%, #0f2238 100%);
+    border-left: 3px solid var(--gold);
+  }
+  @media (max-width: 600px) {
+    .dash-card.featured { grid-column: span 1; }
+  }
+
+  /* ── how to use section ── */
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  @media (max-width: 600px) {
+    .how-grid { grid-template-columns: 1fr; }
+  }
+  .how-step {
+    background: var(--navy2);
+    padding: 1.5rem;
+  }
+  .step-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    margin-bottom: .75rem;
+  }
+  .step-title {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: .5rem;
+  }
+  .step-body {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .step-body code {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    background: rgba(255,255,255,0.07);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--offwhite);
+  }
+
+  /* ── footer ── */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-left { font-size: 12px; color: var(--muted); }
+  .footer-right {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* ── responsive ── */
+  @media (max-width: 600px) {
+    .topbar { padding: 0 1rem; }
+    .hero { padding: 2.5rem 1rem 2rem; }
+    .dash-section { padding: 0 1rem; }
+    .stat-strip { flex-wrap: wrap; }
+    .stat-item { min-width: 50%; }
+    .footer { flex-direction: column; gap: .5rem; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- top bar -->
+<nav class="topbar" aria-label="Site navigation">
+  <a href="index.html" class="logo" aria-label="Lady Dukes Analytics home">
+    <svg class="logo-diamond" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+      <rect x="14" y="1" width="18" height="18" rx="2" transform="rotate(45 14 1)" fill="#E8A020" opacity="0.15"/>
+      <rect x="14" y="4" width="13" height="13" rx="1.5" transform="rotate(45 14 4)" fill="none" stroke="#E8A020" stroke-width="1.5"/>
+      <circle cx="14" cy="10.5" r="2" fill="#E8A020"/>
+    </svg>
+    <span class="logo-text">Lady Dukes <span>Analytics</span></span>
+  </a>
+  <span class="topbar-meta">WPA · 10U · 2025–26</span>
+</nav>
+
+<!-- hero -->
+<header class="hero">
+  <div class="season-tag">2025–26 Season</div>
+  <h1>One season.<br><span class="accent">74 games</span> of data.</h1>
+  <p class="hero-sub">Complete statistical analysis for the WPA Lady Dukes 10U program — hitting, pitching, fielding, trends, and projections.</p>
+
+  <div class="stat-strip" role="region" aria-label="Season summary stats">
+    <div class="stat-item">
+      <div class="stat-num up">39–32–3</div>
+      <div class="stat-lbl">Season record</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num gold">+138</div>
+      <div class="stat-lbl">Run differential</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">.306</div>
+      <div class="stat-lbl">Team batting avg</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num up">414</div>
+      <div class="stat-lbl">Stolen bases</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">15</div>
+      <div class="stat-lbl">Players tracked</div>
+    </div>
+  </div>
+</header>
+
+<!-- dashboards -->
+<main>
+  <section class="dash-section" aria-labelledby="dash-label">
+    <div class="section-label" id="dash-label">Dashboards</div>
+    <div class="card-grid">
+
+      <a href="lady_dukes_deep_dive.html" class="dash-card featured" aria-label="Deep dive dashboard">
+        <div class="card-icon icon-gold">📊</div>
+        <div class="card-title">Season deep dive</div>
+        <div class="card-desc">Batting trends, win/loss splits, home/away splits, pitcher breakdowns, and head-to-head vs. nemesis opponents. Six tabs of analysis.</div>
+        <div class="card-tags">
+          <span class="tag">Hitting</span>
+          <span class="tag">Pitching</span>
+          <span class="tag">Trends</span>
+          <span class="tag">Splits</span>
+        </div>
+      </a>
+
+      <a href="lady_dukes_ultra_deep.html" class="dash-card" aria-label="Ultra deep analytics">
+        <div class="card-icon icon-blue">🔬</div>
+        <div class="card-title">Ultra deep analytics</div>
+        <div class="card-desc">BABIP, QAB%, BA/RISP, batted ball profiles, FIP vs ERA, fielding by position, and full scouting portraits on every player.</div>
+        <div class="card-tags">
+          <span class="tag">Advanced</span>
+          <span class="tag">Fielding</span>
+          <span class="tag">FIP</span>
+        </div>
+      </a>
+
+      <a href="lady_dukes_10u_stats_dashboard.html" class="dash-card" aria-label="Season overview dashboard">
+        <div class="card-icon icon-green">📈</div>
+        <div class="card-title">Season overview</div>
+        <div class="card-desc">Season record, run differential, per-player slash lines, pitching leaderboard, monthly record, and opponent breakdown.</div>
+        <div class="card-tags">
+          <span class="tag">Overview</span>
+          <span class="tag">Leaderboard</span>
+          <span class="tag">Monthly</span>
+        </div>
+      </a>
+
+      <a href="lady_dukes_deep_dive.html#pitching" class="dash-card" aria-label="Pitching analysis">
+        <div class="card-icon icon-purple">⚾</div>
+        <div class="card-title">Pitching breakdown</div>
+        <div class="card-desc">ERA by month for all four pitchers, win-context splits, workload distribution, and FIP-adjusted performance.</div>
+        <div class="card-tags">
+          <span class="tag">ERA</span>
+          <span class="tag">FIP</span>
+          <span class="tag">Workload</span>
+        </div>
+      </a>
+
+      <a href="dukes_lineup_and_11u_projection.html" class="dash-card featured" aria-label="11U lineup and projection">
+        <div class="card-icon icon-gold">🔭</div>
+        <div class="card-title">11U lineup & projection</div>
+        <div class="card-desc">Data-driven optimal batting order for the current roster, plus a full 11U season projection accounting for the mound distance change, bigger ball, and longer basepaths.</div>
+        <div class="card-tags">
+          <span class="tag">Lineup</span>
+          <span class="tag">11U</span>
+          <span class="tag">Projection</span>
+          <span class="tag">Rule changes</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- how to use -->
+  <section class="dash-section" aria-labelledby="how-label">
+    <div class="section-label" id="how-label">Adding new dashboards</div>
+    <div class="how-grid">
+      <div class="how-step">
+        <div class="step-num">01 · Export</div>
+        <div class="step-title">Save the HTML file</div>
+        <div class="step-body">When Claude generates a new dashboard, download the HTML file. Name it something descriptive like <code>spring-2026-overview.html</code>.</div>
+      </div>
+      <div class="how-step">
+        <div class="step-num">02 · Upload</div>
+        <div class="step-title">Add to your repository</div>
+        <div class="step-body">Drag the file into your GitHub repository alongside <code>index.html</code>. It goes live at <code>yourusername.github.io/dukes/filename.html</code> within a minute.</div>
+      </div>
+      <div class="how-step">
+        <div class="step-num">03 · Link</div>
+        <div class="step-title">Add a card here</div>
+        <div class="step-body">Copy any existing <code>&lt;a class="dash-card"&gt;</code> block in <code>index.html</code>, update the <code>href</code>, title, and description. That's it.</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- footer -->
+<footer class="footer" role="contentinfo">
+  <div class="footer-left">WPA Lady Dukes Analytics · Peters Township Girls Softball</div>
+  <div class="footer-right">Sep 2025 – Jun 2026 · 74 games</div>
+</footer>
+
+</body>
+</html>
