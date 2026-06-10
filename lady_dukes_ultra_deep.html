@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WPA Lady Dukes 10U — Ultra Deep Dive</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:system-ui,sans-serif;background:#f5f5f2;color:#1a1a1a;padding:1rem 1.25rem;}
+h1{font-size:19px;font-weight:600;margin-bottom:3px;}
+.sub{font-size:12px;color:#666;margin-bottom:1rem;}
+.tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:1.25rem;border-bottom:1px solid #e0e0dc;padding-bottom:.75rem;}
+.tab{background:#fff;border:1px solid #ddd;border-radius:6px;padding:5px 12px;font-size:12px;cursor:pointer;color:#555;white-space:nowrap;}
+.tab.active{border-color:#185FA5;color:#185FA5;background:#EBF4FD;font-weight:600;}
+.section{display:none;}
+.section.active{display:block;}
+table{width:100%;font-size:12px;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.08);margin-bottom:1rem;}
+thead tr{background:#f0f0ec;}
+th{text-align:right;padding:7px 8px;font-weight:600;font-size:11px;color:#444;border-bottom:1px solid #e5e5e0;}
+th:first-child,td:first-child{text-align:left;}
+td{text-align:right;padding:5px 8px;border-bottom:1px solid #f0f0ec;font-size:12px;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#fafaf8;}
+.mg{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:8px;margin-bottom:1rem;}
+.mc{background:#fff;border-radius:8px;padding:11px 13px;box-shadow:0 1px 2px rgba(0,0,0,.08);}
+.mc .lbl{font-size:11px;color:#666;margin-bottom:3px;}
+.mc .val{font-size:20px;font-weight:600;}
+.mc .s{font-size:10px;color:#888;margin-top:2px;}
+h3{font-size:13px;font-weight:600;margin:1rem 0 .6rem;}
+h3:first-child{margin-top:0;}
+.br{display:flex;align-items:center;gap:6px;margin-bottom:5px;}
+.bl{font-size:11px;min-width:130px;flex-shrink:0;}
+.bt{flex:1;background:#ebebea;border-radius:3px;height:14px;overflow:hidden;}
+.bf{height:100%;border-radius:3px;padding-left:5px;font-size:10px;font-weight:600;color:#fff;display:flex;align-items:center;white-space:nowrap;}
+.bv{font-size:11px;color:#666;min-width:38px;text-align:right;}
+.note{background:#fff;border-radius:8px;padding:.9rem 1rem;font-size:12px;color:#444;line-height:1.75;box-shadow:0 1px 2px rgba(0,0,0,.08);margin-bottom:1rem;}
+.note strong{color:#1a1a1a;}
+.tw{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1rem;}
+.card{background:#fff;border-radius:8px;padding:.9rem 1rem;box-shadow:0 1px 2px rgba(0,0,0,.08);}
+.card h4{font-size:12px;font-weight:600;margin-bottom:.5rem;}
+.cw{position:relative;width:100%;background:#fff;border-radius:8px;padding:1rem;box-shadow:0 1px 2px rgba(0,0,0,.08);margin-bottom:1rem;}
+.lg{display:flex;gap:10px;flex-wrap:wrap;font-size:11px;color:#555;margin-bottom:.5rem;}
+.li{display:flex;align-items:center;gap:3px;}
+.ld{width:9px;height:9px;border-radius:2px;flex-shrink:0;}
+select{width:100%;padding:6px 10px;font-size:13px;border:1px solid #ddd;border-radius:6px;background:#fff;color:#1a1a1a;margin-bottom:.75rem;}
+.g{color:#0F6E56;font-weight:600;}
+.b{color:#185FA5;font-weight:600;}
+.w{color:#BA7517;font-weight:600;}
+.r{color:#A32D2D;font-weight:600;}
+.pos-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;font-size:10px;text-align:center;}
+.pos-hd{font-weight:600;color:#555;padding:4px 0;border-bottom:1px solid #e0e0dc;}
+.pos-val{padding:3px 0;color:#1a1a1a;}
+.pos-val.hi{background:#EAF3DE;color:#3B6D11;border-radius:3px;font-weight:600;}
+.diamond{position:relative;width:180px;height:180px;margin:0 auto 1rem;}
+</style>
+</head>
+<body>
+<h1>WPA Lady Dukes 10U — Ultra Deep Dive</h1>
+<p class="sub">74 games · Sep 2025 – Jun 2026 · Record 39-32-3 · 15 players tracked</p>
+
+<div class="tabs">
+  <button class="tab active" onclick="show('adv_bat',this)">Advanced hitting</button>
+  <button class="tab" onclick="show('adv_pitch',this)">Advanced pitching</button>
+  <button class="tab" onclick="show('fielding',this)">Fielding & positions</button>
+  <button class="tab" onclick="show('clutch',this)">Clutch & close games</button>
+  <button class="tab" onclick="show('trends2',this)">Individual trends</button>
+  <button class="tab" onclick="show('portrait',this)">Player portraits</button>
+</div>
+
+<!-- ADVANCED HITTING -->
+<div class="section active" id="adv_bat">
+  <div class="mg">
+    <div class="mc"><div class="lbl">Team QAB%</div><div class="val">48.2%</div><div class="s">Quality at-bats</div></div>
+    <div class="mc"><div class="lbl">Team BABIP</div><div class="val">.476</div><div class="s">Balls in play avg</div></div>
+    <div class="mc"><div class="lbl">Team LOB</div><div class="val">593</div><div class="s">Left on base</div></div>
+    <div class="mc"><div class="lbl">Avg P/PA</div><div class="val">3.97</div><div class="s">Pitches per PA</div></div>
+  </div>
+
+  <h3>Quality at-bat % (QAB%) — productive plate appearances</h3>
+  <div id="qabBars"></div>
+
+  <h3>Full advanced batting table</h3>
+  <table>
+    <thead><tr>
+      <th>Player</th><th>QAB%</th><th>BABIP</th><th>BA/RISP</th><th>LD%</th><th>FB%</th><th>GB%</th><th>2outRBI</th><th>LOB</th><th>ROE</th><th>P/PA</th>
+    </tr></thead>
+    <tbody id="advBatBody"></tbody>
+  </table>
+
+  <div class="tw">
+    <div class="note">
+      <strong>Dantry leads in QAB% (64.2%)</strong> — nearly 2 of every 3 PAs are "quality" even though her BA is .407. That walk rate + hard contact tells a story her raw BA undersells.<br><br>
+      <strong>McWilliams & Tortorice bottom (36–38%)</strong> — the two players with the lowest QAB% also have the lowest BA on the team. Contact quality and contact frequency are both lagging.
+    </div>
+    <div class="note">
+      <strong>Marple's BABIP (.526) is the highest</strong> on the team — when she makes contact she's hitting the ball hard enough to fall in, but her 78.8% K rate means she rarely gets there. If she can reduce Ks even modestly, the production will jump fast.<br><br>
+      <strong>Tortorice has the lowest BABIP (.284)</strong> — she's both striking out a lot AND not getting lucky when she makes contact. Hard to get production going.
+    </div>
+  </div>
+
+  <h3>Batted ball profile (LD% / FB% / GB%)</h3>
+  <div class="cw" style="height:220px;"><canvas id="bbChart" role="img" aria-label="Batted ball type breakdown by player"></canvas></div>
+
+  <h3>BA with runners in scoring position (RISP)</h3>
+  <div id="rispBars"></div>
+
+  <h3>Pitches per plate appearance — who works counts?</h3>
+  <div id="ppaBars"></div>
+</div>
+
+<!-- ADVANCED PITCHING -->
+<div class="section" id="adv_pitch">
+  <div class="mg">
+    <div class="mc"><div class="lbl">Porter Strike%</div><div class="val" style="color:#0F6E56;">62.7%</div><div class="s">best on staff</div></div>
+    <div class="mc"><div class="lbl">Glomb FIP</div><div class="val" style="color:#0F6E56;">2.70</div><div class="s">best on staff</div></div>
+    <div class="mc"><div class="lbl">Rocco SwStr%</div><div class="val" style="color:#185FA5;">23.2%</div><div class="s">most swing & miss</div></div>
+    <div class="mc"><div class="lbl">Rocco BB/INN</div><div class="val" style="color:#A32D2D;">3.22</div><div class="s">control issue</div></div>
+  </div>
+
+  <h3>Pitcher comparison — advanced metrics</h3>
+  <table>
+    <thead><tr>
+      <th>Pitcher</th><th>Strike%</th><th>FPS%</th><th>SwStr%</th><th>K/BF</th><th>P/IP</th><th>P/BF</th><th>FIP</th><th>Weak%</th><th>HHB%</th><th>GO/AO</th><th>BB/INN</th><th>K/BB</th><th>BAA</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td>Maddie Porter</td>
+        <td class="g">62.7%</td><td class="g">64.3%</td><td>19.5%</td><td>0.35</td>
+        <td class="g">19.3</td><td>3.76</td><td>3.18</td><td>80.9%</td><td>33.0%</td>
+        <td class="g">1.96</td><td>1.32</td><td class="g">2.15</td><td>0.28</td>
+      </tr>
+      <tr>
+        <td>Ava Glomb</td>
+        <td>60.7%</td><td>57.3%</td><td>19.2%</td><td class="g">0.38</td>
+        <td class="g">19.2</td><td>4.03</td><td class="g">2.70</td><td class="g">81.3%</td><td class="g">28.8%</td>
+        <td class="b">2.61</td><td class="g">1.02</td><td class="g">2.16</td><td class="g">0.25</td>
+      </tr>
+      <tr>
+        <td>Violet Rocco</td>
+        <td class="r">52.1%</td><td class="r">49.4%</td><td class="g">23.2%</td><td class="b">0.45</td>
+        <td class="r">29.6</td><td class="r">4.49</td><td class="r">5.74</td><td>80.8%</td><td class="r">49.5%</td>
+        <td class="r">0.83</td><td class="r">3.22</td><td>2.02</td><td class="r">0.30</td>
+      </tr>
+      <tr>
+        <td>Autumn Dantry</td>
+        <td class="w">54.6%</td><td>61.3%</td><td>20.7%</td><td>0.35</td>
+        <td>23.7</td><td>4.17</td><td>3.97</td><td>80.2%</td><td>38.6%</td>
+        <td>1.54</td><td class="w">1.86</td><td class="w">1.54</td><td>0.26</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Strike% vs. Walk rate (BB/INN) — command profile</h3>
+  <div class="cw" style="height:200px;"><canvas id="commandChart" role="img" aria-label="Strike percentage vs walk rate per pitcher"></canvas></div>
+
+  <h3>FIP vs ERA — luck-adjusted pitching</h3>
+  <div class="note">
+    <strong>FIP (Fielding Independent Pitching)</strong> measures only what pitchers control — strikeouts, walks, and home runs — removing defense and luck. Lower is better.<br><br>
+    <strong>Glomb: FIP 2.70, ERA 4.24 (+1.54 gap)</strong> — she's been significantly unluckier than her ERA shows. Her underlying command is elite. The runs allowed are not entirely her fault.<br><br>
+    <strong>Porter: FIP 3.18, ERA 3.09 (–0.09)</strong> — ERA and FIP align perfectly. What you see is what you get.<br><br>
+    <strong>Rocco: FIP 5.74, ERA 4.30 (–1.44)</strong> — she's been luckier than her walk rate deserves. The control (52% strikes, 3.22 BB/INN) is unsustainable — expect ERA regression.<br><br>
+    <strong>Dantry: FIP 3.97, ERA 4.63 (+0.66)</strong> — like Glomb, slightly unluckier than skill suggests. But the late-season ERA spike is a real trend.
+  </div>
+
+  <h3>First-pitch strike % vs. first-pitch outcomes</h3>
+  <div class="tw">
+    <div class="card">
+      <h4>First pitch strike %</h4>
+      <div id="fpsBars"></div>
+    </div>
+    <div class="card">
+      <h4>Pitches per inning (efficiency)</h4>
+      <div id="pipBars"></div>
+    </div>
+  </div>
+
+  <h3>Weak contact % — how often batters mis-hit</h3>
+  <div id="weakBars"></div>
+  <p style="font-size:11px;color:#666;margin-top:.4rem;">All four pitchers generate weak contact on ~80% of balls put in play — a good number. Rocco's issue isn't contact quality, it's walks.</p>
+</div>
+
+<!-- FIELDING -->
+<div class="section" id="fielding">
+  <h3>Fielding overview</h3>
+  <table>
+    <thead><tr><th>Player</th><th>INN</th><th>TC</th><th>PO</th><th>A</th><th>E</th><th>DP</th><th>FPCT</th><th>PB</th><th>Role</th></tr></thead>
+    <tbody id="fieldBody"></tbody>
+  </table>
+
+  <div class="note">
+    <strong>Brooklyn Schmidt: 25 errors</strong> — worst on the team by a wide margin. She's playing almost exclusively SS (210.9 inn at SS) which is the hardest defensive position. At .719 FPCT, that's one error every ~3.6 TC. Something to work on — footwork and transfer speed at short.<br><br>
+    <strong>LaFever & McWilliams (catchers):</strong> Both allowed SBs at a 14-15% CS rate — teams are running freely (96 and 88 SBs allowed respectively). CS% below 25% is below average even at 10U. PBs (16 and 11) are another area to address.<br><br>
+    <strong>Dantry (.776 FPCT) and Rocco (.682 FPCT)</strong> — both have fielding struggles relative to their offensive production. Rocco playing heavy LF (108.8 inn) with only 7 errors out there is actually acceptable.
+  </div>
+
+  <h3>Position usage (innings by position)</h3>
+  <div style="overflow-x:auto;">
+    <table id="posTable">
+      <thead><tr id="posHeader"></tr></thead>
+      <tbody id="posBody"></tbody>
+    </table>
+  </div>
+
+  <h3>Catcher comparison — LaFever vs. McWilliams</h3>
+  <div class="tw">
+    <div class="card">
+      <h4 style="color:#185FA5;">Rylan LaFever — 130.4 inn behind plate</h4>
+      <div style="font-size:12px;line-height:2;color:#555;">
+        SB allowed: <strong style="color:#1a1a1a;">96</strong><br>
+        CS: <strong style="color:#1a1a1a;">16</strong> (14.3% CS%)<br>
+        Passed balls: <strong style="color:#A32D2D;">16</strong><br>
+        FPCT: <strong style="color:#1a1a1a;">0.951</strong><br>
+        TC: 244
+      </div>
+    </div>
+    <div class="card">
+      <h4 style="color:#185FA5;">Camille McWilliams — 121.6 inn behind plate</h4>
+      <div style="font-size:12px;line-height:2;color:#555;">
+        SB allowed: <strong style="color:#1a1a1a;">88</strong><br>
+        CS: <strong style="color:#1a1a1a;">15</strong> (14.6% CS%)<br>
+        Passed balls: <strong style="color:#A32D2D;">11</strong><br>
+        FPCT: <strong style="color:#1a1a1a;">0.941</strong><br>
+        TC: 272
+      </div>
+    </div>
+  </div>
+
+  <h3>Defensive versatility — who plays where</h3>
+  <div id="versChart" style="height:220px;position:relative;background:#fff;border-radius:8px;padding:1rem;box-shadow:0 1px 2px rgba(0,0,0,.08);">
+    <canvas id="versCanvas" role="img" aria-label="Innings per player per position"></canvas>
+  </div>
+</div>
+
+<!-- CLUTCH & CLOSE GAMES -->
+<div class="section" id="clutch">
+  <div class="mg">
+    <div class="mc"><div class="lbl">1-run record</div><div class="val r">5-10</div><div class="s">33% win rate</div></div>
+    <div class="mc"><div class="lbl">2-run record</div><div class="val r">4-7</div><div class="s">36% win rate</div></div>
+    <div class="mc"><div class="lbl">3+ run record</div><div class="val g">30-15-3</div><div class="s">65% win rate</div></div>
+    <div class="mc"><div class="lbl">Shutouts thrown</div><div class="val g">11</div><div class="s">vs 4 suffered</div></div>
+  </div>
+
+  <h3>Run environment — how the team scores</h3>
+  <div class="cw" style="height:200px;"><canvas id="scoringDist" role="img" aria-label="Distribution of runs scored per game"></canvas></div>
+
+  <div class="note">
+    <strong>Bimodal scoring:</strong> The team either scores 0–1 runs (19 games) or blows the doors off (14 games with 10+ runs). There's very little middleground — the 4–5 run game (14 games) is the sweet spot that flips close losses.<br><br>
+    <strong>Close-game problem:</strong> In 1-run games the team is 5-10. In 2-run games it's 4-7. That's a combined 9-17 in games decided by 1 or 2 runs — a major area of opportunity. Winning even half of those close losses would push the record to roughly 50-21-3.
+  </div>
+
+  <h3>2-out RBI — clutch production with 2 outs</h3>
+  <div id="twooutBars"></div>
+
+  <h3>Left on base (LOB) — strand rate issues</h3>
+  <div id="lobBars"></div>
+
+  <div class="note">
+    <strong>Tortorice leads in LOB (96)</strong> — she gets on base (17 BB) but the team consistently strands her. That's partly lineup construction and partly her own RISP struggles (.194 BA with runners in scoring position).<br><br>
+    <strong>Dantry: 9 2-out RBI in 59 LOB</strong> — decent 2-out production but 59 LOB over the season suggests she's often stranded too. Her RISP (.413) is solid though, suggesting teammates aren't driving her in.<br><br>
+    <strong>Chimino: only 1 two-out RBI all season</strong> — lowest on the team. Her .121 BA/RISP is the lowest on the team by a significant margin.
+  </div>
+
+  <h3>Record by run differential bracket</h3>
+  <div class="cw" style="height:180px;"><canvas id="marginChart" role="img" aria-label="Record by margin of victory or defeat"></canvas></div>
+</div>
+
+<!-- INDIVIDUAL TRENDS -->
+<div class="section" id="trends2">
+  <select onchange="updatePlayer(this.value)" id="playerSel">
+    <option>Maddie Porter</option><option>Ava Glomb</option><option>Rylan LaFever</option>
+    <option>Autumn Dantry</option><option>Violet Rocco</option><option>Brooklyn Schmidt</option>
+    <option>Camille McWilliams</option><option>Sophia Chimino</option><option>Silvia Tortorice</option>
+    <option>Brianna Marple</option>
+  </select>
+  <div id="playerCard"></div>
+  <div class="lg" style="margin-bottom:.5rem;">
+    <span class="li"><span class="ld" style="background:#1D9E75;"></span>BA</span>
+    <span class="li"><span class="ld" style="background:#185FA5;"></span>OBP</span>
+  </div>
+  <div class="cw" style="height:190px;"><canvas id="indvTrend" role="img" aria-label="Monthly batting trend for selected player"></canvas></div>
+  <table style="margin-top:.5rem;">
+    <thead><tr><th>Month</th><th>H/AB</th><th>BA</th><th>OBP</th><th>RBI</th><th>BB</th><th>SB</th></tr></thead>
+    <tbody id="indvBody"></tbody>
+  </table>
+</div>
+
+<!-- PLAYER PORTRAITS -->
+<div class="section" id="portrait">
+  <p style="font-size:12px;color:#555;margin-bottom:.75rem;">One-paragraph scouting report on each player based on the full season data.</p>
+  <div id="portraitGrid"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+function show(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ======= DATA =======
+const players = [
+  {n:'Maddie Porter',  g:69, ba:.496, obp:.555, slg:.674, ops:1.229, qab:50.0, babip:.575, risp:.543, ld:18.4, fb:31.4, gb:48.3, outrbi:17, lob:44, roe:4, pspa:3.41, sb:50, rbi:53, bb:20, so:31},
+  {n:'Autumn Dantry',  g:68, ba:.407, obp:.536, slg:.551, ops:1.087, qab:64.2, babip:.574, risp:.413, ld:33.0, fb:20.7, gb:44.4, outrbi:9,  lob:59, roe:3, pspa:4.10, sb:31, rbi:33, bb:29, so:38},
+  {n:'Ava Glomb',      g:71, ba:.401, obp:.503, slg:.555, ops:1.058, qab:52.7, babip:.556, risp:.418, ld:22.8, fb:21.9, gb:55.2, outrbi:13, lob:50, roe:5, pspa:3.74, sb:73, rbi:42, bb:26, so:38},
+  {n:'Rylan LaFever',  g:65, ba:.424, obp:.535, slg:.504, ops:1.039, qab:52.2, babip:.609, risp:.425, ld:21.0, fb:24.5, gb:41.8, outrbi:17, lob:48, roe:3, pspa:4.17, sb:78, rbi:39, bb:30, so:42},
+  {n:'Violet Rocco',   g:58, ba:.278, obp:.440, slg:.381, ops:.821,  qab:49.6, babip:.441, risp:.280, ld:17.1, fb:14.0, gb:66.2, outrbi:3,  lob:48, roe:3, pspa:3.99, sb:36, rbi:27, bb:28, so:42},
+  {n:'Brooklyn Schmidt',g:69,ba:.236, obp:.361, slg:.333, ops:.694,  qab:49.0, babip:.495, risp:.220, ld:17.1, fb:33.3, gb:45.5, outrbi:4,  lob:77, roe:1, pspa:4.09, sb:29, rbi:18, bb:23, so:69},
+  {n:'Camille McWilliams',g:73,ba:.246,obp:.370,slg:.283,ops:.653,  qab:36.4, babip:.413, risp:.318, ld:16.3, fb:25.0, gb:53.8, outrbi:9,  lob:66, roe:3, pspa:3.97, sb:41, rbi:30, bb:26, so:62},
+  {n:'Sophia Chimino',  g:60, ba:.238, obp:.391, slg:.257, ops:.648, qab:42.9, babip:.390, risp:.121, ld:14.5, fb:15.8, gb:51.8, outrbi:1,  lob:43, roe:2, pspa:4.07, sb:44, rbi:8,  bb:26, so:48},
+  {n:'Silvia Tortorice',g:72, ba:.197, obp:.283, slg:.197, ops:.480, qab:37.7, babip:.284, risp:.194, ld:9.6,  fb:15.8, gb:69.9, outrbi:8,  lob:96, roe:4, pspa:3.75, sb:14, rbi:29, bb:17, so:46},
+  {n:'Brianna Marple',  g:71, ba:.125, obp:.308, slg:.135, ops:.443, qab:47.4, babip:.526, risp:.044, ld:14.9, fb:12.3, gb:41.2, outrbi:3,  lob:62, roe:2, pspa:4.37, sb:13, rbi:10, bb:28, so:82},
+];
+
+const pitchers = [
+  {n:'Maddie Porter', era:3.09, fip:3.18, whip:.66, strike:62.7, fps:64.3, swstr:19.5, kbf:.35, pip:19.3, pbf:3.76, weak:80.9, hhb:33.0, goao:1.96, bbinn:1.32, kbb:2.15, baa:.28, ip:74.8, outings:33},
+  {n:'Ava Glomb',     era:4.24, fip:2.70, whip:.45, strike:60.7, fps:57.3, swstr:19.2, kbf:.38, pip:19.2, pbf:4.03, weak:81.3, hhb:28.8, goao:2.61, bbinn:1.02, kbb:2.16, baa:.25, ip:94.0, outings:37},
+  {n:'Violet Rocco',  era:4.30, fip:5.74, whip:.59, strike:52.1, fps:49.4, swstr:23.2, kbf:.45, pip:29.6, pbf:4.49, weak:80.8, hhb:49.5, goao:0.83, bbinn:3.22, kbb:2.02, baa:.30, ip:44.6, outings:26},
+  {n:'Autumn Dantry', era:4.63, fip:3.97, whip:.60, strike:54.6, fps:61.3, swstr:20.7, kbf:.35, pip:23.7, pbf:4.17, weak:80.2, hhb:38.6, goao:1.54, bbinn:1.86, kbb:1.54, baa:.26, ip:62.3, outings:29},
+];
+
+const monthlyData = {
+  'Maddie Porter':   {m:['Sep','Oct','Nov','Jan','Feb','Mar','Apr','May','Jun'],ba:[.567,.545,.421,.250,.333,.562,.474,.333,.667],obp:[.577,.567,.444,.333,.750,.611,.500,.444,.667],rbi:[10,14,8,1,0,8,6,3,3],bb:[1,1,2,1,5,5,2,3,0],sb:[14,7,6,2,1,7,8,6,6],hab:['17/30','12/22','8/19','2/8','1/3','9/16','9/19','4/12','8/12']},
+  'Ava Glomb':       {m:['Sep','Oct','Nov','Jan','Feb','Mar','Apr','May','Jun'],ba:[.333,.438,.385,.333,.333,.444,.304,.462,.667],obp:[.426,.550,.500,.333,.556,.500,.419,.500,.692],rbi:[5,5,7,2,0,5,9,7,2],bb:[4,6,4,0,4,3,3,1,1],sb:[9,8,9,7,4,11,12,7,6],hab:['7/21','7/16','5/13','5/15','2/6','8/18','7/23','6/13','8/12']},
+  'Rylan LaFever':   {m:['Sep','Oct','Nov','Jan','Feb','Mar','Apr','May'],ba:[.529,.316,.632,.200,.091,.444,.522,.375],obp:[.600,.421,.700,.357,.200,.571,.636,.500],rbi:[4,5,11,2,0,5,10,2],bb:[3,4,4,4,2,4,4,5],sb:[14,9,15,8,5,10,15,2],hab:['9/17','6/19','12/19','2/10','1/11','8/18','12/23','3/8']},
+  'Autumn Dantry':   {m:['Sep','Oct','Nov','Jan','Feb','Mar','Apr','May','Jun'],ba:[.333,.235,.526,.500,.333,.333,.529,.385,.455],obp:[.368,.353,.611,.571,.556,.611,.647,.438,.500],rbi:[7,2,11,2,1,2,2,3,3],bb:[1,3,2,2,4,8,6,2,1],sb:[3,3,9,4,2,4,4,2,0],hab:['6/18','4/17','10/19','4/8','2/6','3/9','9/17','5/13','5/11']},
+  'Violet Rocco':    {m:['Sep','Oct','Nov','Jan','Feb','Mar','Apr'],ba:[.235,.375,.500,.125,.125,.294,.176],obp:[.480,.500,.600,.500,.333,.500,.176],rbi:[4,1,9,3,1,4,5],bb:[8,4,5,5,2,4,0],sb:[5,4,9,5,2,6,5],hab:['4/17','6/16','7/14','1/8','1/8','5/17','3/17']},
+  'Brooklyn Schmidt':{m:['Sep','Oct','Nov','Jan','Feb','Mar','Apr','May','Jun'],ba:[.429,.222,.286,.222,.000,.111,.167,.167,.100],obp:[.500,.333,.400,.500,.375,.111,.286,.286,.250],rbi:[7,2,1,1,0,1,1,5,0],bb:[3,1,4,4,3,0,4,2,2],sb:[7,3,4,2,2,2,5,3,1],hab:['12/28','4/18','4/14','2/9','0/5','1/9','3/18','2/12','1/10']},
+  'Camille McWilliams':{m:['Sep','Oct','Nov','Jan','Feb','Mar','Apr','May','Jun'],ba:[.296,.158,.533,.231,.125,.235,.167,.000,.400],obp:[.367,.263,.643,.286,.273,.375,.333,.154,.400],rbi:[5,3,11,2,1,2,4,0,2],bb:[3,2,6,1,2,4,6,2,0],sb:[6,4,9,4,3,6,5,3,1],hab:['8/27','3/19','8/15','3/13','1/8','4/17','3/18','0/11','4/10']},
+  'Sophia Chimino':  {m:['Sep','Oct','Nov','Jan','Feb','Mar','Apr','May','Jun'],ba:[.286,.357,.100,.000,.000,.250,.385,.111,.182],obp:[.500,.500,.200,.308,.333,.250,.538,.214,.267],rbi:[0,3,0,1,0,1,0,1,2],bb:[6,4,2,4,2,0,5,2,1],sb:[5,5,6,5,2,6,9,5,1],hab:['4/14','5/14','1/10','0/9','0/4','2/8','10/26','1/9','2/11']},
+  'Silvia Tortorice':{m:['Sep','Oct','Nov','Jan','Feb','Mar','Apr','May','Jun'],ba:[.222,.263,.167,.091,.222,.200,.227,.083,.222],obp:[.259,.316,.267,.182,.308,.267,.250,.154,.364],rbi:[4,5,6,2,1,3,3,2,3],bb:[2,0,4,2,2,1,1,2,3],sb:[1,2,2,2,1,3,2,1,0],hab:['6/27','5/19','3/18','1/11','2/9','3/15','5/22','1/12','2/9']},
+  'Brianna Marple':  {m:['Sep','Oct','Nov','Jan','Feb','Mar','Apr','May','Jun'],ba:[.150,.000,.222,.143,.250,.071,.235,.091,.000],obp:[.273,.333,.333,.417,.450,.350,.350,.091,.000],rbi:[3,0,4,0,1,1,1,0,0],bb:[2,5,3,5,5,6,2,0,0],sb:[1,1,2,2,1,3,2,1,0],hab:['3/20','0/13','2/9','1/7','1/4','1/14','4/17','1/11','0/9']},
+};
+
+// ======= ADVANCED BATTING =======
+const qabBarsEl = document.getElementById('qabBars');
+[...players].sort((a,b)=>b.qab-a.qab).forEach(p=>{
+  const c=p.qab>=55?'#1D9E75':p.qab>=45?'#185FA5':'#BA7517';
+  qabBarsEl.innerHTML+=`<div class="br"><div class="bl">${p.n}</div><div class="bt"><div class="bf" style="width:${p.qab}%;background:${c};">${p.qab.toFixed(1)}%</div></div></div>`;
+});
+
+const advBatBody = document.getElementById('advBatBody');
+players.forEach(p=>{
+  const qc=p.qab>=55?'g':p.qab>=45?'b':'w';
+  const bc=p.babip>=.500?'g':p.babip>=.400?'b':'w';
+  const rc=p.risp>=.400?'g':p.risp>=.250?'b':'r';
+  advBatBody.innerHTML+=`<tr>
+    <td>${p.n}</td>
+    <td class="${qc}">${p.qab.toFixed(1)}%</td>
+    <td class="${bc}">${p.babip.toFixed(3)}</td>
+    <td class="${rc}">${p.risp.toFixed(3)}</td>
+    <td>${p.ld.toFixed(1)}%</td>
+    <td>${p.fb.toFixed(1)}%</td>
+    <td>${p.gb.toFixed(1)}%</td>
+    <td>${p.outrbi}</td>
+    <td>${p.lob}</td>
+    <td>${p.roe}</td>
+    <td>${p.pspa.toFixed(2)}</td>
+  </tr>`;
+});
+
+new Chart(document.getElementById('bbChart'),{
+  type:'bar',
+  data:{
+    labels:players.map(p=>p.n.split(' ')[1]),
+    datasets:[
+      {label:'LD%',data:players.map(p=>p.ld),backgroundColor:'#1D9E75',stack:'a'},
+      {label:'FB%',data:players.map(p=>p.fb),backgroundColor:'#378ADD',stack:'a'},
+      {label:'GB%',data:players.map(p=>p.gb),backgroundColor:'#73726c',stack:'a'},
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+    scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:10}}},y:{stacked:true,max:100,ticks:{callback:v=>v+'%'}}}}
+});
+
+const rispEl=document.getElementById('rispBars');
+[...players].sort((a,b)=>b.risp-a.risp).forEach(p=>{
+  const pct=Math.round(p.risp*100);
+  const c=p.risp>=.400?'#1D9E75':p.risp>=.250?'#185FA5':'#A32D2D';
+  rispEl.innerHTML+=`<div class="br"><div class="bl">${p.n}</div><div class="bt"><div class="bf" style="width:${pct*1.5}%;background:${c};">${p.risp.toFixed(3)}</div></div></div>`;
+});
+
+const ppaEl=document.getElementById('ppaBars');
+[...players].sort((a,b)=>b.pspa-a.pspa).forEach(p=>{
+  const pct=Math.round((p.pspa-3)/1.5*100);
+  const c=p.pspa>=4.2?'#1D9E75':p.pspa>=3.9?'#185FA5':'#BA7517';
+  ppaEl.innerHTML+=`<div class="br"><div class="bl">${p.n}</div><div class="bt"><div class="bf" style="width:${Math.min(100,pct)}%;background:${c};">${p.pspa.toFixed(2)}</div></div></div>`;
+});
+
+// ======= ADVANCED PITCHING =======
+new Chart(document.getElementById('commandChart'),{
+  type:'scatter',
+  data:{datasets:[
+    {label:'Porter',  data:[{x:62.7,y:1.32}],backgroundColor:'#1D9E75',pointRadius:10},
+    {label:'Glomb',   data:[{x:60.7,y:1.02}],backgroundColor:'#185FA5',pointRadius:10},
+    {label:'Rocco',   data:[{x:52.1,y:3.22}],backgroundColor:'#E24B4A',pointRadius:10},
+    {label:'Dantry',  data:[{x:54.6,y:1.86}],backgroundColor:'#BA7517',pointRadius:10},
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: S%=${ctx.parsed.x.toFixed(1)}% BB/INN=${ctx.parsed.y.toFixed(2)}`}}},
+    scales:{
+      x:{title:{display:true,text:'Strike % (higher=better)',font:{size:11}},min:48,max:68},
+      y:{title:{display:true,text:'BB/INN (lower=better)',font:{size:11}},min:0,max:4,reverse:true}
+    }}
+});
+
+const fpsEl=document.getElementById('fpsBars');
+pitchers.forEach(p=>{
+  const c=p.fps>=60?'#1D9E75':p.fps>=50?'#BA7517':'#A32D2D';
+  fpsEl.innerHTML+=`<div class="br"><div class="bl" style="min-width:100px;">${p.n.split(' ')[1]}</div><div class="bt"><div class="bf" style="width:${p.fps}%;background:${c};">${p.fps.toFixed(1)}%</div></div></div>`;
+});
+
+const pipEl=document.getElementById('pipBars');
+pitchers.forEach(p=>{
+  const pct=Math.round((p.pip/30)*100);
+  const c=p.pip<21?'#1D9E75':p.pip<26?'#BA7517':'#A32D2D';
+  pipEl.innerHTML+=`<div class="br"><div class="bl" style="min-width:100px;">${p.n.split(' ')[1]}</div><div class="bt"><div class="bf" style="width:${pct}%;background:${c};">${p.pip.toFixed(1)}</div></div></div>`;
+});
+
+const weakEl=document.getElementById('weakBars');
+pitchers.forEach(p=>{
+  weakEl.innerHTML+=`<div class="br"><div class="bl">${p.n}</div><div class="bt"><div class="bf" style="width:${p.weak}%;background:#1D9E75;">${p.weak.toFixed(1)}%</div></div></div>`;
+});
+
+// ======= FIELDING =======
+const fieldData=[
+  {n:'Maddie Porter',   inn:0,  tc:87,  po:70, a:4,  e:13, dp:0, fpct:.851, pb:0, role:'Pitcher/3B'},
+  {n:'Ava Glomb',       inn:0,  tc:70,  po:56, a:4,  e:10, dp:0, fpct:.857, pb:0, role:'Pitcher/CF'},
+  {n:'Rylan LaFever',   inn:130.4,tc:244,po:227,a:5, e:12, dp:0, fpct:.951, pb:16,role:'Catcher'},
+  {n:'Autumn Dantry',   inn:0,  tc:58,  po:41, a:4,  e:13, dp:2, fpct:.776, pb:0, role:'Pitcher/1B'},
+  {n:'Violet Rocco',    inn:0,  tc:22,  po:15, a:0,  e:7,  dp:0, fpct:.682, pb:0, role:'Pitcher/LF'},
+  {n:'Brooklyn Schmidt',inn:0,  tc:89,  po:63, a:1,  e:25, dp:0, fpct:.719, pb:0, role:'SS'},
+  {n:'Camille McWilliams',inn:121.6,tc:272,po:246,a:10,e:16,dp:1,fpct:.941,pb:11,role:'Catcher'},
+  {n:'Sophia Chimino',  inn:0,  tc:36,  po:26, a:4,  e:6,  dp:1, fpct:.833, pb:0, role:'2B/RF'},
+  {n:'Silvia Tortorice',inn:5.0,tc:69,  po:55, a:2,  e:12, dp:0, fpct:.826, pb:0, role:'2B'},
+  {n:'Brianna Marple',  inn:0,  tc:39,  po:25, a:3,  e:11, dp:1, fpct:.718, pb:0, role:'1B/LF'},
+];
+const fb=document.getElementById('fieldBody');
+fieldData.forEach(p=>{
+  const fc=p.fpct>=.950?'g':p.fpct>=.850?'b':p.fpct>=.800?'w':'r';
+  fb.innerHTML+=`<tr>
+    <td>${p.n}</td><td>${p.inn>0?p.inn.toFixed(1):'—'}</td><td>${p.tc}</td><td>${p.po}</td>
+    <td>${p.a}</td><td>${p.e}</td><td>${p.dp}</td>
+    <td class="${fc}">${p.fpct.toFixed(3)}</td>
+    <td>${p.pb>0?p.pb:'—'}</td><td style="color:#555;font-size:11px;">${p.role}</td>
+  </tr>`;
+});
+
+// Position table
+const posData=[
+  {n:'Maddie Porter',   P:74.8, C:0,   '1B':0,   '2B':3.0, '3B':145.1, SS:1.0, LF:7.7,  CF:8.4,  RF:1.0},
+  {n:'Ava Glomb',       P:94.0, C:0,   '1B':37.3,'2B':0,   '3B':47.5,  SS:3.0, LF:0,    CF:71.3, RF:3.2},
+  {n:'Rylan LaFever',   P:0,    C:130.4,'1B':0,   '2B':1.0, '3B':18.1,  SS:9.1, LF:6.2,  CF:59.3, RF:4.0},
+  {n:'Autumn Dantry',   P:62.3, C:0,   '1B':136.3,'2B':0,  '3B':16.3,  SS:0,   LF:11.2, CF:2.1,  RF:5.2},
+  {n:'Violet Rocco',    P:44.6, C:0,   '1B':0,   '2B':1.0, '3B':0,     SS:0,   LF:108.8,CF:8.4,  RF:22.6},
+  {n:'Brooklyn Schmidt',P:0,    C:0,   '1B':5.0, '2B':0,   '3B':2.1,   SS:210.9,LF:7.2, CF:23.2, RF:0},
+  {n:'Camille McWilliams',P:0,  C:121.6,'1B':0,  '2B':7.4, '3B':35.7,  SS:59.3,LF:10.3, CF:11.0, RF:15.2},
+  {n:'Sophia Chimino',  P:0,    C:0,   '1B':0,   '2B':74.9,'3B':0,     SS:0,   LF:11.2, CF:24.8, RF:87.8},
+  {n:'Silvia Tortorice',P:0,    C:5.0, '1B':0,   '2B':195.1,'3B':0.1,  SS:0,   LF:4.3,  CF:16.4, RF:31.7},
+  {n:'Brianna Marple',  P:0,    C:0,   '1B':77.5,'2B':0,   '3B':0,     SS:0,   LF:75.4, CF:9.5,  RF:63.5},
+];
+const positions=['P','C','1B','2B','3B','SS','LF','CF','RF'];
+const ph=document.getElementById('posHeader');
+ph.innerHTML='<th>Player</th>'+positions.map(p=>`<th>${p}</th>`).join('');
+const pb2=document.getElementById('posBody');
+posData.forEach(p=>{
+  const maxPos=positions.reduce((best,pos)=>p[pos]>p[best]?pos:best,positions[0]);
+  let row=`<td>${p.n}</td>`;
+  positions.forEach(pos=>{
+    const v=p[pos];
+    const hi=v>0&&pos===maxPos;
+    row+=`<td ${hi?'class="g"':''}>${v>0?v.toFixed(0):''}</td>`;
+  });
+  pb2.innerHTML+=`<tr>${row}</tr>`;
+});
+
+// Versatility radar
+const versLabels=posData.map(p=>p.n.split(' ')[1]);
+const versDatasets=positions.map((pos,i)=>({
+  label:pos,
+  data:posData.map(p=>p[pos]||0),
+  backgroundColor:['#185FA5','#1D9E75','#BA7517','#A32D2D','#7F77DD','#888','#5DCAA5','#F09595','#FAC775'][i],
+  stack:'a'
+}));
+new Chart(document.getElementById('versCanvas'),{
+  type:'bar',
+  data:{labels:versLabels,datasets:versDatasets},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+    scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:9}}},y:{stacked:true}}}
+});
+
+// ======= CLUTCH =======
+new Chart(document.getElementById('scoringDist'),{
+  type:'bar',
+  data:{
+    labels:['0','1','2','3','4','5','6','7','8-9','10-11','12-13','14-15','16+'],
+    datasets:[{
+      label:'Games',
+      data:[4,15,5,6,7,7,4,7,4,5,4,3,3],
+      backgroundColor(ctx){const v=ctx.raw;return v>=8?'#1D9E75':v>=4?'#185FA5':'#E24B4A';},
+      borderRadius:3,
+    }]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+    scales:{x:{grid:{display:false},title:{display:true,text:'Runs scored',font:{size:11}}},y:{beginAtZero:true}}}
+});
+
+const twoEl=document.getElementById('twooutBars');
+[...players].sort((a,b)=>b.outrbi-a.outrbi).forEach(p=>{
+  const pct=Math.round((p.outrbi/17)*100);
+  const c=p.outrbi>=15?'#1D9E75':p.outrbi>=8?'#185FA5':'#BA7517';
+  twoEl.innerHTML+=`<div class="br"><div class="bl">${p.n}</div><div class="bt"><div class="bf" style="width:${pct}%;background:${c};">${p.outrbi}</div></div></div>`;
+});
+
+const lobEl=document.getElementById('lobBars');
+[...players].sort((a,b)=>b.lob-a.lob).forEach(p=>{
+  const pct=Math.round((p.lob/96)*100);
+  twoEl; // keep reference
+  lobEl.innerHTML+=`<div class="br"><div class="bl">${p.n}</div><div class="bt"><div class="bf" style="width:${pct}%;background:#A32D2D;">${p.lob}</div></div></div>`;
+});
+
+new Chart(document.getElementById('marginChart'),{
+  type:'bar',
+  data:{
+    labels:['Lost 5+','Lost 3-4','Lost 2','Lost 1','Tie','Won 1','Won 2','Won 3-4','Won 5+'],
+    datasets:[{
+      label:'Games',
+      data:[15,0,7,10,3,5,4,0,22],
+      backgroundColor:['#A32D2D','#E24B4A','#F09595','#FAC775','#888','#9FE1CB','#5DCAA5','#1D9E75','#0F6E56'],
+      borderRadius:3,
+    }]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+    scales:{x:{grid:{display:false}},y:{beginAtZero:true}}}
+});
+
+// ======= INDIVIDUAL TRENDS =======
+let trendChart=null;
+function updatePlayer(name){
+  const d=monthlyData[name];
+  const p=players.find(x=>x.n===name)||players[0];
+  const ctx=document.getElementById('indvTrend');
+  if(trendChart)trendChart.destroy();
+  trendChart=new Chart(ctx,{
+    type:'line',
+    data:{labels:d.m,datasets:[
+      {label:'BA',data:d.ba,borderColor:'#1D9E75',backgroundColor:'rgba(29,158,117,.08)',tension:.35,fill:true,pointRadius:4},
+      {label:'OBP',data:d.obp,borderColor:'#185FA5',backgroundColor:'transparent',tension:.35,borderDash:[4,2],pointRadius:3}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{y:{min:0,max:0.85,ticks:{callback:v=>v.toFixed(3)}},x:{grid:{display:false}}}}
+  });
+  const opsC=p.ops>=1.0?'#0F6E56':p.ops>=.750?'#185FA5':p.ops>=.550?'#BA7517':'#A32D2D';
+  document.getElementById('playerCard').innerHTML=`
+    <div class="mg" style="margin-bottom:.75rem;">
+      <div class="mc"><div class="lbl">Season BA</div><div class="val" style="color:${opsC};">${p.ba.toFixed(3)}</div></div>
+      <div class="mc"><div class="lbl">OPS</div><div class="val" style="color:${opsC};">${p.ops.toFixed(3)}</div></div>
+      <div class="mc"><div class="lbl">SB</div><div class="val">${p.sb}</div></div>
+      <div class="mc"><div class="lbl">RBI</div><div class="val">${p.rbi}</div></div>
+      <div class="mc"><div class="lbl">QAB%</div><div class="val">${p.qab.toFixed(1)}%</div></div>
+      <div class="mc"><div class="lbl">BABIP</div><div class="val">${p.babip.toFixed(3)}</div></div>
+    </div>`;
+  const body=document.getElementById('indvBody');
+  body.innerHTML='';
+  d.m.forEach((m,i)=>{
+    const ba=d.ba[i];
+    const c=ba>=.400?'#0F6E56':ba>=.300?'#185FA5':ba>=.200?'#BA7517':'#A32D2D';
+    body.innerHTML+=`<tr>
+      <td>${m}</td><td>${d.hab[i]||'—'}</td>
+      <td style="color:${c};font-weight:600;">${ba.toFixed(3)}</td>
+      <td>${d.obp[i].toFixed(3)}</td>
+      <td>${d.rbi[i]}</td><td>${d.bb[i]}</td><td>${(d.sb||[])[i]||0}</td>
+    </tr>`;
+  });
+}
+updatePlayer('Maddie Porter');
+
+// ======= PLAYER PORTRAITS =======
+const portraits=[
+  {n:'Maddie Porter',pos:'P/3B',ops:1.229,
+   text:'The clear ace and offensive anchor. Porter leads the team in BA (.496), OPS (1.229), RBI (53), and posts the best ERA (3.09) and WHIP (0.66) on the staff. Her 22% strikeout rate is the best contact rate on the team. QAB% of 50% is solid. The one flag: her performance dips notably in losses (BA drops from .602 to .346), though that\'s partly game-context. At 3B she logged 145 innings — her primary defensive home when not pitching. The team\'s most complete player.',
+   col:'#0F6E56'},
+  {n:'Ava Glomb',pos:'P/CF',ops:1.058,
+   text:'The team workhorse — 94 innings pitched (most on staff), 10 wins, and a .401 BA at the plate. Her FIP of 2.70 is the best on the staff, meaning she\'s been unluckier than her ERA (4.24) suggests — defense has cost her runs. Her WHIP of 0.45 is outstanding. In CF she logged 71 innings, giving the team a go-to arm in center. Win-loss ERA split (1.76 in wins, 7.24 in losses) is dramatic but largely reflects run-support correlation. A genuinely elite player.',
+   col:'#0F6E56'},
+  {n:'Rylan LaFever',pos:'C/CF',ops:1.039,
+   text:'The best batting average on the team in winning games (.575), and a .424 season BA despite a brutal February (.091). LaFever leads the team in stolen bases (78) at 1.20/game — among the top speed threats in the region at this age. As a catcher she handled 130+ innings but threw out only 14.3% of base stealers and allowed 16 PBs — the arm and receiving need work. QAB% of 52.2% is strong. The biggest offensive X-factor in the lineup.',
+   col:'#0F6E56'},
+  {n:'Autumn Dantry',pos:'P/1B',ops:1.087,
+   text:'The team\'s highest QAB% (64.2%) — nearly 2 of 3 plate appearances are productive. Her .407 BA and 1.087 OPS make her a top-4 offensive player. On the mound she was dominant through November (0.00 ERA) before declining sharply — ERA of 11.55 in May and 21.00 in June (small samples) is a red flag. Her strike% (54.6%) and K/BB (1.54) are the weakest on the pitching staff. At 1B she logged 136 innings — a natural defensive home when healthy.',
+   col:'#185FA5'},
+  {n:'Violet Rocco',pos:'P/LF',ops:.821,
+   text:'A pitcher with a .278 BA and the highest walk rate on the team (22.4% BB/PA) — she gets on base despite modest contact. As a pitcher her K/BF (0.45) and SwStr% (23.2%) are the best on the staff, but her control (52.1% strikes, 3.22 BB/INN) is a serious concern and her FIP (5.74) is the highest on the staff. The swing-and-miss stuff is real — if she can fix her command she becomes a much more dangerous pitcher. Primary outfield role in LF (108.8 inn) when not pitching.',
+   col:'#185FA5'},
+  {n:'Brooklyn Schmidt',pos:'SS',ops:.694,
+   text:'The everyday shortstop (210.9 innings at SS — far more than anyone else at any one position) but with 25 errors (.719 FPCT) — the worst on the team. Offensively she opened the season hot (.429 BA in September) before declining each month to .100 in June. The strikeout rate (56.1%) is second-worst on the team and trending the wrong direction. High fly-ball rate (33.3%) with modest power. A player with the athleticism to play SS but needs significant technical work both offensively and defensively.',
+   col:'#BA7517'},
+  {n:'Camille McWilliams',pos:'C/SS',ops:.653,
+   text:'The team\'s lowest QAB% (36.4%) and one of the lower OPS marks (.653). Behind the plate in 121.6 innings, McWilliams is comparable to LaFever in CS% (14.6%) and FPCT (.941). At the plate, November was her best month (.533 BA, 11 RBI) but she\'s been inconsistent — including a 0-for-11 in May. BA/RISP of .318 is actually one of the better numbers on the team, suggesting she does deliver in scoring situations. A defensively capable player who needs more consistent offensive output.',
+   col:'#BA7517'},
+  {n:'Sophia Chimino',pos:'2B/RF',ops:.648,
+   text:'Chimino is one of the team\'s better table-setters with a 19.5% BB rate and 44 SBs, but makes contact only 24% of the time — among the highest K rates on the team (45.7%). Her BA/RISP (.121) is the worst on the team — she simply doesn\'t drive the ball when it matters most. Plays heavy RF (87.8 inn) and 2B (74.9 inn) with a .833 FPCT. The April breakout (.385 BA) suggests the offensive capability is there — consistency is the issue.',
+   col:'#BA7517'},
+  {n:'Silvia Tortorice',pos:'2B',ops:.480,
+   text:'The primary second baseman (195.1 innings at 2B) with the lowest BABIP on the team (.284) and the lowest line-drive rate (9.6%). Tortorice leads the team in LOB (96) — she gets on base through patience but the team consistently strands her. Her BA/RISP (.194) is near the bottom. The extremely high GB% (69.9%) means almost no balls get through the infield. She has 29 RBI and 17 BB, suggesting some value in her patience, but the contact profile needs to change. The most predictable out on the roster currently.',
+   col:'#A32D2D'},
+  {n:'Brianna Marple',pos:'1B/LF',ops:.443,
+   text:'The most extreme plate discipline split on the team: a 78.8% K rate paired with a 21.1% walk rate. She makes contact in roughly 1 of 5 ABs, but when she does, her BABIP (.526) is the highest on the team — she hits it hard. BA/RISP of .044 (essentially 0-for-many with RISP) is the most significant development concern. At 1B (77.5 inn) and LF (75.4 inn) she splits time. The walk rate is a genuine asset at 10U, but the K rate needs to come down meaningfully before she becomes an offensive contributor.',
+   col:'#A32D2D'},
+];
+
+const pg=document.getElementById('portraitGrid');
+portraits.forEach(p=>{
+  pg.innerHTML+=`<div class="card" style="margin-bottom:.75rem;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem;">
+      <div>
+        <span style="font-size:13px;font-weight:600;">${p.n}</span>
+        <span style="font-size:11px;color:#666;margin-left:8px;">${p.pos}</span>
+      </div>
+      <span style="font-size:13px;font-weight:600;color:${p.col};">OPS ${p.ops.toFixed(3)}</span>
+    </div>
+    <p style="font-size:12px;color:#444;line-height:1.7;">${p.text}</p>
+  </div>`;
+});
+</script>
+</body>
+</html>
