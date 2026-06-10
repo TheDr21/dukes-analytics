@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10U Lineup & 11U Projection — Lady Dukes Analytics</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',system-ui,sans-serif;background:#0B1E35;color:#F2EFE8;padding:0;min-height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:52px;border-bottom:1px solid rgba(255,255,255,0.08);background:#0B1E35;position:sticky;top:0;z-index:10;}
+.logo{font-size:14px;font-weight:600;color:#F2EFE8;text-decoration:none;}
+.logo span{color:#E8A020;}
+.back{font-size:12px;color:#8A97A6;text-decoration:none;font-family:'DM Mono',monospace;}
+.back:hover{color:#E8A020;}
+.page{max-width:860px;margin:0 auto;padding:2.5rem 2rem 4rem;}
+h1{font-size:28px;font-weight:600;margin-bottom:.4rem;letter-spacing:-0.01em;}
+h1 span{color:#E8A020;}
+.sub{font-size:13px;color:#8A97A6;margin-bottom:2.5rem;}
+.sec{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;}
+h2{font-size:16px;font-weight:600;margin-bottom:.4rem;}
+.sec-sub{font-size:12px;color:#8A97A6;margin-bottom:1.25rem;}
+.lineup-hdr{display:grid;grid-template-columns:28px 1fr 90px 1fr;gap:8px;padding:0 0 8px;border-bottom:1px solid rgba(255,255,255,0.12);font-size:11px;font-weight:600;color:#8A97A6;text-transform:uppercase;letter-spacing:.05em;}
+.row{display:grid;grid-template-columns:28px 1fr 90px 1fr;gap:8px;align-items:start;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06);}
+.row:last-child{border-bottom:none;}
+.num{font-size:20px;font-weight:600;color:#8A97A6;font-family:'DM Mono',monospace;line-height:1.1;}
+.pname{font-size:14px;font-weight:600;line-height:1.2;}
+.ppos{font-size:11px;color:#8A97A6;margin-top:2px;}
+.ops{font-size:13px;font-weight:600;text-align:right;}
+.ops-sub{font-size:10px;color:#8A97A6;text-align:right;margin-top:2px;font-family:'DM Mono',monospace;}
+.reason{font-size:12px;color:#B0BDC9;line-height:1.55;}
+.g{color:#2DB87C;} .b{color:#378ADD;} .w{color:#E8A020;} .r{color:#E24B4A;}
+.divider{height:1px;background:rgba(255,255,255,0.08);margin:1.25rem 0;}
+.rotation{font-size:12px;color:#8A97A6;line-height:1.7;padding:.9rem 1rem;background:rgba(255,255,255,0.03);border-radius:8px;border-left:3px solid #E8A020;}
+.rotation strong{color:#F2EFE8;}
+.rule-row{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06);}
+.rule-row:last-child{border-bottom:none;}
+.rule-bullet{width:6px;height:6px;border-radius:50%;background:#E8A020;margin-top:6px;flex-shrink:0;}
+.rule-body{}
+.rule-title{font-size:13px;font-weight:600;margin-bottom:3px;}
+.rule-desc{font-size:12px;color:#B0BDC9;line-height:1.55;}
+.proj-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.06);}
+.proj-row:last-child{border-bottom:none;}
+.proj-name{font-size:13px;font-weight:600;}
+.proj-detail{font-size:11px;color:#8A97A6;margin-top:2px;line-height:1.5;}
+.pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;white-space:nowrap;}
+.pill-up{background:rgba(45,184,124,0.15);color:#2DB87C;}
+.pill-ok{background:rgba(55,138,221,0.15);color:#378ADD;}
+.pill-down{background:rgba(232,160,32,0.15);color:#E8A020;}
+.pill-risk{background:rgba(226,75,74,0.15);color:#E24B4A;}
+.record-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem;}
+.record-box{text-align:center;padding:1rem;background:rgba(255,255,255,0.04);border-radius:8px;border:1px solid rgba(255,255,255,0.08);}
+.record-num{font-size:26px;font-weight:600;font-family:'DM Mono',monospace;}
+.record-lbl{font-size:11px;color:#8A97A6;margin-top:4px;text-transform:uppercase;letter-spacing:.05em;}
+.record-cmp{font-size:10px;color:#8A97A6;margin-top:2px;}
+.br-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.br-lbl{font-size:11px;min-width:130px;color:#B0BDC9;}
+.br-track{flex:1;background:rgba(255,255,255,0.07);border-radius:3px;height:14px;overflow:hidden;}
+.br-fill{height:100%;border-radius:3px;display:flex;align-items:center;padding-left:6px;font-size:10px;font-weight:500;color:#fff;}
+.bottom-note{font-size:12px;color:#8A97A6;line-height:1.75;padding:1rem;background:rgba(255,255,255,0.03);border-radius:8px;border-left:3px solid #378ADD;}
+.bottom-note strong{color:#F2EFE8;}
+@media(max-width:600px){
+  .row,.lineup-hdr{grid-template-columns:24px 1fr 70px;}
+  .reason{display:none;}
+  .page{padding:1.5rem 1rem 3rem;}
+}
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <a href="index.html" class="logo">Lady Dukes <span>Analytics</span></a>
+  <a href="index.html" class="back">← Back to hub</a>
+</nav>
+
+<div class="page">
+<h1>10U Lineup & <span>11U Projection</span></h1>
+<p class="sub">Data-driven batting order + 11U season forecast · Based on 74 games, Sep 2025 – Jun 2026</p>
+
+<div class="sec">
+  <h2>Projected 10U starting lineup</h2>
+  <p class="sec-sub">Optimized for OBP at the top, speed on the bases, and run production in the middle.</p>
+  <div class="lineup-hdr"><div>#</div><div>Player / position</div><div style="text-align:right;">OPS</div><div>Why here</div></div>
+
+  <div class="row"><div class="num">1</div><div><div class="pname">Rylan LaFever</div><div class="ppos">C · Leadoff</div></div><div><div class="ops g">1.026</div><div class="ops-sub">.424 BA · 78 SB</div></div><div class="reason">Best pure leadoff on the roster. 1.20 SB/game, .535 OBP, 4.17 P/PA — works counts and creates chaos on the bases from pitch one.</div></div>
+  <div class="row"><div class="num">2</div><div><div class="pname">Ava Glomb</div><div class="ppos">CF · #2 hitter</div></div><div><div class="ops g">1.046</div><div class="ops-sub">.401 BA · 73 SB</div></div><div class="reason">Second-best speed (1.03 SB/g), .401 BA, excellent contact. With LaFever on base she creates a two-threat running game and protects Porter's at-bat.</div></div>
+  <div class="row"><div class="num">3</div><div><div class="pname">Maddie Porter</div><div class="ppos">3B · Best hitter</div></div><div><div class="ops g">1.223</div><div class="ops-sub">.496 BA · 53 RBI</div></div><div class="reason">Best hitter on the team. .496 BA, 4 HR, 53 RBI, lowest K rate (22%). Sees the most pitches behind two on-base threats. Clear #3.</div></div>
+  <div class="row"><div class="num">4</div><div><div class="pname">Autumn Dantry</div><div class="ppos">1B · Cleanup</div></div><div><div class="ops g">1.061</div><div class="ops-sub">.407 BA · 64% QAB</div></div><div class="reason">Best QAB% (64.2%) — works counts, makes contact. Ideal cleanup to drive in what Porter leaves on. Walks nearly as often as she strikes out.</div></div>
+  <div class="row"><div class="num">5</div><div><div class="pname">Violet Rocco</div><div class="ppos">LF · 5-hole</div></div><div><div class="ops b">0.821</div><div class="ops-sub">.278 BA · 22% BB</div></div><div class="reason">Highest walk rate on team (22.4%), .440 OBP — won't make the first out of an inning. Batting 5th limits wear on her arm for pitching duties.</div></div>
+  <div class="row"><div class="num">6</div><div><div class="pname">Sophia Chimino</div><div class="ppos">2B · Speed</div></div><div><div class="ops w">0.640</div><div class="ops-sub">.238 BA · 44 SB</div></div><div class="reason">Third-fastest (0.73 SB/g), 19.5% BB rate. In the 6-hole she gets favorable counts. A spark plug in the bottom third.</div></div>
+  <div class="row"><div class="num">7</div><div><div class="pname">Camille McWilliams</div><div class="ppos">C · Versatile</div></div><div><div class="ops w">0.647</div><div class="ops-sub">.318 BA/RISP · 41 SB</div></div><div class="reason">.318 BA with RISP — best quality. Batting 7th she'll often have runners on. Solid catcher who handles pitchers well.</div></div>
+  <div class="row"><div class="num">8</div><div><div class="pname">Brooklyn Schmidt</div><div class="ppos">SS · Defense</div></div><div><div class="ops w">0.687</div><div class="ops-sub">.236 BA · 210 inn SS</div></div><div class="reason">The everyday SS. Batting 8th limits her high-K offensive impact. Opened the season at .429 in September — ceiling is there.</div></div>
+  <div class="row"><div class="num">9</div><div><div class="pname">Silvia Tortorice</div><div class="ppos">2B · 9-spot</div></div><div><div class="ops r">0.480</div><div class="ops-sub">.197 BA · 17 BB</div></div><div class="reason">The 9-hole acts as a second leadoff in front of LaFever. Patience and 17 BB keep the lineup cycling. Surprising 29 RBI from this spot.</div></div>
+
+  <div class="divider"></div>
+  <div class="rotation"><strong>Pitching rotation:</strong> Glomb (starter, most innings) → Porter (closer / high-leverage) → Dantry (middle innings) → Rocco (strikeout specialist). Marple DHs or fills in defensively.</div>
+</div>
+
+<div class="sec">
+  <h2>11U season projection</h2>
+
+  <h3 style="font-size:13px;font-weight:600;margin-bottom:.75rem;color:#E8A020;">The rule changes that matter</h3>
+  <div class="rule-row"><div class="rule-bullet"></div><div class="rule-body"><div class="rule-title">Mound moves back (~35ft → ~40ft)</div><div class="rule-desc">More distance means more time for hitters to read. Batters who struggle with proximity-based velocity (Marple, Schmidt) may improve. Pitchers lose the proximity edge — command becomes the primary differentiator. Porter and Glomb are groundball pitchers who don't rely on proximity, so they adapt best.</div></div></div>
+  <div class="rule-row"><div class="rule-bullet"></div><div class="rule-body"><div class="rule-title">Ball gets bigger (11-inch → 12-inch)</div><div class="rule-desc">Harder to grip and control. Pitchers with marginal command (Rocco, late-season Dantry) will feel this most early in the year. Contact hitters like Porter and Glomb adapt fastest because mechanics don't change — just the timing window.</div></div></div>
+  <div class="rule-row"><div class="rule-bullet"></div><div class="rule-body"><div class="rule-title">Bases extend to 60ft (from 55ft)</div><div class="rule-desc">Slightly harder to steal. LaFever (78 SB) and Glomb (73 SB) have the speed to absorb it. Catchers LaFever and McWilliams may actually see CS% improve as throws become proportionally similar to what older levels demand.</div></div></div>
+  <div class="rule-row"><div class="rule-bullet"></div><div class="rule-body"><div class="rule-title">Competition rises significantly</div><div class="rule-desc">11U is where physical development gaps widen. Better opposing pitching likely drops team RS from 5.5 to ~4.2 per game. Teams with strong pitching development will be harder to score on — making the Lady Dukes' pitching depth critical.</div></div></div>
+
+  <div class="divider"></div>
+  <h3 style="font-size:13px;font-weight:600;margin-bottom:.75rem;color:#E8A020;">Player-by-player 11U outlook</h3>
+
+  <div class="proj-row"><div><div class="proj-name">Maddie Porter</div><div class="proj-detail">Elite contact, groundball pitcher — adapts fastest to new ball and longer distance. GO/AO 1.96 doesn't depend on proximity.</div></div><span class="pill pill-up">Thrives</span></div>
+  <div class="proj-row"><div><div class="proj-name">Ava Glomb</div><div class="proj-detail">FIP 2.70 shows she's been unlucky — mound distance may help ERA match her skill. Breakout 11U season likely.</div></div><span class="pill pill-up">Breakout</span></div>
+  <div class="proj-row"><div><div class="proj-name">Rylan LaFever</div><div class="proj-detail">Speed doesn't care what ball is used. .424 BA with a 33.6% K rate is the main batting development area.</div></div><span class="pill pill-up">Strong</span></div>
+  <div class="proj-row"><div><div class="proj-name">Autumn Dantry</div><div class="proj-detail">As a hitter, elite. As a pitcher, the late-season ERA spike + bigger ball + longer distance is a real concern. May shift to 1B/hitter role.</div></div><span class="pill pill-ok">Hitter yes · pitcher TBD</span></div>
+  <div class="proj-row"><div><div class="proj-name">Violet Rocco</div><div class="proj-detail">Best SwStr% on staff (23.2%) but only 52% strikes. Bigger ball risks more walks early. High reward if command clicks — high risk if it doesn't.</div></div><span class="pill pill-risk">Wildcard</span></div>
+  <div class="proj-row"><div><div class="proj-name">Brooklyn Schmidt</div><div class="proj-detail">More distance may help batting (more time to read). But 25 errors at SS must be addressed before 11U. Defense is priority #1 this offseason.</div></div><span class="pill pill-down">Needs development</span></div>
+  <div class="proj-row"><div><div class="proj-name">Camille McWilliams</div><div class="proj-detail">Solid catcher, decent RISP production (.318). Steady contributor if offensive consistency improves from 36.4% QAB.</div></div><span class="pill pill-ok">Steady</span></div>
+  <div class="proj-row"><div><div class="proj-name">Sophia Chimino</div><div class="proj-detail">45.7% K rate at 10U will get worse at 11U unless mechanics change. Speed and BB rate give her a role as slap hitter if she adjusts.</div></div><span class="pill pill-down">Swing mechanics priority</span></div>
+  <div class="proj-row"><div><div class="proj-name">Silvia Tortorice</div><div class="proj-detail">69.9% GB rate works at 10U. At 11U, better infields convert more of those. Needs to get LD% from 9.6% to 15%+.</div></div><span class="pill pill-down">Batted ball work needed</span></div>
+  <div class="proj-row"><div><div class="proj-name">Brianna Marple</div><div class="proj-detail">78.8% K rate at 10U — 11U pitching will make this worse before it gets better. BABIP .526 shows real contact quality when she connects. Major project player.</div></div><span class="pill pill-risk">High upside / high risk</span></div>
+
+  <div class="divider"></div>
+  <div class="record-grid">
+    <div class="record-box"><div class="record-num" style="color:#2DB87C;">34–36</div><div class="record-lbl">Projected record</div><div class="record-cmp">vs. 39-32-3 at 10U</div></div>
+    <div class="record-box"><div class="record-num" style="color:#378ADD;">4.2</div><div class="record-lbl">Proj. RS / game</div><div class="record-cmp">vs. 5.5 at 10U</div></div>
+  </div>
+
+  <h3 style="font-size:12px;font-weight:600;margin-bottom:.6rem;">Predicted offensive output at 11U (relative to 10U)</h3>
+  <div id="projBars"></div>
+
+  <div class="bottom-note" style="margin-top:1rem;">
+    <strong>Bottom line:</strong> Porter, Glomb, LaFever, and Dantry carry over nearly intact. The run production gap between them and the rest will widen at 11U. The team's biggest lever is pitching: if Glomb and Porter develop a reliable second pitch, and Rocco hardens her strike%, this team competes for a tournament title. If pitching stagnates, .500 is the ceiling.
+  </div>
+</div>
+</div>
+
+<script>
+const projData=[
+  {n:'Maddie Porter',pct:92,color:'#2DB87C'},
+  {n:'Ava Glomb',pct:95,color:'#2DB87C'},
+  {n:'Rylan LaFever',pct:88,color:'#2DB87C'},
+  {n:'Autumn Dantry',pct:85,color:'#5DCAA5'},
+  {n:'Violet Rocco',pct:72,color:'#E8A020'},
+  {n:'Camille McWilliams',pct:78,color:'#5DCAA5'},
+  {n:'Sophia Chimino',pct:68,color:'#E8A020'},
+  {n:'Brooklyn Schmidt',pct:70,color:'#E8A020'},
+  {n:'Silvia Tortorice',pct:65,color:'#EF9F27'},
+  {n:'Brianna Marple',pct:55,color:'#E24B4A'},
+];
+const el=document.getElementById('projBars');
+projData.forEach(p=>{
+  el.innerHTML+=`<div class="br-row"><div class="br-lbl">${p.n}</div><div class="br-track"><div class="br-fill" style="width:${p.pct}%;background:${p.color};">${p.pct}% · projected output</div></div></div>`;
+});
+</script>
+</body>
+</html>
