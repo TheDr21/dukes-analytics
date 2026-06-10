@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Season Overview — Lady Dukes Analytics</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',system-ui,sans-serif;background:#0B1E35;color:#F2EFE8;min-height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:52px;border-bottom:1px solid rgba(255,255,255,0.08);position:sticky;top:0;background:#0B1E35;z-index:10;}
+.logo{font-size:14px;font-weight:600;color:#F2EFE8;text-decoration:none;}
+.logo span{color:#E8A020;}
+.back{font-size:12px;color:#8A97A6;text-decoration:none;font-family:'DM Mono',monospace;}
+.back:hover{color:#E8A020;}
+.page{max-width:900px;margin:0 auto;padding:2rem;}
+h1{font-size:26px;font-weight:600;margin-bottom:.3rem;letter-spacing:-.01em;}
+h1 span{color:#E8A020;}
+.sub{font-size:13px;color:#8A97A6;margin-bottom:2rem;}
+.tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:1.5rem;}
+.tab{background:transparent;border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:5px 14px;font-size:12px;cursor:pointer;color:#8A97A6;}
+.tab.active{border-color:#E8A020;color:#E8A020;background:rgba(232,160,32,0.08);}
+.section{display:none;}
+.section.active{display:block;}
+.mg{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:1.25rem;}
+.mc{background:rgba(255,255,255,0.05);border-radius:8px;padding:12px 14px;}
+.mc .lbl{font-size:11px;color:#8A97A6;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em;}
+.mc .val{font-size:22px;font-weight:600;font-family:'DM Mono',monospace;}
+.mc .s{font-size:10px;color:#8A97A6;margin-top:2px;}
+table{width:100%;font-size:12px;border-collapse:collapse;background:rgba(255,255,255,0.03);border-radius:10px;overflow:hidden;}
+th{text-align:right;padding:7px 8px;font-weight:500;font-size:11px;color:#8A97A6;border-bottom:1px solid rgba(255,255,255,0.08);text-transform:uppercase;letter-spacing:.04em;}
+th:first-child{text-align:left;}
+td{text-align:right;padding:5px 8px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:12px;}
+td:first-child{text-align:left;font-weight:500;}
+tr:hover td{background:rgba(255,255,255,0.03);}
+h3{font-size:13px;font-weight:600;margin-bottom:.75rem;color:#F2EFE8;}
+.cw{background:rgba(255,255,255,0.03);border-radius:10px;padding:1rem;margin-bottom:1rem;}
+.br{display:flex;align-items:center;gap:6px;margin-bottom:5px;}
+.bl{font-size:11px;min-width:130px;color:#B0BDC9;}
+.bt{flex:1;background:rgba(255,255,255,0.07);border-radius:3px;height:14px;overflow:hidden;}
+.bf{height:100%;border-radius:3px;display:flex;align-items:center;padding-left:5px;font-size:10px;font-weight:500;color:#fff;}
+.g{color:#2DB87C;font-weight:600;} .b{color:#378ADD;font-weight:600;} .w{color:#E8A020;font-weight:600;} .r{color:#E24B4A;font-weight:600;}
+.lg{display:flex;gap:12px;font-size:11px;color:#8A97A6;margin-bottom:.5rem;flex-wrap:wrap;}
+.li{display:flex;align-items:center;gap:4px;}
+.ld{width:9px;height:9px;border-radius:2px;}
+.opp-row{display:grid;grid-template-columns:2fr 45px 45px 45px 45px;gap:4px;align-items:center;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:12px;}
+.opp-hdr{font-size:11px;color:#8A97A6;font-weight:500;border-bottom:1px solid rgba(255,255,255,0.1);}
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <a href="index.html" class="logo">Lady Dukes <span>Analytics</span></a>
+  <a href="index.html" class="back">← Back to hub</a>
+</nav>
+<div class="page">
+<h1>Season <span>Overview</span></h1>
+<p class="sub">WPA Lady Dukes 10U · 74 games · Sep 2025 – Jun 2026</p>
+
+<div class="tabs">
+  <button class="tab active" onclick="show('overview',this)">Overview</button>
+  <button class="tab" onclick="show('hitting',this)">Hitting</button>
+  <button class="tab" onclick="show('pitching',this)">Pitching</button>
+  <button class="tab" onclick="show('monthly',this)">Monthly</button>
+  <button class="tab" onclick="show('opponents',this)">Opponents</button>
+</div>
+
+<div class="section active" id="overview">
+  <div class="mg">
+    <div class="mc"><div class="lbl">Record</div><div class="val g">39-32-3</div><div class="s">74 games</div></div>
+    <div class="mc"><div class="lbl">Win %</div><div class="val">.527</div></div>
+    <div class="mc"><div class="lbl">Runs scored</div><div class="val">410</div><div class="s">5.5/game</div></div>
+    <div class="mc"><div class="lbl">Runs allowed</div><div class="val">272</div><div class="s">3.7/game</div></div>
+    <div class="mc"><div class="lbl">Run diff</div><div class="val g">+138</div></div>
+    <div class="mc"><div class="lbl">Team BA</div><div class="val">.306</div></div>
+    <div class="mc"><div class="lbl">Shutouts W</div><div class="val">11</div></div>
+    <div class="mc"><div class="lbl">Stolen bases</div><div class="val">414</div></div>
+  </div>
+  <h3>Win/loss margin distribution</h3>
+  <div class="cw">
+    <div class="br"><div class="bl">Blowout wins (5+)</div><div class="bt"><div class="bf" style="width:56%;background:#1D9E75;">22 games</div></div></div>
+    <div class="br"><div class="bl">Close wins (1–4)</div><div class="bt"><div class="bf" style="width:43%;background:#5DCAA5;">17 games</div></div></div>
+    <div class="br"><div class="bl">Ties</div><div class="bt"><div class="bf" style="width:8%;background:#E8A020;">3</div></div></div>
+    <div class="br"><div class="bl">Close losses (1–2)</div><div class="bt"><div class="bf" style="width:43%;background:#F09595;">17 games</div></div></div>
+    <div class="br"><div class="bl">Blowout losses (5+)</div><div class="bt"><div class="bf" style="width:38%;background:#E24B4A;">15 games</div></div></div>
+  </div>
+  <div class="lg"><span class="li"><span class="ld" style="background:#1D9E75;"></span>Runs scored</span><span class="li"><span class="ld" style="background:#E24B4A;"></span>Runs allowed</span></div>
+  <div class="cw" style="height:220px;"><canvas id="rsChart" role="img" aria-label="Monthly runs scored vs allowed">Monthly run data shown above.</canvas></div>
+</div>
+
+<div class="section" id="hitting">
+  <div class="mg">
+    <div class="mc"><div class="lbl">Team BA</div><div class="val">.306</div></div>
+    <div class="mc"><div class="lbl">Total H</div><div class="val">387</div></div>
+    <div class="mc"><div class="lbl">XBH</div><div class="val">69</div><div class="s">47 2B · 10 3B · 12 HR</div></div>
+    <div class="mc"><div class="lbl">Total RBI</div><div class="val">294</div></div>
+    <div class="mc"><div class="lbl">Total SB</div><div class="val">414</div></div>
+  </div>
+  <h3>Slash line leaderboard (sorted by OPS)</h3>
+  <table><thead><tr><th>Player</th><th>G</th><th>PA</th><th>BA</th><th>OBP</th><th>SLG</th><th>OPS</th><th>HR</th><th>RBI</th><th>SB</th></tr></thead><tbody id="hitBody"></tbody></table>
+  <div style="margin-top:1.25rem;"><h3>OPS comparison</h3><div id="opsBars"></div></div>
+</div>
+
+<div class="section" id="pitching">
+  <div class="mg">
+    <div class="mc"><div class="lbl">Staff ERA</div><div class="val g">4.07</div></div>
+    <div class="mc"><div class="lbl">Porter ERA</div><div class="val g">3.09</div></div>
+    <div class="mc"><div class="lbl">Total IP</div><div class="val">275.7</div></div>
+    <div class="mc"><div class="lbl">Staff W-L</div><div class="val">34-26</div></div>
+  </div>
+  <h3>Pitcher stats</h3>
+  <table><thead><tr><th>Pitcher</th><th>G</th><th>IP</th><th>W-L</th><th>ERA</th><th>WHIP</th><th>K</th><th>BB</th><th>K/inn</th></tr></thead><tbody id="pitchBody"></tbody></table>
+  <div style="margin-top:1.25rem;height:200px;position:relative;background:rgba(255,255,255,0.03);border-radius:10px;padding:1rem;"><canvas id="eraChart" role="img" aria-label="ERA by pitcher">ERA: Porter 3.09, Glomb 4.24, Rocco 4.30, Dantry 4.63</canvas></div>
+</div>
+
+<div class="section" id="monthly">
+  <h3>Month-by-month record</h3>
+  <div id="monthCards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:1.25rem;"></div>
+  <div style="height:220px;position:relative;background:rgba(255,255,255,0.03);border-radius:10px;padding:1rem;"><canvas id="monthChart" role="img" aria-label="Monthly win-loss record">Monthly record shown in cards above.</canvas></div>
+</div>
+
+<div class="section" id="opponents">
+  <h3>Head-to-head vs. repeat opponents (2+ games)</h3>
+  <div class="opp-row opp-hdr"><div>Opponent</div><div>G</div><div>W</div><div>L</div><div>T</div></div>
+  <div id="oppList"></div>
+</div>
+</div>
+
+<script>
+function show(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active');btn.classList.add('active');}
+
+const hitters=[
+  {n:'Maddie Porter',g:69,pa:164,ba:.496,obp:.549,slg:.674,ops:1.223,hr:4,rbi:53,sb:50},
+  {n:'Autumn Dantry',g:68,pa:151,ba:.407,obp:.510,slg:.551,ops:1.061,hr:1,rbi:33,sb:31},
+  {n:'Ava Glomb',g:71,pa:165,ba:.401,obp:.491,slg:.555,ops:1.046,hr:2,rbi:42,sb:73},
+  {n:'Rylan LaFever',g:65,pa:159,ba:.424,obp:.522,slg:.504,ops:1.026,hr:2,rbi:39,sb:78},
+  {n:'Violet Rocco',g:58,pa:125,ba:.278,obp:.440,slg:.381,ops:.821,hr:1,rbi:27,sb:36},
+  {n:'Brooklyn Schmidt',g:69,pa:147,ba:.236,obp:.354,slg:.333,ops:.687,hr:2,rbi:18,sb:29},
+  {n:'Camille McWilliams',g:73,pa:165,ba:.246,obp:.364,slg:.283,ops:.647,hr:0,rbi:30,sb:41},
+  {n:'Sophia Chimino',g:60,pa:133,ba:.238,obp:.383,slg:.257,ops:.640,hr:0,rbi:8,sb:44},
+  {n:'Silvia Tortorice',g:72,pa:159,ba:.197,obp:.283,slg:.197,ops:.480,hr:0,rbi:29,sb:14},
+  {n:'Brianna Marple',g:71,pa:133,ba:.125,obp:.308,slg:.135,ops:.443,hr:0,rbi:10,sb:13},
+];
+function oc(v){return v>=1.0?'#2DB87C':v>=.750?'#378ADD':v>=.550?'#E8A020':'#E24B4A';}
+const hb=document.getElementById('hitBody');
+hitters.forEach(p=>{const c=oc(p.ops);hb.innerHTML+=`<tr><td>${p.n}</td><td>${p.g}</td><td>${p.pa}</td><td style="color:${c};font-weight:600;">${p.ba.toFixed(3)}</td><td>${p.obp.toFixed(3)}</td><td>${p.slg.toFixed(3)}</td><td style="color:${c};font-weight:600;">${p.ops.toFixed(3)}</td><td>${p.hr}</td><td>${p.rbi}</td><td>${p.sb}</td></tr>`;});
+const ob=document.getElementById('opsBars');
+hitters.forEach(p=>{const pct=Math.round((p.ops/1.223)*100);ob.innerHTML+=`<div class="br"><div class="bl">${p.n}</div><div class="bt"><div class="bf" style="width:${pct}%;background:${oc(p.ops)};">${p.ops.toFixed(3)}</div></div></div>`;});
+
+const pitchers=[{n:'Maddie Porter',g:33,ip:74.8,wl:'9-2',era:3.09,whip:.66,k:13,bb:12,ki:.17},{n:'Ava Glomb',g:37,ip:94.0,wl:'10-11',era:4.24,whip:.45,k:23,bb:15,ki:.24},{n:'Violet Rocco',g:26,ip:44.6,wl:'7-6',era:4.30,whip:.59,k:21,bb:14,ki:.48},{n:'Autumn Dantry',g:29,ip:62.3,wl:'8-7',era:4.63,whip:.60,k:15,bb:15,ki:.24}];
+const pb=document.getElementById('pitchBody');
+pitchers.forEach(p=>{const c=p.era<3.5?'#2DB87C':p.era<5.0?'#E8A020':'#E24B4A';pb.innerHTML+=`<tr><td>${p.n}</td><td>${p.g}</td><td>${p.ip}</td><td>${p.wl}</td><td style="color:${c};font-weight:600;">${p.era.toFixed(2)}</td><td>${p.whip.toFixed(2)}</td><td>${p.k}</td><td>${p.bb}</td><td>${p.ki.toFixed(2)}</td></tr>`;});
+
+const months=['Sep 25','Oct 25','Nov 25','Jan 26','Feb 26','Mar 26','Apr 26','May 26','Jun 26'];
+const wins=[6,4,7,3,2,5,8,2,2],losses=[6,6,1,3,4,3,3,3,3],ties=[1,0,0,0,0,0,1,1,0];
+const rs=[80,51,76,22,17,41,61,31,31],ra=[71,38,4,16,31,21,32,35,24];
+const mc=document.getElementById('monthCards');
+months.forEach((m,i)=>{const bc=wins[i]>losses[i]?'#2DB87C':wins[i]<losses[i]?'#E24B4A':'#E8A020';mc.innerHTML+=`<div class="mc"><div class="lbl">${m}</div><div class="val" style="color:${bc};">${wins[i]}-${losses[i]}${ties[i]?'-'+ties[i]:''}</div><div class="s">RS ${rs[i]} RA ${ra[i]}</div></div>`;});
+
+const opponents=[{n:'Pittsburgh Power 10u Mattone',g:7,w:3,l:4,t:0},{n:'All American-Red 10U',g:6,w:0,l:5,t:1},{n:'FP Select 10U',g:5,w:1,l:3,t:1},{n:'Pittsburgh Tigers 10U',g:4,w:0,l:4,t:0},{n:'Silver Creek 10u',g:4,w:1,l:3,t:0},{n:'Diamond Divas 10U',g:3,w:3,l:0,t:0},{n:'South Hills Elite 10U',g:3,w:2,l:1,t:0},{n:'Finesse-Tytke 10U',g:2,w:2,l:0,t:0},{n:'Pittsburgh Spirit 10u',g:2,w:2,l:0,t:0},{n:'Queen Bee Hewitt 10U',g:2,w:0,l:2,t:0},{n:'Athletix 10U Dragish',g:2,w:0,l:2,t:0}];
+const ol=document.getElementById('oppList');
+opponents.forEach(o=>{ol.innerHTML+=`<div class="opp-row"><div>${o.n}</div><div style="color:#8A97A6;">${o.g}</div><div style="color:#2DB87C;font-weight:600;">${o.w}</div><div style="color:#E24B4A;font-weight:600;">${o.l}</div><div style="color:#E8A020;">${o.t}</div></div>`;});
+
+new Chart(document.getElementById('rsChart'),{type:'bar',data:{labels:months,datasets:[{label:'RS',data:rs,backgroundColor:'#1D9E75'},{label:'RA',data:ra,backgroundColor:'#E24B4A'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#8A97A6'}},y:{beginAtZero:true,ticks:{color:'#8A97A6'},grid:{color:'rgba(255,255,255,0.05)'}}}}});
+new Chart(document.getElementById('eraChart'),{type:'bar',data:{labels:['Porter','Glomb','Rocco','Dantry'],datasets:[{label:'ERA',data:[3.09,4.24,4.30,4.63],backgroundColor:['#2DB87C','#378ADD','#E8A020','#EF9F27']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#8A97A6'}},y:{beginAtZero:true,max:6,ticks:{color:'#8A97A6'},grid:{color:'rgba(255,255,255,0.05)'}}}}});
+new Chart(document.getElementById('monthChart'),{type:'bar',data:{labels:months,datasets:[{label:'W',data:wins,backgroundColor:'#1D9E75',stack:'a'},{label:'T',data:ties,backgroundColor:'#E8A020',stack:'a'},{label:'L',data:losses,backgroundColor:'#E24B4A',stack:'a'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{stacked:true,grid:{display:false},ticks:{color:'#8A97A6'}},y:{stacked:true,max:14,ticks:{color:'#8A97A6'},grid:{color:'rgba(255,255,255,0.05)'}}}}});
+</script>
+</body>
+</html>
