@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Steel City Athletics Szymarek 10U — Scouting Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --black:#06090f;--carbon:#0c1018;--border:#1a2235;--muted:#3a4d6a;
+    --body:#7a9ab8;--light:#c0d4e8;--white:#eaf2f8;
+    --steel:#4a90c4;--steel2:#7db8e0;--chrome:#c8d8e8;--red:#e03030;
+    --green:#22c55e;--amber:#f59e0b;--ice:#00c2d4;
+  }
+  html{scroll-behavior:smooth}
+  body{background:var(--black);color:var(--light);font-family:'Inter',sans-serif;font-size:14px;line-height:1.6}
+
+  .hero{position:relative;padding:72px 48px 56px;border-bottom:1px solid var(--border);overflow:hidden}
+  .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 30% 0%,rgba(74,144,196,0.16) 0%,transparent 70%);pointer-events:none}
+  /* Steel girder lines — signature element */
+  .hero::after{content:'';position:absolute;right:0;top:0;bottom:0;width:220px;
+    background:repeating-linear-gradient(165deg,transparent,transparent 18px,rgba(74,144,196,0.06) 18px,rgba(74,144,196,0.06) 20px);
+    pointer-events:none}
+  .hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;color:var(--steel2);text-transform:uppercase;margin-bottom:16px}
+  .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,8vw,96px);line-height:.92;color:var(--white);letter-spacing:.01em;margin-bottom:6px}
+  .hero-title span{color:var(--steel2)}
+  .hero-subtitle{font-size:15px;color:var(--body);margin-bottom:40px;font-weight:300}
+  .hero-stats{display:flex;gap:48px;flex-wrap:wrap}
+  .hero-stat-val{font-family:'Bebas Neue',sans-serif;font-size:44px;color:var(--white);line-height:1}
+  .hero-stat-val.steel{color:var(--steel2)}
+  .hero-stat-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-top:4px}
+
+  .container{max-width:1100px;margin:0 auto;padding:0 48px}
+  @media(max-width:700px){.container{padding:0 20px}.hero{padding:48px 20px 40px}}
+  .section{padding:56px 0;border-bottom:1px solid var(--border)}
+  .section:last-child{border-bottom:none}
+  .section-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--steel2);text-transform:uppercase;margin-bottom:8px}
+  .section-title{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--white);letter-spacing:.02em;margin-bottom:28px}
+
+  .player-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:32px}
+  .player-card{background:var(--carbon);border:1px solid var(--border);border-radius:10px;padding:20px 24px;position:relative;transition:border-color .2s,transform .2s}
+  .player-card:hover{border-color:var(--steel);transform:translateY(-2px)}
+  .player-card.featured{border-color:var(--steel)}
+  .player-card.featured::before{content:'STANDOUT';position:absolute;top:14px;right:14px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--steel2);background:rgba(74,144,196,0.12);padding:2px 7px;border-radius:3px}
+  .player-name{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--white);letter-spacing:.03em;margin-bottom:2px}
+  .player-meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.08em;margin-bottom:16px}
+  .player-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .pstat-val{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:var(--white);line-height:1}
+  .pstat-val.hi{color:var(--green)}.pstat-val.warn{color:var(--amber)}.pstat-val.lo{color:var(--red)}.pstat-val.steel{color:var(--steel2)}
+  .pstat-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:3px}
+  .divider{height:1px;background:var(--border);margin:16px 0}
+
+  .tbl-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse}
+  thead th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.10em;color:var(--muted);text-transform:uppercase;padding:8px 12px;text-align:right;border-bottom:1px solid var(--border);white-space:nowrap}
+  thead th:first-child{text-align:left}
+  tbody td{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--light);padding:10px 12px;text-align:right;border-bottom:1px solid rgba(26,34,53,0.8);white-space:nowrap}
+  tbody td:first-child{text-align:left;font-weight:500;color:var(--white)}
+  tbody tr:hover td{background:rgba(74,144,196,0.04)}
+  .hi{color:var(--green)!important;font-weight:500}.warn{color:var(--amber)!important}.lo{color:var(--red)!important}.steel-t{color:var(--steel2)!important;font-weight:500}
+  .badge{display:inline-block;font-size:9px;padding:1px 5px;border-radius:3px;background:rgba(0,194,212,0.15);color:var(--ice);letter-spacing:.06em;margin-left:5px;vertical-align:middle}
+
+  .notes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+  .note-card{background:var(--carbon);border:1px solid var(--border);border-left:3px solid var(--steel);border-radius:0 8px 8px 0;padding:18px 20px}
+  .note-title{font-weight:600;color:var(--white);margin-bottom:6px;font-size:13px}
+  .note-body{color:var(--body);font-size:12px;line-height:1.7}
+  .note-card.ice{border-left-color:var(--ice)}.note-card.amber{border-left-color:var(--amber)}.note-card.green{border-left-color:var(--green)}.note-card.red{border-left-color:var(--red)}
+
+  .footer{padding:32px 48px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.08em;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">Confidential Scouting Report · 2025 Fall Season</div>
+    <div class="hero-title">Steel City<br><span>Athletics</span></div>
+    <div class="hero-subtitle">Szymarek 10U &nbsp;·&nbsp; Peters Township, PA &nbsp;·&nbsp; 55-game season sample</div>
+    <div class="hero-stats">
+      <div><div class="hero-stat-val steel">.439</div><div class="hero-stat-label">Top AVG — Piper L</div></div>
+      <div><div class="hero-stat-val">2.85</div><div class="hero-stat-label">Ace ERA — Layla G</div></div>
+      <div><div class="hero-stat-val">378</div><div class="hero-stat-label">Staff strikeouts</div></div>
+      <div><div class="hero-stat-val steel">4</div><div class="hero-stat-label">Pitching arms</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="container">
+    <div class="section-label">Recruiting Targets</div>
+    <div class="section-title">Standout Players</div>
+    <div class="player-grid">
+
+      <div class="player-card featured">
+        <div class="player-name">Layla G</div>
+        <div class="player-meta">74 G · TWO-WAY · ACE</div>
+        <div class="player-stats">
+          <div><div class="pstat-val hi">2.85</div><div class="pstat-label">ERA</div></div>
+          <div><div class="pstat-val hi">1.44</div><div class="pstat-label">WHIP</div></div>
+          <div><div class="pstat-val hi">151</div><div class="pstat-label">SO</div></div>
+          <div><div class="pstat-val">73.2</div><div class="pstat-label">IP</div></div>
+          <div><div class="pstat-val steel">.322</div><div class="pstat-label">AVG</div></div>
+          <div><div class="pstat-val">27</div><div class="pstat-label">RBI</div></div>
+        </div>
+        <div class="divider"></div>
+        <div style="font-size:11px;color:var(--body);line-height:1.6">Team ace and two-way player. 151 Ks in 73 innings — over 2 strikeouts per inning. Hits .322 at the plate. The most valuable player on this roster.</div>
+      </div>
+
+      <div class="player-card featured">
+        <div class="player-name">Piper L</div>
+        <div class="player-meta">49 G · POSITION PLAYER</div>
+        <div class="player-stats">
+          <div><div class="pstat-val steel">.439</div><div class="pstat-label">AVG</div></div>
+          <div><div class="pstat-val hi">.538</div><div class="pstat-label">OBP</div></div>
+          <div><div class="pstat-val">25</div><div class="pstat-label">RBI</div></div>
+          <div><div class="pstat-val hi">43</div><div class="pstat-label">Hits</div></div>
+          <div><div class="pstat-val hi">40</div><div class="pstat-label">Runs</div></div>
+          <div><div class="pstat-val hi">21</div><div class="pstat-label">BB</div></div>
+        </div>
+        <div class="divider"></div>
+        <div style="font-size:11px;color:var(--body);line-height:1.6">Best pure hitter on the team. .439 AVG with elite plate discipline — .538 OBP on 21 walks. Only 25 strikeouts in 98 AB. Gets on base and scores runs at will.</div>
+      </div>
+
+      <div class="player-card featured">
+        <div class="player-name">Ayla H</div>
+        <div class="player-meta">76 G · TWO-WAY · #2 ARM</div>
+        <div class="player-stats">
+          <div><div class="pstat-val warn">3.93</div><div class="pstat-label">ERA</div></div>
+          <div><div class="pstat-val">1.52</div><div class="pstat-label">WHIP</div></div>
+          <div><div class="pstat-val hi">177</div><div class="pstat-label">SO</div></div>
+          <div><div class="pstat-val">98.0</div><div class="pstat-label">IP</div></div>
+          <div><div class="pstat-val">.259</div><div class="pstat-label">AVG</div></div>
+          <div><div class="pstat-val warn">72</div><div class="pstat-label">BB pit</div></div>
+        </div>
+        <div class="divider"></div>
+        <div style="font-size:11px;color:var(--body);line-height:1.6">Workhorse #2 arm with 177 Ks in 98 innings. Walk rate (72 BB) is the weakness — patient lineups will exploit her. High strikeout upside if control improves.</div>
+      </div>
+
+      <div class="player-card featured">
+        <div class="player-name">Aubrielle T</div>
+        <div class="player-meta">46 G · POSITION PLAYER</div>
+        <div class="player-stats">
+          <div><div class="pstat-val steel">.389</div><div class="pstat-label">AVG</div></div>
+          <div><div class="pstat-val">.444</div><div class="pstat-label">OBP</div></div>
+          <div><div class="pstat-val">21</div><div class="pstat-label">RBI</div></div>
+          <div><div class="pstat-val">35</div><div class="pstat-label">Hits</div></div>
+          <div><div class="pstat-val">21</div><div class="pstat-label">Runs</div></div>
+          <div><div class="pstat-val warn">38</div><div class="pstat-label">K's</div></div>
+        </div>
+        <div class="divider"></div>
+        <div style="font-size:11px;color:var(--body);line-height:1.6">.389 AVG in 90 AB — strong contact hitter. High strikeout total (38) is the only concern. When she makes contact she's dangerous, hitting .389 with good run production.</div>
+      </div>
+
+    </div>
+
+    <div class="section-label" style="margin-top:8px">Full Roster</div>
+    <div class="section-title" style="margin-bottom:16px">Batting Statistics</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Player</th><th>G</th><th>AB</th><th>H</th><th>R</th><th>RBI</th><th>BB</th><th>K</th><th>AVG</th><th>OBP</th></tr></thead>
+        <tbody>
+          <tr><td>Piper L</td><td>49</td><td>98</td><td>43</td><td>40</td><td>25</td><td>21</td><td>25</td><td class="steel-t">.439</td><td class="hi">.538</td></tr>
+          <tr><td>Aubrielle T</td><td>46</td><td>90</td><td>35</td><td>21</td><td>21</td><td>9</td><td class="warn">38</td><td class="hi">.389</td><td>.444</td></tr>
+          <tr><td>Ava B</td><td>48</td><td>102</td><td>35</td><td>36</td><td>19</td><td>17</td><td>33</td><td>.343</td><td>.437</td></tr>
+          <tr><td>Gia W</td><td>42</td><td>67</td><td>22</td><td>17</td><td>19</td><td>17</td><td>24</td><td>.328</td><td>.464</td></tr>
+          <tr><td>Layla G <span class="badge">P</span></td><td>74</td><td>87</td><td>28</td><td>20</td><td>27</td><td>23</td><td>38</td><td>.322</td><td>.464</td></tr>
+          <tr><td>Kennedy S <span class="badge">P</span></td><td>55</td><td>79</td><td>25</td><td>20</td><td>18</td><td>20</td><td>34</td><td>.316</td><td>.455</td></tr>
+          <tr><td>Olivia B</td><td>49</td><td>86</td><td>25</td><td>21</td><td>18</td><td>13</td><td>40</td><td>.291</td><td>.384</td></tr>
+          <tr><td>Ayla H <span class="badge">P</span></td><td>76</td><td>81</td><td>21</td><td>23</td><td>18</td><td>19</td><td>45</td><td>.259</td><td>.400</td></tr>
+          <tr><td>Maddie C</td><td>49</td><td>74</td><td>18</td><td>13</td><td>11</td><td>14</td><td>37</td><td>.243</td><td>.364</td></tr>
+          <tr><td>Madison H <span class="badge">P</span></td><td>58</td><td>75</td><td>11</td><td>20</td><td>12</td><td>24</td><td>48</td><td class="lo">.147</td><td>.354</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-label" style="margin-top:48px">Pitching Staff</div>
+    <div class="section-title" style="margin-bottom:16px">Pitching Statistics</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Pitcher</th><th>G</th><th>IP</th><th>ER</th><th>H</th><th>BB</th><th>SO</th><th>ERA</th><th>WHIP</th></tr></thead>
+        <tbody>
+          <tr><td>Layla G</td><td>74</td><td>73.2</td><td>30</td><td>63</td><td>43</td><td class="hi">151</td><td class="hi">2.85</td><td>1.44</td></tr>
+          <tr><td>Ayla H</td><td>76</td><td>98.0</td><td>55</td><td>77</td><td class="warn">72</td><td class="hi">177</td><td class="warn">3.93</td><td>1.52</td></tr>
+          <tr><td>Kennedy S</td><td>55</td><td>9.0</td><td>4</td><td>11</td><td class="hi">0</td><td>15</td><td>3.11</td><td>1.22</td></tr>
+          <tr><td>Madison H</td><td>58</td><td>19.0</td><td>10</td><td>13</td><td>19</td><td>35</td><td>3.68</td><td>1.68</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="container">
+    <div class="section-label">Analysis</div>
+    <div class="section-title">Scouting Notes</div>
+    <div class="notes-grid">
+      <div class="note-card green">
+        <div class="note-title">Elite Ace in Layla G</div>
+        <div class="note-body">2.85 ERA with 151 Ks in 73 innings — over 2 K/inning. At 10U that's dominant. She also hits .322 with 27 RBI. If she's on the circle Steel City wins most games.</div>
+      </div>
+      <div class="note-card green">
+        <div class="note-title">Piper L — Plate Discipline</div>
+        <div class="note-body">.439 AVG and .538 OBP is an elite combination. She gets on base almost every other AB via hit or walk. Sets the table at the top of the order consistently.</div>
+      </div>
+      <div class="note-card ice">
+        <div class="note-title">Deep Pitching Staff</div>
+        <div class="note-body">Four arms gives them flexibility. Ayla H (177 SO in 98 IP) is a legitimate #2 despite the walk issues. Kennedy S in short relief has 0 BB in 9 innings — precise and effective.</div>
+      </div>
+      <div class="note-card amber">
+        <div class="note-title">Walk Rate — Ayla H</div>
+        <div class="note-body">72 BB in 98 innings is a significant weakness. Patient lineups who work counts will get on base and put pressure on the defense. This is the primary exploitable gap.</div>
+      </div>
+      <div class="note-card amber">
+        <div class="note-title">Strikeout Rate — Bottom of Order</div>
+        <div class="note-body">Madison H (48 K), Olivia B (40 K), Maddie C (37 K) give pitchers a chance to attack the bottom third of the lineup aggressively. Get to Layla G's spot in the order if possible.</div>
+      </div>
+      <div class="note-card green">
+        <div class="note-title">Balanced Offense</div>
+        <div class="note-body">Seven of ten players hit .290+. No dominant power hitter, but consistent contact from 1-7 in the lineup makes them hard to shut down. They manufacture runs rather than hit home runs.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <span>STEEL CITY ATHLETICS SZYMAREK 10U · 2025 FALL SEASON SCOUTING REPORT</span>
+  <span>GENERATED VIA GC SCOUT CRAWLER · CONFIDENTIAL</span>
+</div>
+</body>
+</html>

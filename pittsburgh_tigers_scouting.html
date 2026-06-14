@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pittsburgh Tigers 10U — Scouting Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --black:#080600;--carbon:#100e00;--border:#282000;--muted:#5c4e00;
+    --body:#a89040;--light:#d8c870;--white:#f8f0d0;
+    --tiger:#e88000;--tiger2:#f0a830;--black2:#181000;
+    --green:#22c55e;--red:#ef4444;--amber:#f59e0b;--ice:#00c8d4;
+  }
+  html{scroll-behavior:smooth}
+  body{background:var(--black);color:var(--light);font-family:'Inter',sans-serif;font-size:14px;line-height:1.6}
+
+  .hero{position:relative;padding:72px 48px 56px;border-bottom:1px solid var(--border);overflow:hidden}
+  .hero::before{content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse 70% 60% at 50% -10%,rgba(232,128,0,0.18) 0%,transparent 65%);
+    pointer-events:none}
+  /* Tiger stripe watermark — signature element */
+  .hero::after{content:'';position:absolute;right:0;top:0;bottom:0;width:280px;
+    background:repeating-linear-gradient(-55deg,transparent,transparent 24px,rgba(232,128,0,0.05) 24px,rgba(232,128,0,0.05) 38px,transparent 38px,transparent 50px);
+    pointer-events:none}
+  .hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;color:var(--tiger2);text-transform:uppercase;margin-bottom:16px}
+  .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,8vw,96px);line-height:.92;color:var(--white);letter-spacing:.01em;margin-bottom:6px}
+  .hero-title span{color:var(--tiger2)}
+  .hero-subtitle{font-size:15px;color:var(--body);margin-bottom:40px;font-weight:300}
+  .hero-stats{display:flex;gap:48px;flex-wrap:wrap}
+  .hero-stat-val{font-family:'Bebas Neue',sans-serif;font-size:44px;color:var(--white);line-height:1}
+  .hero-stat-val.tiger{color:var(--tiger2)}
+  .hero-stat-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-top:4px}
+
+  .alert-banner{background:linear-gradient(90deg,rgba(232,128,0,0.18) 0%,rgba(232,128,0,0.05) 100%);border-top:1px solid var(--tiger);border-bottom:1px solid var(--border);padding:14px 48px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;color:var(--tiger2);text-transform:uppercase;display:flex;align-items:center;gap:12px}
+  .alert-banner::before{content:'🐯';font-size:14px}
+
+  .container{max-width:1100px;margin:0 auto;padding:0 48px}
+  @media(max-width:700px){.container{padding:0 20px}.hero{padding:48px 20px 40px}}
+  .section{padding:56px 0;border-bottom:1px solid var(--border)}
+  .section:last-child{border-bottom:none}
+  .section-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--tiger2);text-transform:uppercase;margin-bottom:8px}
+  .section-title{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--white);letter-spacing:.02em;margin-bottom:28px}
+
+  /* Dual-ace feature */
+  .dual-ace{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px}
+  @media(max-width:700px){.dual-ace{grid-template-columns:1fr}}
+  .ace-card{background:var(--carbon);border:1px solid var(--tiger);border-radius:10px;padding:24px 28px;position:relative;overflow:hidden}
+  .ace-card::before{content:'ACE';position:absolute;right:-4px;top:50%;transform:translateY(-50%) rotate(90deg);font-family:'Bebas Neue',sans-serif;font-size:60px;color:rgba(232,128,0,0.06);letter-spacing:.1em;pointer-events:none}
+  .ace-num{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--tiger2);text-transform:uppercase;margin-bottom:8px}
+  .ace-name{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--white);line-height:1;margin-bottom:4px}
+  .ace-desc{font-size:11px;color:var(--body);line-height:1.7;margin-bottom:14px}
+  .ace-stats{display:flex;gap:20px;flex-wrap:wrap}
+  .as-val{font-family:'JetBrains Mono',monospace;font-size:22px;color:var(--tiger2);font-weight:500;line-height:1}
+  .as-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:3px}
+
+  .player-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:32px}
+  .player-card{background:var(--carbon);border:1px solid var(--border);border-radius:10px;padding:20px 24px;position:relative;transition:border-color .2s,transform .2s}
+  .player-card:hover{border-color:var(--tiger);transform:translateY(-2px)}
+  .player-card.featured{border-color:var(--tiger)}
+  .player-card.featured::before{content:'STANDOUT';position:absolute;top:14px;right:14px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--tiger2);background:rgba(232,128,0,0.12);padding:2px 7px;border-radius:3px}
+  .player-name{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--white);letter-spacing:.03em;margin-bottom:2px}
+  .player-meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.08em;margin-bottom:16px}
+  .player-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .pstat-val{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:var(--white);line-height:1}
+  .pstat-val.hi{color:var(--green)}.pstat-val.warn{color:var(--amber)}.pstat-val.lo{color:var(--red)}.pstat-val.tiger{color:var(--tiger2)}
+  .pstat-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:3px}
+  .divider{height:1px;background:var(--border);margin:16px 0}
+
+  .tbl-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse}
+  thead th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.10em;color:var(--muted);text-transform:uppercase;padding:8px 12px;text-align:right;border-bottom:1px solid var(--border);white-space:nowrap}
+  thead th:first-child{text-align:left}
+  tbody td{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--light);padding:10px 12px;text-align:right;border-bottom:1px solid rgba(40,32,0,0.8);white-space:nowrap}
+  tbody td:first-child{text-align:left;font-weight:500;color:var(--white)}
+  tbody tr:hover td{background:rgba(232,128,0,0.04)}
+  .hi{color:var(--green)!important;font-weight:500}.warn{color:var(--amber)!important}.lo{color:var(--red)!important}.tiger-t{color:var(--tiger2)!important;font-weight:500}
+  .badge{display:inline-block;font-size:9px;padding:1px 5px;border-radius:3px;background:rgba(0,200,212,0.15);color:var(--ice);letter-spacing:.06em;margin-left:5px;vertical-align:middle}
+
+  .notes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+  .note-card{background:var(--carbon);border:1px solid var(--border);border-left:3px solid var(--tiger);border-radius:0 8px 8px 0;padding:18px 20px}
+  .note-title{font-weight:600;color:var(--white);margin-bottom:6px;font-size:13px}
+  .note-body{color:var(--body);font-size:12px;line-height:1.7}
+  .note-card.ice{border-left-color:var(--ice)}.note-card.amber{border-left-color:var(--amber)}.note-card.green{border-left-color:var(--green)}.note-card.red{border-left-color:var(--red)}
+
+  .footer{padding:32px 48px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.08em;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">Confidential Scouting Report · 2025 Fall Season</div>
+    <div class="hero-title">Pittsburgh<br><span>Tigers</span></div>
+    <div class="hero-subtitle">10U &nbsp;·&nbsp; Pittsburgh, PA &nbsp;·&nbsp; 67-game season sample</div>
+    <div class="hero-stats">
+      <div><div class="hero-stat-val tiger">.487</div><div class="hero-stat-label">Top AVG — Peyton S</div></div>
+      <div><div class="hero-stat-val">2.33</div><div class="hero-stat-label">Ace ERA — Amelia H</div></div>
+      <div><div class="hero-stat-val">468</div><div class="hero-stat-label">Combined staff Ks</div></div>
+      <div><div class="hero-stat-val tiger">2</div><div class="hero-stat-label">Elite starting arms</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="alert-banner">Most complete team scouted · Elite lineup top to bottom · Two ace-caliber starters · No free outs anywhere</div>
+
+<div class="section">
+  <div class="container">
+    <div class="section-label">Pitching Staff</div>
+    <div class="section-title">Two-Headed Monster</div>
+
+    <div class="dual-ace">
+      <div class="ace-card">
+        <div class="ace-num">#1 Starter</div>
+        <div class="ace-name">Amelia H</div>
+        <div class="ace-desc">The workhorse. 147 innings at 2.33 ERA with 310 strikeouts — the highest K total of any pitcher scouted this season. Also hits .292 with a .504 OBP. Generational two-way arm.</div>
+        <div class="ace-stats">
+          <div><div class="as-val">2.33</div><div class="as-label">ERA</div></div>
+          <div><div class="as-val">310</div><div class="as-label">SO</div></div>
+          <div><div class="as-val">147.1</div><div class="as-label">IP</div></div>
+          <div><div class="as-val">1.02</div><div class="as-label">WHIP</div></div>
+        </div>
+      </div>
+      <div class="ace-card">
+        <div class="ace-num">#2 Starter</div>
+        <div class="ace-name">Skylar R</div>
+        <div class="ace-desc">Most teams would kill for Skylar R as their ace. 91 innings at 2.38 ERA, 158 Ks, 1.15 WHIP. Also hits .317 with 27 RBI. A true #2 who'd be the best arm on most other rosters.</div>
+        <div class="ace-stats">
+          <div><div class="as-val">2.38</div><div class="as-label">ERA</div></div>
+          <div><div class="as-val">158</div><div class="as-label">SO</div></div>
+          <div><div class="as-val">91.0</div><div class="as-label">IP</div></div>
+          <div><div class="as-val">1.15</div><div class="as-label">WHIP</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Recruiting Targets</div>
+    <div class="section-title" style="margin-bottom:20px">Standout Players</div>
+    <div class="player-grid">
+
+      <div class="player-card featured">
+        <div class="player-name">Peyton S</div>
+        <div class="player-meta">54 G BAT · 11 G PIT · TWO-WAY</div>
+        <div class="player-stats">
+          <div><div class="pstat-val tiger">.487</div><div class="pstat-label">AVG</div></div>
+          <div><div class="pstat-val hi">.564</div><div class="pstat-label">OBP</div></div>
+          <div><div class="pstat-val hi">56</div><div class="pstat-label">Runs</div></div>
+          <div><div class="pstat-val hi">58</div><div class="pstat-label">Hits</div></div>
+          <div><div class="pstat-val">23</div><div class="pstat-label">RBI</div></div>
+          <div><div class="pstat-val">21</div><div class="pstat-label">BB</div></div>
+        </div>
+        <div class="divider"></div>
+        <div style="font-size:11px;color:var(--body);line-height:1.6">Best pure hitter scouted across all 10U teams. .487 AVG, .564 OBP, leads the team in hits and runs. Virtually impossible to get out. Plan around her every at-bat.</div>
+      </div>
+
+      <div class="player-card featured">
+        <div class="player-name">Sophia S</div>
+        <div class="player-meta">67 G BAT · POSITION PLAYER</div>
+        <div class="player-stats">
+          <div><div class="pstat-val">.388</div><div class="pstat-label">AVG</div></div>
+          <div><div class="pstat-val hi">.523</div><div class="pstat-label">OBP</div></div>
+          <div><div class="pstat-val">22</div><div class="pstat-label">RBI</div></div>
+          <div><div class="pstat-val hi">34</div><div class="pstat-label">BB</div></div>
+          <div><div class="pstat-val hi">40</div><div class="pstat-label">Runs</div></div>
+          <div><div class="pstat-val">39</div><div class="pstat-label">K's</div></div>
+        </div>
+        <div class="divider"></div>
+        <div style="font-size:11px;color:var(--body);line-height:1.6">Hits .388 AND draws 34 walks — .523 OBP. She gets on base almost every other plate appearance. Patient, disciplined hitter who puts pressure on pitchers every AB.</div>
+      </div>
+
+      <div class="player-card featured">
+        <div class="player-name">Gracie K</div>
+        <div class="player-meta">61 G BAT · 14 G PIT · TWO-WAY</div>
+        <div class="player-stats">
+          <div><div class="pstat-val tiger">.400</div><div class="pstat-label">AVG</div></div>
+          <div><div class="pstat-val hi">.500</div><div class="pstat-label">OBP</div></div>
+          <div><div class="pstat-val hi">33</div><div class="pstat-label">RBI</div></div>
+          <div><div class="pstat-val">25.1</div><div class="pstat-label">IP</div></div>
+          <div><div class="pstat-val">4.70</div><div class="pstat-label">ERA</div></div>
+          <div><div class="pstat-val">43</div><div class="pstat-label">SO pit</div></div>
+        </div>
+        <div class="divider"></div>
+        <div style="font-size:11px;color:var(--body);line-height:1.6">.400 AVG, .500 OBP, 33 RBI at the plate. Strong two-way player though ERA is high in relief. One of the most dangerous bats in the middle of this lineup.</div>
+      </div>
+
+      <div class="player-card featured">
+        <div class="player-name">Ava T</div>
+        <div class="player-meta">67 G BAT · POSITION PLAYER</div>
+        <div class="player-stats">
+          <div><div class="pstat-val">.385</div><div class="pstat-label">AVG</div></div>
+          <div><div class="pstat-val">.448</div><div class="pstat-label">OBP</div></div>
+          <div><div class="pstat-val hi">39</div><div class="pstat-label">RBI</div></div>
+          <div><div class="pstat-val hi">50</div><div class="pstat-label">Hits</div></div>
+          <div><div class="pstat-val">27</div><div class="pstat-label">Runs</div></div>
+          <div><div class="pstat-val">29</div><div class="pstat-label">K's</div></div>
+        </div>
+        <div class="divider"></div>
+        <div style="font-size:11px;color:var(--body);line-height:1.6">Team's RBI leader with 39 and most hits (50). Hits .385 in the most AB of any position player. The definition of a consistent run producer over a full season.</div>
+      </div>
+
+    </div>
+
+    <div class="section-label" style="margin-top:8px">Full Roster</div>
+    <div class="section-title" style="margin-bottom:16px">Batting Statistics</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Player</th><th>G</th><th>AB</th><th>H</th><th>R</th><th>RBI</th><th>BB</th><th>K</th><th>AVG</th><th>OBP</th></tr></thead>
+        <tbody>
+          <tr><td>Peyton S <span class="badge">P</span></td><td>54</td><td>119</td><td>58</td><td class="hi">56</td><td>23</td><td>21</td><td>32</td><td class="tiger-t">.487</td><td class="hi">.564</td></tr>
+          <tr><td>Gracie K <span class="badge">P</span></td><td>61</td><td>110</td><td>44</td><td>28</td><td class="hi">33</td><td>22</td><td>24</td><td class="tiger-t">.400</td><td class="hi">.500</td></tr>
+          <tr><td>Sophia S</td><td>67</td><td>121</td><td>47</td><td>40</td><td>22</td><td class="hi">34</td><td>39</td><td>.388</td><td class="hi">.523</td></tr>
+          <tr><td>Ava T</td><td>67</td><td>130</td><td>50</td><td>27</td><td class="hi">39</td><td>15</td><td>29</td><td>.385</td><td>.448</td></tr>
+          <tr><td>Avery P</td><td>64</td><td>126</td><td>48</td><td>38</td><td>39</td><td>27</td><td>38</td><td>.381</td><td>.490</td></tr>
+          <tr><td>Aleah C</td><td>67</td><td>120</td><td>40</td><td>29</td><td>32</td><td>18</td><td class="warn">59</td><td>.333</td><td>.420</td></tr>
+          <tr><td>Skylar R <span class="badge">P</span></td><td>66</td><td>101</td><td>32</td><td>28</td><td>27</td><td>24</td><td>35</td><td>.317</td><td>.448</td></tr>
+          <tr><td>Amelia H <span class="badge">P</span></td><td>62</td><td>89</td><td>26</td><td>36</td><td>26</td><td class="hi">38</td><td>41</td><td>.292</td><td class="hi">.504</td></tr>
+          <tr><td>Toni M <span class="badge">P</span></td><td>65</td><td>94</td><td>24</td><td>20</td><td>19</td><td>14</td><td>39</td><td>.255</td><td>.352</td></tr>
+          <tr><td>Kitty S</td><td>67</td><td>131</td><td>32</td><td>43</td><td>21</td><td class="hi">36</td><td class="warn">67</td><td>.244</td><td>.407</td></tr>
+          <tr><td>Cora D</td><td>65</td><td>92</td><td>21</td><td>25</td><td>25</td><td>23</td><td class="warn">47</td><td>.228</td><td>.383</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-label" style="margin-top:48px">Pitching Staff</div>
+    <div class="section-title" style="margin-bottom:16px">Pitching Statistics</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Pitcher</th><th>G</th><th>IP</th><th>ER</th><th>H</th><th>BB</th><th>SO</th><th>ERA</th><th>WHIP</th></tr></thead>
+        <tbody>
+          <tr><td>Amelia H</td><td>39</td><td>147.1</td><td>49</td><td>72</td><td>79</td><td class="hi">310</td><td class="hi">2.33</td><td class="hi">1.02</td></tr>
+          <tr><td>Skylar R</td><td>32</td><td>91.0</td><td>31</td><td>70</td><td>35</td><td class="hi">158</td><td class="hi">2.38</td><td>1.15</td></tr>
+          <tr><td>Toni M</td><td>10</td><td>19.0</td><td>10</td><td>19</td><td>14</td><td>31</td><td class="warn">3.68</td><td>1.74</td></tr>
+          <tr><td>Gracie K</td><td>14</td><td>25.1</td><td>17</td><td>20</td><td>21</td><td>43</td><td class="warn">4.70</td><td>1.62</td></tr>
+          <tr><td>Peyton S</td><td>11</td><td>15.1</td><td>11</td><td>16</td><td>15</td><td>34</td><td class="warn">5.02</td><td>2.02</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="container">
+    <div class="section-label">Analysis</div>
+    <div class="section-title">Scouting Notes</div>
+    <div class="notes-grid">
+      <div class="note-card red">
+        <div class="note-title">⚠ Most Complete Team Scouted</div>
+        <div class="note-body">No obvious weakness. Elite pitching, relentless lineup, two-way players throughout. You need a near-perfect game to beat this team. Every run will be earned.</div>
+      </div>
+      <div class="note-card red">
+        <div class="note-title">Peyton S — Walk Her</div>
+        <div class="note-body">.487 AVG is the highest of any player scouted at the 10U level. With runners on base, consider pitching around her. She will not make outs under pressure. Do not give her a pitch to hit.</div>
+      </div>
+      <div class="note-card amber">
+        <div class="note-title">Survive Amelia H</div>
+        <div class="note-body">310 Ks in 147 innings — you will strike out. The key is limiting free passes, making contact when you can, and keeping games close enough to win late. Work deep counts to raise her pitch count.</div>
+      </div>
+      <div class="note-card amber">
+        <div class="note-title">Attack Toni M or Gracie K</div>
+        <div class="note-body">If Amelia H or Skylar R comes out, the ERA jumps dramatically (3.68 and 4.70). Manufacture runs, put pressure on the defense, and capitalize when the secondary arms enter.</div>
+      </div>
+      <div class="note-card green">
+        <div class="note-title">Bottom Order Has Holes</div>
+        <div class="note-body">Kitty S (67 K) and Cora D (47 K) both have high strikeout totals despite decent OBP from walks. Attack them early in counts with strikes and generate outs quickly in the bottom third.</div>
+      </div>
+      <div class="note-card ice">
+        <div class="note-title">Amelia H — Walks Are High</div>
+        <div class="note-body">79 BB in 147 IP is 0.54 per inning. Despite the elite ERA, she gives up walks. Patient hitters who take pitches will get on base via walk. Don't expand the zone — make her find it.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <span>PITTSBURGH TIGERS 10U · 2025 FALL SEASON SCOUTING REPORT</span>
+  <span>GENERATED VIA GC SCOUT CRAWLER · CONFIDENTIAL</span>
+</div>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PA Lady Knights 10U — Scouting Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --black:#080608;--carbon:#100d14;--border:#1e1828;--muted:#4a3d5c;
+    --body:#9080a8;--light:#c8b8e0;--white:#f0eaf8;
+    --purple:#7c3aed;--purple2:#a78bfa;--gold:#d4a017;--gold2:#f0c840;
+    --green:#22c55e;--red:#ef4444;--amber:#f59e0b;--ice:#60c8ff;
+  }
+  html{scroll-behavior:smooth}
+  body{background:var(--black);color:var(--light);font-family:'Inter',sans-serif;font-size:14px;line-height:1.6}
+
+  .hero{position:relative;padding:72px 48px 56px;border-bottom:1px solid var(--border);overflow:hidden}
+  .hero::before{content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse 60% 80% at 80% 0%,rgba(124,58,237,0.14) 0%,transparent 65%),
+               radial-gradient(ellipse 40% 40% at 10% 80%,rgba(212,160,23,0.08) 0%,transparent 60%);
+    pointer-events:none}
+  /* Shield crest watermark */
+  .hero-shield{position:absolute;right:40px;top:20px;opacity:.04;pointer-events:none}
+  .hero-shield svg{width:200px;height:240px}
+  .hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;color:var(--purple2);text-transform:uppercase;margin-bottom:16px}
+  .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,8vw,96px);line-height:.92;color:var(--white);letter-spacing:.01em;margin-bottom:6px}
+  .hero-title span{color:var(--purple2)}
+  .hero-subtitle{font-size:15px;color:var(--body);margin-bottom:40px;font-weight:300}
+  .hero-stats{display:flex;gap:48px;flex-wrap:wrap}
+  .hero-stat-val{font-family:'Bebas Neue',sans-serif;font-size:44px;color:var(--white);line-height:1}
+  .hero-stat-val.purple{color:var(--purple2)}
+  .hero-stat-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-top:4px}
+
+  /* ALERT BANNER */
+  .alert-banner{background:linear-gradient(90deg,rgba(124,58,237,0.15) 0%,rgba(124,58,237,0.05) 100%);border-top:1px solid var(--purple);border-bottom:1px solid var(--border);padding:14px 48px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;color:var(--purple2);text-transform:uppercase;display:flex;align-items:center;gap:12px}
+  .alert-banner::before{content:'⚠';font-size:14px}
+
+  .container{max-width:1100px;margin:0 auto;padding:0 48px}
+  @media(max-width:700px){.container{padding:0 20px}.hero{padding:48px 20px 40px}}
+  .section{padding:56px 0;border-bottom:1px solid var(--border)}
+  .section:last-child{border-bottom:none}
+  .section-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--purple2);text-transform:uppercase;margin-bottom:8px}
+  .section-title{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--white);letter-spacing:.02em;margin-bottom:28px}
+
+  /* ELLY L FEATURE — signature element: ace spotlight */
+  .ace-spotlight{background:var(--carbon);border:1px solid var(--purple);border-radius:10px;padding:28px 32px;margin-bottom:32px;position:relative;overflow:hidden}
+  .ace-spotlight::before{content:'ACE';position:absolute;right:-8px;top:50%;transform:translateY(-50%) rotate(90deg);font-family:'Bebas Neue',sans-serif;font-size:80px;color:rgba(124,58,237,0.06);letter-spacing:.1em;pointer-events:none}
+  .ace-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--purple2);text-transform:uppercase;margin-bottom:10px}
+  .ace-name{font-family:'Bebas Neue',sans-serif;font-size:42px;color:var(--white);line-height:1;margin-bottom:4px}
+  .ace-desc{font-size:12px;color:var(--body);line-height:1.7;max-width:580px;margin-bottom:16px}
+  .ace-stats{display:flex;gap:32px;flex-wrap:wrap}
+  .as-val{font-family:'JetBrains Mono',monospace;font-size:26px;color:var(--purple2);font-weight:500;line-height:1}
+  .as-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:3px}
+
+  .player-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:32px}
+  .player-card{background:var(--carbon);border:1px solid var(--border);border-radius:10px;padding:20px 24px;position:relative;transition:border-color .2s,transform .2s}
+  .player-card:hover{border-color:var(--purple);transform:translateY(-2px)}
+  .player-card.featured{border-color:var(--purple)}
+  .player-card.featured::before{content:'STANDOUT';position:absolute;top:14px;right:14px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--purple2);background:rgba(124,58,237,0.12);padding:2px 7px;border-radius:3px}
+  .player-name{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--white);letter-spacing:.03em;margin-bottom:2px}
+  .player-meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.08em;margin-bottom:16px}
+  .player-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .pstat-val{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:var(--white);line-height:1}
+  .pstat-val.hi{color:var(--green)}.pstat-val.warn{color:var(--amber)}.pstat-val.lo{color:var(--red)}.pstat-val.purple{color:var(--purple2)}
+  .pstat-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:3px}
+  .divider{height:1px;background:var(--border);margin:16px 0}
+
+  .tbl-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse}
+  thead th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.10em;color:var(--muted);text-transform:uppercase;padding:8px 12px;text-align:right;border-bottom:1px solid var(--border);white-space:nowrap}
+  thead th:first-child{text-align:left}
+  tbody td{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--light);padding:10px 12px;text-align:right;border-bottom:1px solid rgba(30,24,40,0.8);white-space:nowrap}
+  tbody td:first-child{text-align:left;font-weight:500;color:var(--white)}
+  tbody tr:hover td{background:rgba(124,58,237,0.04)}
+  .hi{color:var(--green)!important;font-weight:500}.warn{color:var(--amber)!important}.lo{color:var(--red)!important}.purple-t{color:var(--purple2)!important;font-weight:500}
+  .badge{display:inline-block;font-size:9px;padding:1px 5px;border-radius:3px;background:rgba(96,200,255,0.15);color:var(--ice);letter-spacing:.06em;margin-left:5px;vertical-align:middle}
+
+  .notes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+  .note-card{background:var(--carbon);border:1px solid var(--border);border-left:3px solid var(--purple);border-radius:0 8px 8px 0;padding:18px 20px}
+  .note-title{font-weight:600;color:var(--white);margin-bottom:6px;font-size:13px}
+  .note-body{color:var(--body);font-size:12px;line-height:1.7}
+  .note-card.ice{border-left-color:var(--ice)}.note-card.amber{border-left-color:var(--amber)}.note-card.green{border-left-color:var(--green)}.note-card.red{border-left-color:var(--red)}
+
+  .footer{padding:32px 48px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.08em;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-shield">
+    <svg viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M100 10 L190 50 L190 130 Q190 200 100 230 Q10 200 10 130 L10 50 Z" fill="white"/>
+    </svg>
+  </div>
+  <div class="container">
+    <div class="hero-eyebrow">Confidential Scouting Report · 2025–26 Season</div>
+    <div class="hero-title">PA Lady<br><span>Knights</span></div>
+    <div class="hero-subtitle">10U &nbsp;·&nbsp; Pennsylvania &nbsp;·&nbsp; 46-game season sample</div>
+    <div class="hero-stats">
+      <div><div class="hero-stat-val purple">.430</div><div class="hero-stat-label">Top AVG — Molly J</div></div>
+      <div><div class="hero-stat-val">2.35</div><div class="hero-stat-label">Ace ERA — Elly L</div></div>
+      <div><div class="hero-stat-val">225</div><div class="hero-stat-label">Ks — Elly L alone</div></div>
+      <div><div class="hero-stat-val purple">107</div><div class="hero-stat-label">Innings pitched — Ace</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="alert-banner">High-threat team · Elite ace pitcher · Deep lineup · Elly L is the best arm scouted this season</div>
+
+<div class="section">
+  <div class="container">
+    <div class="section-label">Primary Threat</div>
+    <div class="section-title">The Ace</div>
+
+    <div class="ace-spotlight">
+      <div class="ace-label">🏆 Best Pitcher Scouted — All Teams</div>
+      <div class="ace-name">Elly L</div>
+      <div class="ace-desc">The most dominant pitcher scouted across all teams this season. 107 innings at a 2.35 ERA with 225 strikeouts — over 2 K per inning. Also hits .402 with a .538 OBP. A generational two-way talent at the 10U level. Plan your entire game around her.</div>
+      <div class="ace-stats">
+        <div><div class="as-val">2.35</div><div class="as-label">ERA</div></div>
+        <div><div class="as-val">225</div><div class="as-label">SO</div></div>
+        <div><div class="as-val">107.1</div><div class="as-label">IP</div></div>
+        <div><div class="as-val">1.09</div><div class="as-label">WHIP</div></div>
+        <div><div class="as-val">.402</div><div class="as-label">AVG bat</div></div>
+        <div><div class="as-val">.538</div><div class="as-label">OBP bat</div></div>
+      </div>
+    </div>
+
+    <div class="section-label">Recruiting Targets</div>
+    <div class="section-title" style="margin-bottom:20px">Standout Players</div>
+    <div class="player-grid">
+      <div class="player-card featured">
+        <div class="player-name">Molly J</div>
+        <div class="player-meta">42 G BAT · 8 G PIT · TWO-WAY</div>
+        <div class="player-stats">
+          <div><div class="pstat-val purple">.430</div><div class="pstat-label">AVG</div></div>
+          <div><div class="pstat-val hi">.529</div><div class="pstat-label">OBP</div></div>
+          <div><div class="pstat-val hi">44</div><div class="pstat-label">RBI</div></div>
+          <div><div class="pstat-val hi">37</div><div class="pstat-label">Hits</div></div>
+          <div><div class="pstat-val">25</div><div class="pstat-label">Runs</div></div>
+          <div><div class="pstat-val">18</div><div class="pstat-label">BB</div></div>
+        </div>
+        <div class="divider"></div>
+        <div style="font-size:11px;color:var(--body);line-height:1.6">Team's best hitter behind Elly L. .430 AVG and team-leading 44 RBI. Hits in run situations consistently. Also pitches but ERA is high — primarily a bat.</div>
+      </div>
+
+      <div class="player-card featured">
+        <div class="player-name">Evelynn M</div>
+        <div class="player-meta">46 G BAT · POSITION PLAYER</div>
+        <div class="player-stats">
+          <div><div class="pstat-val">.387</div><div class="pstat-label">AVG</div></div>
+          <div><div class="pstat-val hi">.482</div><div class="pstat-label">OBP</div></div>
+          <div><div class="pstat-val">30</div><div class="pstat-label">RBI</div></div>
+          <div><div class="pstat-val hi">36</div><div class="pstat-label">Hits</div></div>
+          <div><div class="pstat-val hi">36</div><div class="pstat-label">Runs</div></div>
+          <div><div class="pstat-val">17</div><div class="pstat-label">BB</div></div>
+        </div>
+        <div class="divider"></div>
+        <div style="font-size:11px;color:var(--body);line-height:1.6">Full-season .387 AVG with 36 runs and 30 RBI. Tied for most hits on the team (36). Consistent producer in the middle of the lineup game after game.</div>
+      </div>
+
+      <div class="player-card featured">
+        <div class="player-name">Sadie K</div>
+        <div class="player-meta">46 G BAT · POSITION PLAYER</div>
+        <div class="player-stats">
+          <div><div class="pstat-val">.345</div><div class="pstat-label">AVG</div></div>
+          <div><div class="pstat-val hi">.509</div><div class="pstat-label">OBP</div></div>
+          <div><div class="pstat-val">23</div><div class="pstat-label">RBI</div></div>
+          <div><div class="pstat-val hi">28</div><div class="pstat-label">BB</div></div>
+          <div><div class="pstat-val hi">34</div><div class="pstat-label">Runs</div></div>
+          <div><div class="pstat-val">28</div><div class="pstat-label">K's</div></div>
+        </div>
+        <div class="divider"></div>
+        <div style="font-size:11px;color:var(--body);line-height:1.6">Elite plate discipline — .509 OBP on 28 walks. Forces pitchers to work hard every AB. Gets on base and scores runs at a high clip. A true table-setter.</div>
+      </div>
+
+      <div class="player-card featured">
+        <div class="player-name">O L</div>
+        <div class="player-meta">3 G PIT · RELIEF ARM</div>
+        <div class="player-stats">
+          <div><div class="pstat-val hi">1.70</div><div class="pstat-label">ERA</div></div>
+          <div><div class="pstat-val hi">1.46</div><div class="pstat-label">WHIP</div></div>
+          <div><div class="pstat-val hi">28</div><div class="pstat-label">SO</div></div>
+          <div><div class="pstat-val">12.1</div><div class="pstat-label">IP</div></div>
+          <div><div class="pstat-val">.400</div><div class="pstat-label">AVG bat</div></div>
+          <div><div class="pstat-val hi">.500</div><div class="pstat-label">OBP bat</div></div>
+        </div>
+        <div class="divider"></div>
+        <div style="font-size:11px;color:var(--body);line-height:1.6">Small sample but eye-popping: 28 Ks in 12 innings at 1.70 ERA. If she emerges as a regular arm alongside Elly L this team becomes nearly unbeatable.</div>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:8px">Full Roster</div>
+    <div class="section-title" style="margin-bottom:16px">Batting Statistics</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Player</th><th>G</th><th>AB</th><th>H</th><th>R</th><th>RBI</th><th>BB</th><th>K</th><th>AVG</th><th>OBP</th></tr></thead>
+        <tbody>
+          <tr><td>Elly L <span class="badge">P</span></td><td>46</td><td>92</td><td>37</td><td>26</td><td>30</td><td>27</td><td>26</td><td class="purple-t">.402</td><td class="hi">.538</td></tr>
+          <tr><td>Molly J <span class="badge">P</span></td><td>42</td><td>86</td><td>37</td><td>25</td><td class="hi">44</td><td>18</td><td>23</td><td class="purple-t">.430</td><td class="hi">.529</td></tr>
+          <tr><td>Evelynn M</td><td>46</td><td>93</td><td>36</td><td>36</td><td>30</td><td>17</td><td>23</td><td>.387</td><td>.482</td></tr>
+          <tr><td>Sadie K</td><td>46</td><td>84</td><td>29</td><td>34</td><td>23</td><td class="hi">28</td><td>28</td><td>.345</td><td class="hi">.509</td></tr>
+          <tr><td>Emma N</td><td>38</td><td>78</td><td>25</td><td class="hi">47</td><td>6</td><td>17</td><td>19</td><td>.321</td><td>.442</td></tr>
+          <tr><td>Caroline F <span class="badge">P</span></td><td>13</td><td>27</td><td>10</td><td>10</td><td>8</td><td>1</td><td>8</td><td>.370</td><td>.393</td></tr>
+          <tr><td>Everly D <span class="badge">P</span></td><td>24</td><td>40</td><td>10</td><td>8</td><td>10</td><td>10</td><td>18</td><td>.250</td><td>.400</td></tr>
+          <tr><td>Lola B <span class="badge">P</span></td><td>26</td><td>52</td><td>12</td><td>10</td><td>8</td><td>7</td><td>27</td><td>.231</td><td>.322</td></tr>
+          <tr><td>Kylie H</td><td>44</td><td>69</td><td>15</td><td>20</td><td>14</td><td>21</td><td>40</td><td>.217</td><td>.400</td></tr>
+          <tr><td>Addi H</td><td>45</td><td>72</td><td>13</td><td>21</td><td>14</td><td>18</td><td>47</td><td>.181</td><td>.344</td></tr>
+          <tr><td>Reese T</td><td>46</td><td>78</td><td>14</td><td>21</td><td>11</td><td>18</td><td class="warn">47</td><td class="lo">.179</td><td>.333</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-label" style="margin-top:48px">Pitching Staff</div>
+    <div class="section-title" style="margin-bottom:16px">Pitching Statistics</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Pitcher</th><th>G</th><th>IP</th><th>ER</th><th>H</th><th>BB</th><th>SO</th><th>ERA</th><th>WHIP</th></tr></thead>
+        <tbody>
+          <tr><td>Elly L</td><td>35</td><td>107.1</td><td>36</td><td>50</td><td>67</td><td class="hi">225</td><td class="hi">2.35</td><td class="hi">1.09</td></tr>
+          <tr><td>O L</td><td>3</td><td>12.1</td><td>3</td><td>12</td><td>6</td><td class="hi">28</td><td class="hi">1.70</td><td>1.46</td></tr>
+          <tr><td>Lola B</td><td>21</td><td>42.2</td><td>19</td><td>20</td><td class="warn">52</td><td>94</td><td>3.12</td><td class="warn">1.69</td></tr>
+          <tr><td>Everly D</td><td>4</td><td>5.0</td><td>0</td><td>7</td><td>2</td><td>10</td><td class="hi">0.00</td><td>1.80</td></tr>
+          <tr><td>Molly J</td><td>8</td><td>11.2</td><td>12</td><td>16</td><td class="warn">30</td><td>26</td><td class="lo">7.20</td><td class="lo">3.94</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="container">
+    <div class="section-label">Analysis</div>
+    <div class="section-title">Scouting Notes</div>
+    <div class="notes-grid">
+      <div class="note-card red">
+        <div class="note-title">⚠ Elly L — Game Plan Required</div>
+        <div class="note-body">225 Ks in 107 innings at 2.35 ERA makes her the most dominant arm scouted this season. You must work deep counts, make her throw extra pitches, and hope she tires late. She will not be rattled easily.</div>
+      </div>
+      <div class="note-card amber">
+        <div class="note-title">Exploit Lola B</div>
+        <div class="note-body">52 walks in 42 innings — almost impossible to control. If Elly L comes out or struggles, Lola B is the likely replacement. Patient hitters who take pitches will get on base for free. Draw walks, manufacture runs.</div>
+      </div>
+      <div class="note-card red">
+        <div class="note-title">Do Not Pitch to Molly J</div>
+        <div class="note-body">.430 AVG and 44 RBI — she destroys mistakes. Work around her with runners on base if possible. She's their most dangerous bat in run situations.</div>
+      </div>
+      <div class="note-card green">
+        <div class="note-title">Bottom Order is Beatable</div>
+        <div class="note-body">Addi H and Reese T both hit under .180 with 47 K's each. Attack them early in counts and generate outs efficiently. Getting through the bottom third of the order clean is critical to keeping the game close.</div>
+      </div>
+      <div class="note-card ice">
+        <div class="note-title">Sadie K — OBP Threat</div>
+        <div class="note-body">.509 OBP means she reaches base in half her PA. She'll be on base constantly even if you get her out with good pitching. Know where she is on the bases at all times.</div>
+      </div>
+      <div class="note-card green">
+        <div class="note-title">O L — Watch Closely</div>
+        <div class="note-body">28 Ks in 12 innings at 1.70 ERA is remarkable. If she develops into a regular rotation piece alongside Elly L, this team becomes virtually unbeatable. Worth tracking for tournament prep.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <span>PA LADY KNIGHTS 10U · 2025–26 SEASON SCOUTING REPORT</span>
+  <span>GENERATED VIA GC SCOUT CRAWLER · CONFIDENTIAL</span>
+</div>
+</body>
+</html>
