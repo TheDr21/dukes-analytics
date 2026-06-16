@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3-Recruit Impact — Lady Dukes Analytics</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',system-ui,sans-serif;background:#0B1E35;color:#F2EFE8;min-height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:52px;border-bottom:1px solid rgba(255,255,255,0.08);position:sticky;top:0;background:#0B1E35;z-index:10;}
+.logo{font-size:14px;font-weight:600;color:#F2EFE8;text-decoration:none;}
+.logo span{color:#E8A020;}
+.back{font-size:12px;color:#8A97A6;text-decoration:none;font-family:'DM Mono',monospace;}
+.back:hover{color:#E8A020;}
+.page{max-width:860px;margin:0 auto;padding:2rem;}
+h1{font-size:26px;font-weight:600;margin-bottom:.3rem;}
+h1 span{color:#E8A020;}
+.sub{font-size:13px;color:#8A97A6;margin-bottom:2rem;}
+.mg{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:1.5rem;}
+.mc{background:rgba(255,255,255,0.05);border-radius:8px;padding:12px 14px;}
+.mc .lbl{font-size:11px;color:#8A97A6;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em;}
+.mc .val{font-size:22px;font-weight:600;font-family:'DM Mono',monospace;}
+.mc .s{font-size:10px;color:#8A97A6;margin-top:3px;}
+.sec{font-size:11px;font-weight:600;color:#8A97A6;text-transform:uppercase;letter-spacing:.06em;margin:1.5rem 0 .75rem;padding-bottom:.4rem;border-bottom:1px solid rgba(255,255,255,0.08);}
+.br{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.bl{font-size:12px;min-width:160px;color:#F2EFE8;flex-shrink:0;}
+.bt{flex:1;background:rgba(255,255,255,0.07);border-radius:3px;height:15px;overflow:hidden;}
+.bf{height:100%;border-radius:3px;display:flex;align-items:center;padding-left:6px;font-size:10px;font-weight:600;color:#fff;white-space:nowrap;}
+.pill{display:inline-block;font-size:10px;font-weight:600;padding:1px 7px;border-radius:3px;margin-left:5px;vertical-align:middle;}
+.pg{background:rgba(45,184,124,0.2);color:#2DB87C;}
+.pb{background:rgba(55,138,221,0.2);color:#378ADD;}
+.lineup-wrap{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:.75rem 1rem;}
+.lrow{display:grid;grid-template-columns:24px 1fr 80px;gap:8px;align-items:start;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.lrow:last-child{border-bottom:none;}
+.spot{font-size:18px;font-weight:600;color:#8A97A6;font-family:'DM Mono',monospace;line-height:1.1;}
+.pn{font-size:13px;font-weight:600;line-height:1.2;}
+.pp{font-size:11px;color:#8A97A6;margin-top:1px;}
+.po{font-size:13px;font-weight:600;text-align:right;}
+.ps{font-size:10px;color:#8A97A6;text-align:right;margin-top:1px;}
+.note{background:rgba(255,255,255,0.04);border-left:3px solid #E8A020;border-radius:0 8px 8px 0;padding:.9rem 1rem;font-size:12px;color:#B0BDC9;line-height:1.75;margin-top:1.25rem;}
+.note strong{color:#F2EFE8;}
+.tw{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+.card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:1rem;}
+.card h4{font-size:12px;font-weight:600;color:#8A97A6;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.75rem;}
+.recruit-header{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:1.5rem;}
+.rc{flex:1;min-width:200px;background:rgba(55,138,221,0.08);border:1px solid rgba(55,138,221,0.25);border-radius:10px;padding:1rem 1.25rem;}
+.rc .rn{font-size:14px;font-weight:600;margin-bottom:.4rem;}
+.rc .rs{font-size:12px;color:#8A97A6;line-height:1.6;}
+.rc .rb{font-size:20px;font-weight:600;font-family:'DM Mono',monospace;color:#378ADD;margin-bottom:2px;}
+@media(max-width:600px){.tw{grid-template-columns:1fr;}.page{padding:1.25rem 1rem;}.lrow{grid-template-columns:22px 1fr 70px;}}
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <a href="index.html" class="logo">Lady Dukes <span>Analytics</span></a>
+  <a href="index.html" class="back">← Back to hub</a>
+</nav>
+<div class="page">
+<h1>Adding <span>Molly J, Evelynn M & Lola B</span></h1>
+<p class="sub">What three PA Lady Knights recruits do to the Lady Dukes roster</p>
+
+<div class="recruit-header">
+  <div class="rc"><div class="rn">Molly J</div><div class="rb">.430 BA · .529 OBP</div><div class="rs">44 RBI · 26.7% K rate · no pitching role<br>Slots #5 in lineup by OPS</div></div>
+  <div class="rc"><div class="rn">Evelynn M</div><div class="rb">.387 BA · .482 OBP</div><div class="rs">36 R · 24.7% K rate · pure hitter<br>2nd-best contact rate on team</div></div>
+  <div class="rc"><div class="rn">Lola B</div><div class="rb">3.12 ERA · 94 K</div><div class="rs">42.2 IP · 1.69 WHIP · #2 arm on staff<br>.231 BA — bats at bottom</div></div>
+</div>
+
+<div class="mg">
+  <div class="mc"><div class="lbl">Lineup avg OPS</div><div class="val" style="color:#2DB87C;">0.931</div><div class="s">was 0.848 (+.083)</div></div>
+  <div class="mc"><div class="lbl">Team avg BA</div><div class="val" style="color:#2DB87C;">.315</div><div class="s">was .305 (+.010)</div></div>
+  <div class="mc"><div class="lbl">Team K rate</div><div class="val" style="color:#378ADD;">40.0%</div><div class="s">was 41.7% (–1.7%)</div></div>
+  <div class="mc"><div class="lbl">OPS .900+ bats</div><div class="val" style="color:#2DB87C;">6</div><div class="s">was 4</div></div>
+</div>
+
+<div class="sec">Full OPS ranking — all 13 players</div>
+<div id="fullOps"></div>
+
+<div class="sec">Projected starting lineup (9)</div>
+<div class="lineup-wrap"><div id="lineup"></div></div>
+
+<div class="tw" style="margin-top:1.25rem;">
+  <div class="card">
+    <h4>Pitching staff ERA</h4>
+    <div style="position:relative;height:180px;"><canvas id="eraChart" role="img" aria-label="ERA by pitcher. Porter 3.09, Lola B 3.12, Glomb 4.24, Rocco 4.30, Dantry 4.63. Molly J not a pitching option.">Porter 3.09, Lola B 3.12, Glomb 4.24, Rocco 4.30, Dantry 4.63.</canvas></div>
+  </div>
+  <div class="card">
+    <h4>Displaced players</h4>
+    <div style="font-size:12px;color:#8A97A6;line-height:2.1;">
+      <div><span style="color:#F2EFE8;font-weight:600;">Marple</span> — off active roster</div>
+      <div><span style="color:#F2EFE8;font-weight:600;">Tortorice</span> — reserve / pinch runner</div>
+      <div><span style="color:#F2EFE8;font-weight:600;">Schmidt</span> — utility SS (defense only)</div>
+      <div><span style="color:#F2EFE8;font-weight:600;">McWilliams</span> — stays (catcher depth)</div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">K rate — lower is better</div>
+<div id="kBars"></div>
+
+<div class="note">
+  <strong>Bottom line:</strong> Adding all three is a top-to-bottom upgrade. Evelynn is the real surprise — her .387 BA and 24.7% K rate (second only to Porter on the whole roster) makes the top 6 of this lineup genuinely elite. Molly J gives you RBI production in the 4-hole. Lola B gives the pitching staff something it's never had: a strikeout pitcher who can miss bats at scale (94 K). The team goes from four .900+ OPS hitters to six, and the lineup avg OPS jumps nearly 10 points. Schmidt, Tortorice, and Marple become depth pieces. This is a tournament-caliber roster.
+</div>
+</div>
+
+<script>
+const roster=[
+  {n:'Maddie Porter',ops:1.223,r:false},{n:'Autumn Dantry',ops:1.061,r:false},
+  {n:'Ava Glomb',ops:1.046,r:false},{n:'Rylan LaFever',ops:1.026,r:false},
+  {n:'Molly J',ops:0.958,r:true},{n:'Evelynn M',ops:0.909,r:true},
+  {n:'Violet Rocco',ops:0.821,r:false},{n:'Brooklyn Schmidt',ops:0.687,r:false},
+  {n:'Camille McWilliams',ops:0.647,r:false},{n:'Sophia Chimino',ops:0.640,r:false},
+  {n:'Lola B',ops:0.553,r:true},{n:'Silvia Tortorice',ops:0.480,r:false},
+  {n:'Brianna Marple',ops:0.443,r:false},
+];
+const opsEl=document.getElementById('fullOps');
+roster.forEach(p=>{
+  const pct=Math.round((p.ops/1.223)*100);
+  const c=p.ops>=1.0?'#2DB87C':p.ops>=.900?'#5DCAA5':p.ops>=.750?'#378ADD':p.ops>=.550?'#E8A020':'#E24B4A';
+  const tag=p.r?`<span class="pill pb">NEW</span>`:'';
+  opsEl.innerHTML+=`<div class="br"><div class="bl">${p.n}${tag}</div><div class="bt"><div class="bf" style="width:${pct}%;background:${c};">${p.ops.toFixed(3)}</div></div></div>`;
+});
+
+const lineupData=[
+  {spot:'1',n:'Rylan LaFever',pos:'C',ops:1.026,sub:'.424 BA · 78 SB',r:false},
+  {spot:'2',n:'Ava Glomb',pos:'CF',ops:1.046,sub:'.401 BA · 73 SB',r:false},
+  {spot:'3',n:'Maddie Porter',pos:'3B',ops:1.223,sub:'.496 BA · 53 RBI',r:false},
+  {spot:'4',n:'Molly J',pos:'1B',ops:0.958,sub:'.430 BA · 44 RBI',r:true},
+  {spot:'5',n:'Autumn Dantry',pos:'P/DH',ops:1.061,sub:'.407 BA · 64% QAB',r:false},
+  {spot:'6',n:'Evelynn M',pos:'RF',ops:0.909,sub:'.387 BA · 24.7% K%',r:true},
+  {spot:'7',n:'Violet Rocco',pos:'LF',ops:0.821,sub:'.278 BA · pitcher',r:false},
+  {spot:'8',n:'Sophia Chimino',pos:'2B',ops:0.640,sub:'.238 BA · 44 SB',r:false},
+  {spot:'9',n:'Lola B',pos:'P',ops:0.553,sub:'.231 BA · ace arm',r:true},
+];
+const lineupEl=document.getElementById('lineup');
+lineupData.forEach(p=>{
+  const c=p.ops>=1.0?'#2DB87C':p.ops>=.900?'#5DCAA5':p.ops>=.750?'#378ADD':'#E8A020';
+  const tag=p.r?`<span class="pill pg">NEW</span>`:'';
+  lineupEl.innerHTML+=`<div class="lrow"><div class="spot">${p.spot}</div><div><div class="pn">${p.n}${tag}</div><div class="pp">${p.pos}</div></div><div><div class="po" style="color:${c};">${p.ops.toFixed(3)}</div><div class="ps">${p.sub}</div></div></div>`;
+});
+
+new Chart(document.getElementById('eraChart'),{
+  type:'bar',
+  data:{
+    labels:['Porter','Lola B','Glomb','Rocco','Dantry'],
+    datasets:[{label:'ERA',data:[3.09,3.12,4.24,4.30,4.63],backgroundColor:['#2DB87C','#378ADD','#5DCAA5','#E8A020','#EF9F27'],borderRadius:4}]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#8A97A6',font:{size:11}}},y:{beginAtZero:true,max:7,grid:{color:'rgba(255,255,255,0.06)'},ticks:{color:'#8A97A6'}}}}
+});
+
+const kData=[
+  {n:'Maddie Porter',k:22.0,r:false},{n:'Evelynn M',k:24.7,r:true},{n:'Molly J',k:26.7,r:true},
+  {n:'Ava Glomb',k:27.7,r:false},{n:'Autumn Dantry',k:32.2,r:false},{n:'Silvia Tortorice',k:32.4,r:false},
+  {n:'Rylan LaFever',k:33.6,r:false},{n:'Violet Rocco',k:43.3,r:false},{n:'Camille McWilliams',k:44.9,r:false},
+  {n:'Sophia Chimino',k:45.7,r:false},{n:'Lola B',k:51.9,r:true},{n:'Brooklyn Schmidt',k:56.1,r:false},
+  {n:'Brianna Marple',k:78.8,r:false},
+];
+const kb=document.getElementById('kBars');
+kData.forEach(p=>{
+  const c=p.k<30?'#2DB87C':p.k<50?'#E8A020':'#E24B4A';
+  const tag=p.r?`<span class="pill pb">NEW</span>`:'';
+  kb.innerHTML+=`<div class="br"><div class="bl">${p.n}${tag}</div><div class="bt"><div class="bf" style="width:${p.k}%;background:${c};">${p.k.toFixed(1)}%</div></div></div>`;
+});
+</script>
+</body>
+</html>
