@@ -67,7 +67,7 @@ h1{font-size:24px;font-weight:600;margin-bottom:.3rem;} h1 span{color:#E8A020;}
 <div class="section active" id="rankings">
 <div class="page" style="padding-top:2rem;">
 <h1>Master <span>Rankings</span></h1>
-<p class="sub">10 teams scouted · All records corrected from actual game data · Click any team to open full scouting report</p>
+<p class="sub">11 teams scouted · All records corrected from actual game data · Click any team to open full scouting report</p>
 
 <div class="sl">Lady Dukes — reference point</div>
 <div class="dukes-ref">
@@ -296,7 +296,28 @@ h1{font-size:24px;font-weight:600;margin-bottom:.3rem;} h1 span{color:#E8A020;}
     <div class="rc-stat"><div class="rc-sv">42%</div><div class="rc-sl">K rate</div></div>
   </div>
   <div class="rc-note">🏆 Jordan M (.500/.604) &nbsp;·&nbsp; ⚾ Luciana L (8.34 ERA, 142K) &nbsp;·&nbsp; Highest team OBP (.564) but worst pitching staff (8.34 ERA). Score on them. Dukes are 1-0 in the data.</div>
-</a></div></div>
+</a>
+<a href="scout-smash-palmer.html" class="rc">
+  <div style="height:3px;background:#378ADD;opacity:.8;"></div>
+  <div class="rc-main">
+    <div class="rc-num" style="color:#378ADD;">#11</div>
+    <div>
+      <div class="rc-name">Smash Palmer 10U</div>
+      <span class="rc-tier" style="background:rgba(55,138,221,0.08);color:#378ADD;">AVERAGE</span>
+      <div class="rc-rec">vs Dukes: <span style="color:#2DB87C;font-weight:600;">W 14-1</span></div>
+    </div>
+    <div><div class="rc-danger" style="color:#378ADD;">7.6</div><div class="rc-dl">Danger</div></div>
+  </div>
+  <div class="rc-bar"><div class="rc-bar-track"><div class="rc-bar-fill" style="width:54%;background:#378ADD;"></div></div></div>
+  <div class="rc-stats">
+    <div class="rc-stat"><div class="rc-sv">.476</div><div class="rc-sl">OBP</div></div>
+    <div class="rc-stat"><div class="rc-sv">.895</div><div class="rc-sl">OPS</div></div>
+    <div class="rc-stat"><div class="rc-sv">4.94</div><div class="rc-sl">Best ERA</div></div>
+    <div class="rc-stat"><div class="rc-sv">54%</div><div class="rc-sl">K rate</div></div>
+  </div>
+  <div class="rc-note">🏆 Jenna H (.458/.649) · ⚾ Harper V (4.94 ERA, 58K) · Top 3 hitters legitimate threats but bottom of lineup K rate 58–81%. Dukes beat them 14-1. Beatable but respect the top of the order.</div>
+</a>
+</div></div>
 
 <div class="section" id="hitters">
 <div class="page" style="padding-top:2rem;">
@@ -323,12 +344,12 @@ function show(id,btn){document.querySelectorAll('.section').forEach(s=>s.classLi
 new Chart(document.getElementById('dangerChart'),{
   type:'bar',
   data:{
-    labels:['PA Knights','All American','TN Mojo','SHE','Silver Creek','Pgh Tigers','Outlaws L','Outlaws V','Pgh Preds','Devil Dogs'],
+    labels:['PA Knights','All American','TN Mojo','SHE','Silver Creek','Pgh Tigers','Outlaws L','Outlaws V','Pgh Preds','Devil Dogs','Smash Palmer'],
     datasets:[
-      {label:'Danger',data:[13.55,12.97,12.92,11.13,10.43,9.43,9.29,8.95,7.81,7.69],
-       backgroundColor:['#E24B4A','#E24B4A','#E24B4A','#E24B4A','#E8A020','#E8A020','#E8A020','#E8A020','#378ADD','#378ADD'],
+      {label:'Danger',data:[13.55,12.97,12.92,11.13,10.43,9.43,9.29,8.95,7.81,7.69,7.56],
+       backgroundColor:['#E24B4A','#E24B4A','#E24B4A','#E24B4A','#E8A020','#E8A020','#E8A020','#E8A020','#378ADD','#378ADD','#378ADD'],
        borderRadius:4},
-      {label:'Lady Dukes',data:[8.18,8.18,8.18,8.18,8.18,8.18,8.18,8.18,8.18,8.18],
+      {label:'Lady Dukes',data:[8.18,8.18,8.18,8.18,8.18,8.18,8.18,8.18,8.18,8.18,8.18],
        type:'line',borderColor:'#E8A020',borderDash:[4,3],pointRadius:0,borderWidth:2,fill:false}
     ]
   },
