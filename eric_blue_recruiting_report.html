@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recruiting Report — Coach Eric Blue</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --black:#06080a;--carbon:#0c1014;--border:#1a2030;--muted:#3a4858;
+    --body:#7090a8;--light:#b8ccd8;--white:#e8f0f8;
+    --accent:#00c8d4;--gold:#f0c020;--gold2:#ffe040;
+    --green:#22c55e;--red:#ef4444;--amber:#f59e0b;--purple:#a060f0;
+    --grade-a:#22c55e;--grade-b:#60aaff;--grade-c:#f59e0b;--grade-d:#ef4444;
+  }
+  html{scroll-behavior:smooth}
+  body{background:var(--black);color:var(--light);font-family:'Inter',sans-serif;font-size:14px;line-height:1.6}
+
+  /* COVER */
+  .cover{position:relative;padding:72px 48px 56px;border-bottom:1px solid var(--border);overflow:hidden;background:linear-gradient(135deg,#060810 0%,#0a0c18 100%)}
+  .cover::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(0,200,212,0.12) 0%,transparent 65%);pointer-events:none}
+  .cover-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;color:var(--accent);text-transform:uppercase;margin-bottom:12px}
+  .cover-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,7vw,88px);line-height:.92;color:var(--white);margin-bottom:6px}
+  .cover-title span{color:var(--accent)}
+  .cover-to{font-size:13px;color:var(--body);margin-bottom:6px}
+  .cover-to strong{color:var(--white)}
+  .cover-meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.08em;margin-bottom:32px}
+
+  /* GRADE LEGEND */
+  .grade-legend{display:flex;gap:20px;flex-wrap:wrap}
+  .gl-item{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--body)}
+  .gl-dot{width:10px;height:10px;border-radius:50%}
+
+  /* SUMMARY GRID */
+  .summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:28px 48px;border-bottom:1px solid var(--border)}
+  @media(max-width:900px){.summary-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:500px){.summary-grid{grid-template-columns:1fr;padding:20px}}
+  .summary-card{background:var(--carbon);border-radius:8px;padding:14px 16px;border-left:3px solid var(--border)}
+  .sc-grade{font-family:'Bebas Neue',sans-serif;font-size:32px;line-height:1;margin-bottom:4px}
+  .sc-name{font-weight:600;font-size:13px;color:var(--white);margin-bottom:2px}
+  .sc-team{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+  .sc-tag{font-size:11px;color:var(--body)}
+
+  /* PLAYER CARDS */
+  .container{max-width:1100px;margin:0 auto;padding:0 48px}
+  @media(max-width:700px){.container{padding:0 20px}}
+  .players-section{padding:48px 0}
+  .player-report{background:var(--carbon);border:1px solid var(--border);border-radius:12px;margin-bottom:24px;overflow:hidden}
+  .player-header{padding:24px 28px 0;display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap}
+  .grade-badge{font-family:'Bebas Neue',sans-serif;font-size:48px;line-height:1;flex-shrink:0;width:56px;text-align:center}
+  .player-info{flex:1;min-width:200px}
+  .player-name{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--white);line-height:1;letter-spacing:.02em}
+  .player-team{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+  .player-role{display:inline-block;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:500;margin-bottom:8px}
+  .role-tw{background:rgba(160,96,240,0.15);color:var(--purple)}
+  .role-bat{background:rgba(0,200,212,0.12);color:var(--accent)}
+  .role-pit{background:rgba(240,192,32,0.12);color:var(--gold2)}
+  .player-stat-row{display:flex;gap:24px;flex-wrap:wrap;padding:0 28px 20px}
+  .psr-group{display:flex;gap:16px}
+  .psr-item{text-align:center}
+  .psr-val{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:var(--white);line-height:1}
+  .psr-val.hi{color:var(--green)}.psr-val.warn{color:var(--amber)}.psr-val.lo{color:var(--red)}
+  .psr-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-top:2px}
+  .stat-divider{width:1px;background:var(--border);align-self:stretch;margin:0 4px}
+  .player-notes{padding:16px 28px 24px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:600px){.player-notes{grid-template-columns:1fr}}
+  .note-block{padding:12px 14px;border-radius:6px;font-size:12px;line-height:1.7}
+  .note-block.strength{background:rgba(34,197,94,0.07);border-left:3px solid var(--green)}
+  .note-block.concern{background:rgba(245,158,11,0.07);border-left:3px solid var(--amber)}
+  .note-block.verdict{background:rgba(0,200,212,0.07);border-left:3px solid var(--accent)}
+  .note-block.red{background:rgba(239,68,68,0.07);border-left:3px solid var(--red)}
+  .note-title{font-weight:600;color:var(--white);font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+  .note-text{color:var(--body)}
+  .player-header-bar{height:3px;width:100%}
+
+  .section-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--accent);text-transform:uppercase;margin-bottom:8px;margin-top:40px}
+  .section-title{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--white);letter-spacing:.02em;margin-bottom:20px}
+
+  .footer{padding:28px 48px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.08em;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="container">
+    <div class="cover-eyebrow">Confidential · Recruiting Intelligence Report</div>
+    <div class="cover-title">Recruiting<br><span>Dossier</span></div>
+    <div class="cover-to">Prepared for: <strong>Head Coach Eric Blue</strong></div>
+    <div class="cover-meta">8 PROSPECTS · 7 PROGRAMS · 2025–26 SEASON DATA · GENERATED VIA GC SCOUT CRAWLER</div>
+    <div class="grade-legend">
+      <div class="gl-item"><div class="gl-dot" style="background:var(--grade-a)"></div>A — Elite prospect, pursue immediately</div>
+      <div class="gl-item"><div class="gl-dot" style="background:var(--grade-b)"></div>B — Strong prospect, high interest</div>
+      <div class="gl-item"><div class="gl-dot" style="background:var(--grade-c)"></div>C — Developing prospect, monitor</div>
+      <div class="gl-item"><div class="gl-dot" style="background:var(--grade-d)"></div>D — Not ready / small sample</div>
+    </div>
+  </div>
+</div>
+
+<!-- SUMMARY GRID -->
+<div class="summary-grid">
+  <div class="summary-card" style="border-left-color:var(--grade-a)">
+    <div class="sc-grade" style="color:var(--grade-a)">A</div>
+    <div class="sc-name">Allie Brawdy</div>
+    <div class="sc-team">Pittsburgh Tigers 12U</div>
+    <div class="sc-tag">.571 AVG · 6 Ks · Pure bat · Elite contact</div>
+  </div>
+  <div class="summary-card" style="border-left-color:var(--grade-a)">
+    <div class="sc-grade" style="color:var(--grade-a)">A</div>
+    <div class="sc-name">Claire Kassi</div>
+    <div class="sc-team">Power Wall 11U</div>
+    <div class="sc-tag">188 SO · 4.69 ERA · .414 AVG · Top two-way</div>
+  </div>
+  <div class="summary-card" style="border-left-color:var(--grade-a)">
+    <div class="sc-grade" style="color:var(--grade-a)">A-</div>
+    <div class="sc-name">Allison Landi</div>
+    <div class="sc-team">LK Spin / PA Lady Knights</div>
+    <div class="sc-tag">3.23 ERA · 33 SO · Best control in pool</div>
+  </div>
+  <div class="summary-card" style="border-left-color:var(--grade-b)">
+    <div class="sc-grade" style="color:var(--grade-b)">B+</div>
+    <div class="sc-name">Bella Hixenbaugh</div>
+    <div class="sc-team">Post 3 12U</div>
+    <div class="sc-tag">.507 AVG · 77 SO · 65 IP · True two-way</div>
+  </div>
+  <div class="summary-card" style="border-left-color:var(--grade-b)">
+    <div class="sc-grade" style="color:var(--grade-b)">B</div>
+    <div class="sc-name">Amelia Dewey</div>
+    <div class="sc-team">All American Blue 12U</div>
+    <div class="sc-tag">.464 AVG · 15 RBI · 15 games — small sample</div>
+  </div>
+  <div class="summary-card" style="border-left-color:var(--grade-b)">
+    <div class="sc-grade" style="color:var(--grade-b)">B</div>
+    <div class="sc-name">Aubrey Majors</div>
+    <div class="sc-team">Ohio Blast 12U</div>
+    <div class="sc-tag">.479 AVG · Two-way · High ERA, strong bat</div>
+  </div>
+  <div class="summary-card" style="border-left-color:var(--grade-c)">
+    <div class="sc-grade" style="color:var(--grade-c)">C+</div>
+    <div class="sc-name">Arianna Cannizzaro</div>
+    <div class="sc-team">Steel City Williams 11U</div>
+    <div class="sc-tag">.350 AVG · 66 Ks · 9.14 ERA — needs work</div>
+  </div>
+  <div class="summary-card" style="border-left-color:var(--grade-c)">
+    <div class="sc-grade" style="color:var(--grade-c)">C</div>
+    <div class="sc-name">Kendall Schlafhauser</div>
+    <div class="sc-team">Power Wall 11U</div>
+    <div class="sc-tag">.338 AVG · 17.40 ERA — bat is the value</div>
+  </div>
+  <div class="summary-card" style="border-left-color:var(--grade-c)">
+    <div class="sc-grade" style="color:var(--grade-c)">C+</div>
+    <div class="sc-name">Brynne Berdine</div>
+    <div class="sc-team">PA Renegades 11U</div>
+    <div class="sc-tag">.278 AVG · .400 OBP · 11 BB · Pos. only</div>
+  </div>
+  <div class="summary-card" style="border-left-color:var(--grade-a)">
+    <div class="sc-grade" style="color:var(--grade-a)">A+</div>
+    <div class="sc-name">Avery Goodman</div>
+    <div class="sc-team">All American Red 10U</div>
+    <div class="sc-tag">.500 AVG · .627 OBP · 188 SO · 1.22 ERA · Elite</div>
+  </div>
+  <div class="summary-card" style="border-left-color:var(--grade-d)">
+    <div class="sc-grade" style="color:var(--grade-d)">D</div>
+    <div class="sc-name">Kynslee Kimball</div>
+    <div class="sc-team">PA Renegades 11U</div>
+    <div class="sc-tag">.242 AVG · .367 OBP · 14 RBI · Not ready</div>
+  </div>
+  <div class="summary-card" style="border-left-color:var(--grade-a)">
+    <div class="sc-grade" style="color:var(--grade-a)">A</div>
+    <div class="sc-name">Jocelyn W</div>
+    <div class="sc-team">Marple 12U — Canonballerz</div>
+    <div class="sc-tag">.548 AVG · .659 OBP · 4 K's · Elite contact</div>
+  </div>
+  <div class="summary-card" style="border-left-color:var(--grade-d)">
+    <div class="sc-grade" style="color:var(--grade-d)">D</div>
+    <div class="sc-name">Sophia Zurcher</div>
+    <div class="sc-team">North Stars Kelly 11U</div>
+    <div class="sc-tag">.225 AVG · .380 OBP · 31 K's · Not ready</div>
+  </div>
+  <div class="summary-card" style="border-left-color:var(--grade-c)">
+    <div class="sc-grade" style="color:var(--grade-c)">C</div>
+    <div class="sc-name">Makylee C</div>
+    <div class="sc-team">Pittsburgh Tigers 12U</div>
+    <div class="sc-tag">.353 AVG · 17 RBI · 6.20 ERA — bat first</div>
+  </div>
+  <div class="summary-card" style="border-left-color:var(--grade-b)">
+    <div class="sc-grade" style="color:var(--grade-b)">B</div>
+    <div class="sc-name">Emma Ripple</div>
+    <div class="sc-team">Pittsburgh Predators Smith 11U</div>
+    <div class="sc-tag">.400 AVG both seasons · .465 OBP · Consistent</div>
+  </div>
+</div>
+
+<!-- PLAYER REPORTS -->
+<div class="container">
+<div class="players-section">
+
+  <div class="section-label">Grade A Prospects</div>
+  <div class="section-title">Pursue Immediately</div>
+
+  <!-- ALLIE BRAWDY -->
+  <div class="player-report">
+    <div class="player-header-bar" style="background:var(--grade-a)"></div>
+    <div class="player-header">
+      <div class="grade-badge" style="color:var(--grade-a)">A</div>
+      <div class="player-info">
+        <div class="player-team">Pittsburgh Tigers 12U — Suckfiel</div>
+        <div class="player-name">Allie Brawdy</div>
+        <span class="player-role role-bat">Pure Hitter</span>
+      </div>
+    </div>
+    <div class="player-stat-row">
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val hi">.571</div><div class="psr-label">AVG</div></div>
+        <div class="psr-item"><div class="psr-val hi">.625</div><div class="psr-label">OBP</div></div>
+        <div class="psr-item"><div class="psr-val hi">24</div><div class="psr-label">Hits</div></div>
+        <div class="psr-item"><div class="psr-val">12</div><div class="psr-label">RBI</div></div>
+        <div class="psr-item"><div class="psr-val">22</div><div class="psr-label">Runs</div></div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val hi">6</div><div class="psr-label">K's</div></div>
+        <div class="psr-item"><div class="psr-val hi">6</div><div class="psr-label">BB</div></div>
+        <div class="psr-item"><div class="psr-val">22</div><div class="psr-label">G</div></div>
+        <div class="psr-item"><div class="psr-val">42</div><div class="psr-label">AB</div></div>
+      </div>
+    </div>
+    <div class="player-notes">
+      <div class="note-block strength"><div class="note-title">✅ Strength — Contact</div><div class="note-text">Only 6 strikeouts in 42 AB (14% K rate). This is elite bat-to-ball skill at 12U. She doesn't miss. .571 AVG sustained over 22 games with 4 different lineup combinations around her. The contact is real.</div></div>
+      <div class="note-block strength"><div class="note-title">✅ Strength — On-Base</div><div class="note-text">.625 OBP means she reaches base in nearly 2 of every 3 PA. That's a player who creates scoring opportunities every time she steps in the box. Her team's run production is directly tied to her being on base.</div></div>
+      <div class="note-block verdict"><div class="note-title">📋 Verdict</div><div class="note-text">Top priority recruit in this pool. The contact rates alone (.571 AVG, 6 Ks in 42 AB) would stand out at any age. No pitching data — she's a pure hitter. Best bat prospect on the board.</div></div>
+      <div class="note-block concern"><div class="note-title">⚠ Watch For</div><div class="note-text">Small sample at 22 games. No pitching data limits two-way value. However, for a pure bat recruit this profile is outstanding. Confirm the numbers hold across a tournament setting.</div></div>
+    </div>
+  </div>
+
+  <!-- CLAIRE KASSI -->
+  <div class="player-report">
+    <div class="player-header-bar" style="background:var(--grade-a)"></div>
+    <div class="player-header">
+      <div class="grade-badge" style="color:var(--grade-a)">A</div>
+      <div class="player-info">
+        <div class="player-team">Pittsburgh Power 11U — Wall</div>
+        <div class="player-name">Claire Kassi</div>
+        <span class="player-role role-tw">Two-Way Player</span>
+      </div>
+    </div>
+    <div class="player-stat-row">
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val hi">.414</div><div class="psr-label">AVG</div></div>
+        <div class="psr-item"><div class="psr-val hi">.532</div><div class="psr-label">OBP</div></div>
+        <div class="psr-item"><div class="psr-val">41</div><div class="psr-label">Hits</div></div>
+        <div class="psr-item"><div class="psr-val hi">32</div><div class="psr-label">RBI</div></div>
+        <div class="psr-item"><div class="psr-val">19</div><div class="psr-label">Runs</div></div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val hi">4.69</div><div class="psr-label">ERA</div></div>
+        <div class="psr-item"><div class="psr-val hi">1.81</div><div class="psr-label">WHIP</div></div>
+        <div class="psr-item"><div class="psr-val hi">188</div><div class="psr-label">SO</div></div>
+        <div class="psr-item"><div class="psr-val">97.0</div><div class="psr-label">IP</div></div>
+        <div class="psr-item"><div class="psr-val warn">74</div><div class="psr-label">BB</div></div>
+      </div>
+    </div>
+    <div class="player-notes">
+      <div class="note-block strength"><div class="note-title">✅ Strength — Elite K Volume</div><div class="note-text">188 strikeouts in 97 innings (1.94 K/IP) over 28 pitching appearances is exceptional. She misses bats at an elite rate at 11U. With 57 games of data this isn't a fluke — she genuinely has the stuff to punch out hitters.</div></div>
+      <div class="note-block strength"><div class="note-title">✅ Strength — Durable Two-Way</div><div class="note-text">.414 AVG, .532 OBP, 32 RBI batting while also logging 97 innings pitching in the same season. Handles both roles at a high level — that roster flexibility is extremely valuable at the college level.</div></div>
+      <div class="note-block concern"><div class="note-title">⚠ Concern — Walk Rate</div><div class="note-text">74 BB in 97 IP (0.76 per inning) is the one issue. The ERA (4.69) reflects unearned baserunners more than hit contact. If command develops to match the K rate she becomes an elite pitching prospect. This is the key development area to evaluate in person.</div></div>
+      <div class="note-block verdict"><div class="note-title">📋 Verdict</div><div class="note-text">Top two-way recruit in this pool. 188 Ks at 11U in 97 innings with a .414 AVG is a profile that stands out at any level. The walk rate is the one flag — watch her in a live setting to assess command trajectory. Pursue immediately.</div></div>
+    </div>
+  </div>
+
+  <!-- ALLISON LANDI -->
+  <div class="player-report">
+    <div class="player-header-bar" style="background:var(--grade-a)"></div>
+    <div class="player-header">
+      <div class="grade-badge" style="color:var(--grade-a)">A-</div>
+      <div class="player-info">
+        <div class="player-team">PA Lady Knights 2026 / LK Spin</div>
+        <div class="player-name">Allison Landi</div>
+        <span class="player-role role-tw">Two-Way · Best Control</span>
+      </div>
+    </div>
+    <div class="player-stat-row">
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val">.273</div><div class="psr-label">AVG</div></div>
+        <div class="psr-item"><div class="psr-val">.385</div><div class="psr-label">OBP</div></div>
+        <div class="psr-item"><div class="psr-val">9</div><div class="psr-label">Hits</div></div>
+        <div class="psr-item"><div class="psr-val">6</div><div class="psr-label">RBI</div></div>
+        <div class="psr-item"><div class="psr-val">8</div><div class="psr-label">Runs</div></div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val hi">3.23</div><div class="psr-label">ERA</div></div>
+        <div class="psr-item"><div class="psr-val hi">1.46</div><div class="psr-label">WHIP</div></div>
+        <div class="psr-item"><div class="psr-val hi">33</div><div class="psr-label">SO</div></div>
+        <div class="psr-item"><div class="psr-val">26.0</div><div class="psr-label">IP</div></div>
+        <div class="psr-item"><div class="psr-val hi">19</div><div class="psr-label">BB</div></div>
+        <div class="psr-item"><div class="psr-val warn">19</div><div class="psr-label">K bat</div></div>
+      </div>
+    </div>
+    <div class="player-notes">
+      <div class="note-block strength"><div class="note-title">✅ Strength — Best ERA in Pool</div><div class="note-text">3.23 ERA across 26 innings is the best ERA of any two-way recruit in this group. Only 19 BB in 26 IP is excellent control — she throws strikes, challenges hitters, and gets outs. This is the pitching profile coaches want.</div></div>
+      <div class="note-block strength"><div class="note-title">✅ Strength — Command Projection</div><div class="note-text">The combination of 3.23 ERA + 1.46 WHIP + 19 BB/26 IP shows command that's ahead of most 2014-born pitchers. K/IP is 1.27 — not elite volume but effective. She gets hitters out without relying on walks.</div></div>
+      <div class="note-block concern"><div class="note-title">⚠ Concern — Bat is Below Average</div><div class="note-text">.273 AVG and 19 Ks batting in 33 AB shows she's significantly weaker at the plate than at the circle. In a two-way context she'd be primarily a pitcher. Batting needs development if two-way value is expected.</div></div>
+      <div class="note-block verdict"><div class="note-title">📋 Verdict</div><div class="note-text">Best pure pitching prospect in this pool. If Coach Blue is looking for a controlled, command-based arm who generates groundouts and limits free passes, Allison Landi is the recruit. Smaller sample (26 IP) — needs in-person evaluation to confirm. High priority.</div></div>
+    </div>
+  </div>
+
+  <div class="section-label">Grade B Prospects</div>
+  <div class="section-title">Strong Interest</div>
+
+  <!-- BELLA HIXENBAUGH -->
+  <div class="player-report">
+    <div class="player-header-bar" style="background:var(--grade-b)"></div>
+    <div class="player-header">
+      <div class="grade-badge" style="color:var(--grade-b)">B+</div>
+      <div class="player-info">
+        <div class="player-team">Post 3 12U — Hacker</div>
+        <div class="player-name">Bella Hixenbaugh</div>
+        <span class="player-role role-tw">Two-Way Player · Workhorse</span>
+      </div>
+    </div>
+    <div class="player-stat-row">
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val hi">.507</div><div class="psr-label">AVG</div></div>
+        <div class="psr-item"><div class="psr-val hi">.541</div><div class="psr-label">OBP</div></div>
+        <div class="psr-item"><div class="psr-val hi">35</div><div class="psr-label">Hits</div></div>
+        <div class="psr-item"><div class="psr-val">13</div><div class="psr-label">RBI</div></div>
+        <div class="psr-item"><div class="psr-val">31</div><div class="psr-label">Runs</div></div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val warn">5.79</div><div class="psr-label">ERA</div></div>
+        <div class="psr-item"><div class="psr-val">1.73</div><div class="psr-label">WHIP</div></div>
+        <div class="psr-item"><div class="psr-val hi">77</div><div class="psr-label">SO</div></div>
+        <div class="psr-item"><div class="psr-val">65.1</div><div class="psr-label">IP</div></div>
+        <div class="psr-item"><div class="psr-val hi">17</div><div class="psr-label">BB</div></div>
+      </div>
+    </div>
+    <div class="player-notes">
+      <div class="note-block strength"><div class="note-title">✅ Strength — Durable & Productive</div><div class="note-text">.507 AVG batting AND 65 innings pitched — a true workhorse. The low walk rate (17 BB in 65 IP) shows excellent control. She pitches strikes and lets the defense work. Gave up hits (96 H) but limited walks.</div></div>
+      <div class="note-block concern"><div class="note-title">⚠ Concern — ERA & Hits Allowed</div><div class="note-text">5.79 ERA with 96 hits allowed in 65 innings is the red flag. She's hittable — opponents make a lot of contact against her. The low BB rate is positive but if she can't miss bats consistently the ERA will remain elevated. K rate (1.18 K/IP) is solid but not elite.</div></div>
+      <div class="note-block verdict"><div class="note-title">📋 Verdict</div><div class="note-text">Strong bat recruit at .507 AVG with elite plate discipline. Pitching value is limited by hit rate — she's a contact pitcher who relies on defense. Highest value as a bat who can eat innings in a pinch. B+ prospect worth a visit.</div></div>
+      <div class="note-block strength"><div class="note-title">✅ Plate Discipline</div><div class="note-text">14 Ks in 69 AB (20% K rate) is very good contact at 12U. She puts the ball in play consistently. Combined with the .507 AVG this is a hitter who can be relied on in high-leverage at-bats.</div></div>
+    </div>
+  </div>
+
+  <!-- AMELIA DEWEY -->
+  <div class="player-report">
+    <div class="player-header-bar" style="background:var(--grade-b)"></div>
+    <div class="player-header">
+      <div class="grade-badge" style="color:var(--grade-b)">B</div>
+      <div class="player-info">
+        <div class="player-team">Team All American Blue 12U</div>
+        <div class="player-name">Amelia Dewey</div>
+        <span class="player-role role-bat">Hitter · Small Sample</span>
+      </div>
+    </div>
+    <div class="player-stat-row">
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val hi">.464</div><div class="psr-label">AVG</div></div>
+        <div class="psr-item"><div class="psr-val hi">.500</div><div class="psr-label">OBP</div></div>
+        <div class="psr-item"><div class="psr-val hi">13</div><div class="psr-label">Hits</div></div>
+        <div class="psr-item"><div class="psr-val hi">15</div><div class="psr-label">RBI</div></div>
+        <div class="psr-item"><div class="psr-val">7</div><div class="psr-label">Runs</div></div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val">7</div><div class="psr-label">K's</div></div>
+        <div class="psr-item"><div class="psr-val">2</div><div class="psr-label">BB</div></div>
+        <div class="psr-item"><div class="psr-val warn">15</div><div class="psr-label">G</div></div>
+        <div class="psr-item"><div class="psr-val">28</div><div class="psr-label">AB</div></div>
+      </div>
+    </div>
+    <div class="player-notes">
+      <div class="note-block strength"><div class="note-title">✅ Strength — RBI Production</div><div class="note-text">15 RBI in just 15 games — one per game. That's elite production in any sample. She's hitting in run situations and delivering. .464 AVG with 7 Ks in 28 AB is excellent contact for 12U.</div></div>
+      <div class="note-block concern"><div class="note-title">⚠ Concern — Very Small Sample</div><div class="note-text">Only 15 games / 28 AB makes statistical reliability questionable. These numbers could be a hot streak or represent her true level. Needs significantly more at-bats to confirm. Also note she's on two roster files (AA Blue & SC Williams) — clarify current team affiliation.</div></div>
+      <div class="note-block verdict"><div class="note-title">📋 Verdict</div><div class="note-text">Intriguing bat prospect with impressive production rate. The RBI rate (1 per game) and .464 AVG are standout numbers but 15 games isn't enough to commit high recruiting capital. Medium-high priority — needs follow-up evaluation at a tournament.</div></div>
+      <div class="note-block concern"><div class="note-title">⚠ Note — Roster Discrepancy</div><div class="note-text">Amelia Dewey appears on both the AA Blue file and the Steel City Williams file. The SC Williams entry shows .300 AVG in 18 games (smaller sample). Clarify which program she's primarily with before evaluating further.</div></div>
+    </div>
+  </div>
+
+  <!-- AUBREY MAJORS -->
+  <div class="player-report">
+    <div class="player-header-bar" style="background:var(--grade-b)"></div>
+    <div class="player-header">
+      <div class="grade-badge" style="color:var(--grade-b)">B</div>
+      <div class="player-info">
+        <div class="player-team">Ohio Blast — Majors 12U</div>
+        <div class="player-name">Aubrey Majors</div>
+        <span class="player-role role-tw">Two-Way Player</span>
+      </div>
+    </div>
+    <div class="player-stat-row">
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val hi">.479</div><div class="psr-label">AVG</div></div>
+        <div class="psr-item"><div class="psr-val hi">.565</div><div class="psr-label">OBP</div></div>
+        <div class="psr-item"><div class="psr-val hi">34</div><div class="psr-label">Hits</div></div>
+        <div class="psr-item"><div class="psr-val">12</div><div class="psr-label">RBI</div></div>
+        <div class="psr-item"><div class="psr-val">22</div><div class="psr-label">Runs</div></div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val lo">8.70</div><div class="psr-label">ERA</div></div>
+        <div class="psr-item"><div class="psr-val warn">3.07</div><div class="psr-label">WHIP</div></div>
+        <div class="psr-item"><div class="psr-val">51</div><div class="psr-label">SO</div></div>
+        <div class="psr-item"><div class="psr-val">56.1</div><div class="psr-label">IP</div></div>
+        <div class="psr-item"><div class="psr-val warn">44</div><div class="psr-label">BB</div></div>
+      </div>
+    </div>
+    <div class="player-notes">
+      <div class="note-block strength"><div class="note-title">✅ Strength — Elite Bat</div><div class="note-text">.479 AVG and .565 OBP over 39 games (71 AB) is a meaningful full-season sample. 14 walks shows good plate discipline. She's one of the best pure hitters in this recruiting pool. The bat alone warrants interest.</div></div>
+      <div class="note-block concern"><div class="note-title">⚠ Concern — Pitching ERA</div><div class="note-text">8.70 ERA and 3.07 WHIP in 56 innings is difficult to overlook. 44 BB and 129 hits allowed signal significant control and command issues on the mound. The K total (51 in 56 IP) shows she can miss some bats but not consistently enough to compensate.</div></div>
+      <div class="note-block verdict"><div class="note-title">📋 Verdict</div><div class="note-text">Recruit primarily as a bat with pitching as upside. The .479 AVG is legitimate and makes her a B prospect. The pitching needs significant development before it becomes an asset. If Coach Blue needs a strong hitter who can grow into a two-way role, she's worth a look.</div></div>
+      <div class="note-block strength"><div class="note-title">✅ Note — Context</div><div class="note-text">The team name is "Majors" which may be the family name — she may be playing on a family-organized team where she's the primary pitcher by necessity rather than by ability. Worth confirming her primary position at a neutral tryout setting.</div></div>
+    </div>
+  </div>
+
+  <div class="section-label">Grade C Prospects</div>
+  <div class="section-title">Monitor & Develop</div>
+
+  <!-- ARIANNA CANNIZZARO -->
+  <div class="player-report">
+    <div class="player-header-bar" style="background:var(--grade-c)"></div>
+    <div class="player-header">
+      <div class="grade-badge" style="color:var(--grade-c)">C+</div>
+      <div class="player-info">
+        <div class="player-team">Steel City Athletics Williams 11U</div>
+        <div class="player-name">Arianna Cannizzaro</div>
+        <span class="player-role role-tw">Two-Way · Developing</span>
+      </div>
+    </div>
+    <div class="player-stat-row">
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val">.350</div><div class="psr-label">AVG</div></div>
+        <div class="psr-item"><div class="psr-val hi">.509</div><div class="psr-label">OBP</div></div>
+        <div class="psr-item"><div class="psr-val">28</div><div class="psr-label">Hits</div></div>
+        <div class="psr-item"><div class="psr-val">12</div><div class="psr-label">RBI</div></div>
+        <div class="psr-item"><div class="psr-val">32</div><div class="psr-label">Runs</div></div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val lo">9.14</div><div class="psr-label">ERA</div></div>
+        <div class="psr-item"><div class="psr-val warn">2.68</div><div class="psr-label">WHIP</div></div>
+        <div class="psr-item"><div class="psr-val hi">66</div><div class="psr-label">SO</div></div>
+        <div class="psr-item"><div class="psr-val">43.2</div><div class="psr-label">IP</div></div>
+        <div class="psr-item"><div class="psr-val lo">47</div><div class="psr-label">BB</div></div>
+      </div>
+    </div>
+    <div class="player-notes">
+      <div class="note-block strength"><div class="note-title">✅ Strength — OBP & Walks Drawn</div><div class="note-text">.509 OBP from 26 BB in 80 AB shows elite plate discipline at the plate. She has a good eye, takes walks, and scores runs (32 runs in 45 games). The offensive approach is advanced for 11U.</div></div>
+      <div class="note-block concern"><div class="note-title">⚠ Concern — Pitching Control</div><div class="note-text">9.14 ERA and 47 BB in 43 innings is a significant control problem. She averages more than one walk per inning. The 66 Ks show raw arm talent — she can miss bats — but until the command develops she's a liability on the mound.</div></div>
+      <div class="note-block verdict"><div class="note-title">📋 Verdict</div><div class="note-text">The bat approach and K rate on the mound show real upside, but the 9.14 ERA makes her a developmental arm only. At 11U there's time for the command to develop. Monitor her progression into 12U — if the walks come down even to 30 BB per 43 IP the ERA will drop dramatically.</div></div>
+      <div class="note-block concern"><div class="note-title">⚠ Note — Team Context</div><div class="note-text">Steel City Williams 11U has a staff ERA issue across multiple pitchers (Giovanna Q: 9.33, Cora K: 9.04). This may reflect coaching or team defense rather than individual arm quality. See her pitch against a different team before finalizing assessment.</div></div>
+    </div>
+  </div>
+
+  <!-- KENDALL SCHLAFHAUSER -->
+  <div class="player-report">
+    <div class="player-header-bar" style="background:var(--grade-c)"></div>
+    <div class="player-header">
+      <div class="grade-badge" style="color:var(--grade-c)">C</div>
+      <div class="player-info">
+        <div class="player-team">Pittsburgh Power 11U — Wall</div>
+        <div class="player-name">Kendall Schlafhauser</div>
+        <span class="player-role role-tw">Two-Way · Bat First</span>
+      </div>
+    </div>
+    <div class="player-stat-row">
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val">.338</div><div class="psr-label">AVG</div></div>
+        <div class="psr-item"><div class="psr-val hi">.505</div><div class="psr-label">OBP</div></div>
+        <div class="psr-item"><div class="psr-val">25</div><div class="psr-label">Hits</div></div>
+        <div class="psr-item"><div class="psr-val">19</div><div class="psr-label">RBI</div></div>
+        <div class="psr-item"><div class="psr-val">20</div><div class="psr-label">Runs</div></div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val lo">17.40</div><div class="psr-label">ERA</div></div>
+        <div class="psr-item"><div class="psr-val lo">4.46</div><div class="psr-label">WHIP</div></div>
+        <div class="psr-item"><div class="psr-val">28</div><div class="psr-label">SO</div></div>
+        <div class="psr-item"><div class="psr-val">23.1</div><div class="psr-label">IP</div></div>
+        <div class="psr-item"><div class="psr-val lo">50</div><div class="psr-label">BB</div></div>
+      </div>
+    </div>
+    <div class="player-notes">
+      <div class="note-block strength"><div class="note-title">✅ Strength — OBP Batting</div><div class="note-text">.505 OBP from 25 BB in 74 AB. She draws walks at an elite rate and gets on base. 19 RBI in 53 games shows she's producing runs from the lineup. The batting plate discipline is legitimate.</div></div>
+      <div class="note-block concern"><div class="note-title">⚠ Concern — Pitching Not Viable</div><div class="note-text">17.40 ERA and 50 BB in 23 innings — pitching is not currently a viable asset. She's walking more than two batters per inning. This is a purely developmental arm at this stage. Recruit as a bat only.</div></div>
+      <div class="note-block verdict"><div class="note-title">📋 Verdict</div><div class="note-text">Bat-only recruit at this stage. The .338 AVG and .505 OBP are respectable but not elite enough to rate higher than C without two-way value. Worth monitoring if her pitching develops significantly or if the .338 bat ticks up. Not a priority for immediate pursuit.</div></div>
+      <div class="note-block concern"><div class="note-title">⚠ Note — Teammate Context</div><div class="note-text">Her teammate Claire Kassi (Grade A) is significantly more developed both at the plate and on the mound. If Power Wall comes to a showcase, focus recruiting energy on Kassi first and evaluate Kendall secondarily.</div></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+
+  <!-- GRADE C+ ADDITION -->
+  <div class="section-label" style="margin-top:40px">Addition to Dossier</div>
+  <div class="section-title">Added on Request</div>
+
+  <!-- BRYNNE BERDINE -->
+  <div class="player-report">
+    <div class="player-header-bar" style="background:var(--grade-c)"></div>
+    <div class="player-header">
+      <div class="grade-badge" style="color:var(--grade-c)">C+</div>
+      <div class="player-info">
+        <div class="player-team">PA Renegades — Anselmino 11U</div>
+        <div class="player-name">Brynne Berdine</div>
+        <span class="player-role role-bat">Position Player · Plate Discipline</span>
+      </div>
+    </div>
+    <div class="player-stat-row">
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val warn">.278</div><div class="psr-label">AVG</div></div>
+        <div class="psr-item"><div class="psr-val">.400</div><div class="psr-label">OBP</div></div>
+        <div class="psr-item"><div class="psr-val">15</div><div class="psr-label">Hits</div></div>
+        <div class="psr-item"><div class="psr-val">10</div><div class="psr-label">RBI</div></div>
+        <div class="psr-item"><div class="psr-val">11</div><div class="psr-label">Runs</div></div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val hi">11</div><div class="psr-label">BB</div></div>
+        <div class="psr-item"><div class="psr-val">13</div><div class="psr-label">K's</div></div>
+        <div class="psr-item"><div class="psr-val">30</div><div class="psr-label">G</div></div>
+        <div class="psr-item"><div class="psr-val">54</div><div class="psr-label">AB</div></div>
+        <div class="psr-item"><div class="psr-val">—</div><div class="psr-label">ERA</div></div>
+      </div>
+    </div>
+    <div class="player-notes">
+      <div class="note-block strength"><div class="note-title">✅ Strength — Plate Discipline</div><div class="note-text">11 walks in 54 AB (one walk per 4.9 PA) is solid at 11U. The .400 OBP well outpaces the .278 AVG because of those walks — she understands the zone and doesn't chase. That discipline is a coachable foundation that can carry a hitter.</div></div>
+      <div class="note-block concern"><div class="note-title">⚠ Concern — Batting Average</div><div class="note-text">.278 AVG is below the threshold of every other recruit currently on the board. 13 Ks in 54 AB (24% K rate) is manageable but when paired with the low hit total it limits her run production ceiling. Needs meaningful AVG improvement to be a high-priority target.</div></div>
+      <div class="note-block concern"><div class="note-title">⚠ Concern — No Pitching Value</div><div class="note-text">Position player only — no pitching data. All current Grade A and B prospects contribute on the mound. Brynne adds no two-way value, which limits roster flexibility at the college level.</div></div>
+      <div class="note-block verdict"><div class="note-title">📋 Verdict — C+ · Monitor</div><div class="note-text">The plate discipline (.400 OBP, 11 BB) is genuinely advanced for 11U and suggests good baseball IQ. But .278 AVG and no pitching puts her behind the current targets. Recommend a live tournament evaluation before committing recruiting resources. If the AVG ticks up toward .340+ in her next season, she becomes a B-range prospect worth pursuing.</div></div>
+    </div>
+  </div>
+
+
+  <!-- AVERY GOODMAN - A+ ADDITION -->
+  <div class="section-label" style="margin-top:40px">⭐ Priority Addition</div>
+  <div class="section-title">Top Prospect — Immediate Pursuit</div>
+
+  <div class="player-report">
+    <div class="player-header-bar" style="background:var(--grade-a)"></div>
+    <div class="player-header">
+      <div class="grade-badge" style="color:var(--grade-a)">A+</div>
+      <div class="player-info">
+        <div class="player-team">All American Red 10U — 2025 Fall</div>
+        <div class="player-name">Avery Goodman</div>
+        <span class="player-role role-tw">Two-Way · Elite Prospect · Top Priority</span>
+      </div>
+    </div>
+    <div class="player-stat-row">
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val hi">.500</div><div class="psr-label">AVG</div></div>
+        <div class="psr-item"><div class="psr-val hi">.627</div><div class="psr-label">OBP</div></div>
+        <div class="psr-item"><div class="psr-val hi">44</div><div class="psr-label">Hits</div></div>
+        <div class="psr-item"><div class="psr-val hi">37</div><div class="psr-label">RBI</div></div>
+        <div class="psr-item"><div class="psr-val hi">40</div><div class="psr-label">Runs</div></div>
+        <div class="psr-item"><div class="psr-val hi">30</div><div class="psr-label">BB</div></div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val hi">1.22</div><div class="psr-label">ERA</div></div>
+        <div class="psr-item"><div class="psr-val hi">0.78</div><div class="psr-label">WHIP</div></div>
+        <div class="psr-item"><div class="psr-val hi">188</div><div class="psr-label">SO</div></div>
+        <div class="psr-item"><div class="psr-val">86.1</div><div class="psr-label">IP</div></div>
+        <div class="psr-item"><div class="psr-val hi">12</div><div class="psr-label">K bat</div></div>
+        <div class="psr-item"><div class="psr-val hi">39</div><div class="psr-label">BB pit</div></div>
+      </div>
+    </div>
+    <div class="player-notes">
+      <div class="note-block strength"><div class="note-title">✅ Pitching — Elite by Any Standard</div><div class="note-text">0.78 WHIP and 1.22 ERA in 86 innings. That WHIP is sub-0.80 — allowing fewer than one baserunner per inning over a full 53-game season sample. 188 strikeouts at a 2.18 K/IP rate. These are numbers that don't just stand out at 10U — they stand out at any age group in this entire scouting pool. The best pitching profile seen this season.</div></div>
+      <div class="note-block strength"><div class="note-title">✅ Batting — Elite Contact + Discipline</div><div class="note-text">.500 AVG with only 12 strikeouts in 88 AB (13.6% K rate) over 53 games. .627 OBP reflects 30 walks on top of the hits. 37 RBI and 40 runs in a 53-game sample means she produces and scores at an extraordinary rate. This is a genuine two-way elite with no weakness at the plate.</div></div>
+      <div class="note-block strength"><div class="note-title">✅ Durability & Volume</div><div class="note-text">86 innings pitched AND 88 AB across 53 games — she plays almost every game and contributes on both sides every time. The quality of the numbers doesn't dip despite the volume. That workload durability at 10U is a strong indicator of long-term development capacity.</div></div>
+      <div class="note-block verdict"><div class="note-title">📋 Verdict — A+ · Contact Immediately</div><div class="note-text">Avery Goodman is the top prospect in the entire Eric Blue dossier. 0.78 WHIP over 86 innings + .500 AVG + 188 Ks is a profile that doesn't come around often. She is currently playing 10U but these numbers project as elite at 11U and 12U. Make contact with the All American Red program immediately. She should be the #1 recruiting priority on the board.</div></div>
+    </div>
+  </div>
+
+
+  <!-- KYNSLEE KIMBALL -->
+  <div class="section-label" style="margin-top:40px">Grade D — Not Ready</div>
+  <div class="section-title">Developmental Watch</div>
+
+  <div class="player-report">
+    <div class="player-header-bar" style="background:var(--grade-d)"></div>
+    <div class="player-header">
+      <div class="grade-badge" style="color:var(--grade-d)">D</div>
+      <div class="player-info">
+        <div class="player-team">PA Renegades — Anselmino 11U</div>
+        <div class="player-name">Kynslee Kimball</div>
+        <span class="player-role role-bat">Position Player · Developmental</span>
+      </div>
+    </div>
+    <div class="player-stat-row">
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val lo">.242</div><div class="psr-label">AVG</div></div>
+        <div class="psr-item"><div class="psr-val warn">.367</div><div class="psr-label">OBP</div></div>
+        <div class="psr-item"><div class="psr-val">16</div><div class="psr-label">Hits</div></div>
+        <div class="psr-item"><div class="psr-val">14</div><div class="psr-label">RBI</div></div>
+        <div class="psr-item"><div class="psr-val">13</div><div class="psr-label">Runs</div></div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val hi">13</div><div class="psr-label">BB</div></div>
+        <div class="psr-item"><div class="psr-val warn">30</div><div class="psr-label">K's</div></div>
+        <div class="psr-item"><div class="psr-val">37</div><div class="psr-label">G</div></div>
+        <div class="psr-item"><div class="psr-val">66</div><div class="psr-label">AB</div></div>
+        <div class="psr-item"><div class="psr-val">—</div><div class="psr-label">ERA</div></div>
+      </div>
+    </div>
+    <div class="player-notes">
+      <div class="note-block concern"><div class="note-title">⚠ Concern — Batting Average</div><div class="note-text">.242 AVG in 37 games is below the threshold of every other recruit on the board. 30 strikeouts in 66 AB (45% K rate) is the primary driver — she swings and misses too frequently to sustain a higher average at this stage of development.</div></div>
+      <div class="note-block concern"><div class="note-title">⚠ Concern — Strikeout Rate</div><div class="note-text">30 Ks in 66 AB at 11U is a significant contact issue. Compared to teammate Brynne Berdine (13 Ks in 54 AB, already graded C+), Kynslee struggles more against competitive pitching. The bat path or timing needs meaningful work before she becomes a viable recruit.</div></div>
+      <div class="note-block strength"><div class="note-title">✅ Positive — Walks</div><div class="note-text">13 BB in 66 AB shows some zone awareness — she's not chasing everything. The .367 OBP outpaces her AVG meaningfully because of those walks. The approach foundation is there, similar to Brynne Berdine, but the contact rate needs more development.</div></div>
+      <div class="note-block red"><div class="note-title">📋 Verdict — D · Not a Current Priority</div><div class="note-text">.242 AVG and 45% K rate puts her behind all current recruits on the board including teammate Brynne Berdine (C+). No pitching data limits two-way value. Not a current recruiting priority. Monitor into 12U — if the K rate drops significantly and AVG climbs toward .300+ she becomes worth a second look.</div></div>
+    </div>
+  </div>
+
+
+  <!-- JOCELYN W -->
+  <div class="section-label" style="margin-top:40px">Grade A — Elite Bat Addition</div>
+  <div class="section-title">Pure Contact Hitter</div>
+
+  <div class="player-report">
+    <div class="player-header-bar" style="background:var(--grade-a)"></div>
+    <div class="player-header">
+      <div class="grade-badge" style="color:var(--grade-a)">A</div>
+      <div class="player-info">
+        <div class="player-team">Marple 12U — Canonballerz</div>
+        <div class="player-name">Jocelyn W</div>
+        <span class="player-role role-bat">Pure Hitter · Elite Contact</span>
+      </div>
+    </div>
+    <div class="player-stat-row">
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val hi">.548</div><div class="psr-label">AVG</div></div>
+        <div class="psr-item"><div class="psr-val hi">.659</div><div class="psr-label">OBP</div></div>
+        <div class="psr-item"><div class="psr-val hi">17</div><div class="psr-label">Hits</div></div>
+        <div class="psr-item"><div class="psr-val">11</div><div class="psr-label">RBI</div></div>
+        <div class="psr-item"><div class="psr-val">15</div><div class="psr-label">Runs</div></div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val hi">10</div><div class="psr-label">BB</div></div>
+        <div class="psr-item"><div class="psr-val hi">4</div><div class="psr-label">K's</div></div>
+        <div class="psr-item"><div class="psr-val">13</div><div class="psr-label">G</div></div>
+        <div class="psr-item"><div class="psr-val">31</div><div class="psr-label">AB</div></div>
+        <div class="psr-item"><div class="psr-val">—</div><div class="psr-label">ERA</div></div>
+      </div>
+    </div>
+    <div class="player-notes">
+      <div class="note-block strength"><div class="note-title">✅ Strength — Extraordinary Contact</div><div class="note-text">Only 4 strikeouts in 31 AB (12.9% K rate) is one of the best contact rates in the entire recruiting pool. She almost never misses the ball. .548 AVG sustained across 13 games on a rec-league team confirms she can hit regardless of competition level.</div></div>
+      <div class="note-block strength"><div class="note-title">✅ Strength — Elite On-Base</div><div class="note-text">.659 OBP from a combination of 17 hits AND 10 walks in 31 AB. She reaches base via multiple methods — she can hit for average and take walks. That dual on-base ability is extremely valuable and uncommon at 12U.</div></div>
+      <div class="note-block concern"><div class="note-title">⚠ Concern — Small Sample / Rec League</div><div class="note-text">Only 13 games on a recreational league team (Canonballerz/Marple). The competition level is lower than travel ball, which inflates numbers. Needs evaluation against travel-level pitching before full confidence in the grade. The contact rate (4 Ks) is meaningful regardless of level — that skill translates.</div></div>
+      <div class="note-block verdict"><div class="note-title">📋 Verdict — A · High Priority</div><div class="note-text">.548 AVG with 4 Ks and .659 OBP is a profile that demands attention even with the rec-league caveat. The contact rate alone (.129 K rate) puts her in the same tier as Allie Brawdy (Tigers, Grade A). No pitching data — pure bat recruit. Strongly recommend a live evaluation at a travel tournament to confirm the numbers hold against competitive pitching.</div></div>
+    </div>
+  </div>
+
+
+  <!-- SOPHIA ZURCHER -->
+  <div class="player-report">
+    <div class="player-header-bar" style="background:var(--grade-d)"></div>
+    <div class="player-header">
+      <div class="grade-badge" style="color:var(--grade-d)">D</div>
+      <div class="player-info">
+        <div class="player-team">North Stars — Kelly 11U</div>
+        <div class="player-name">Sophia Zurcher</div>
+        <span class="player-role role-bat">Position Player · Developmental</span>
+      </div>
+    </div>
+    <div class="player-stat-row">
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val lo">.225</div><div class="psr-label">AVG</div></div>
+        <div class="psr-item"><div class="psr-val warn">.380</div><div class="psr-label">OBP</div></div>
+        <div class="psr-item"><div class="psr-val">18</div><div class="psr-label">Hits</div></div>
+        <div class="psr-item"><div class="psr-val">14</div><div class="psr-label">RBI</div></div>
+        <div class="psr-item"><div class="psr-val">27</div><div class="psr-label">Runs</div></div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val hi">20</div><div class="psr-label">BB</div></div>
+        <div class="psr-item"><div class="psr-val lo">31</div><div class="psr-label">K's</div></div>
+        <div class="psr-item"><div class="psr-val">54</div><div class="psr-label">G</div></div>
+        <div class="psr-item"><div class="psr-val">80</div><div class="psr-label">AB</div></div>
+        <div class="psr-item"><div class="psr-val">—</div><div class="psr-label">ERA</div></div>
+      </div>
+    </div>
+    <div class="player-notes">
+      <div class="note-block concern"><div class="note-title">⚠ Concern — Batting Average & K Rate</div><div class="note-text">.225 AVG over 54 games (80 AB) is a full-season sample — this isn't a small-sample anomaly. 31 strikeouts in 80 AB (38.8% K rate) is the primary driver. She struggles to make contact against 11U pitching consistently. This is the lowest AVG of any position player added to this dossier.</div></div>
+      <div class="note-block concern"><div class="note-title">⚠ Context — Strong Team Around Her</div><div class="note-text">The North Stars roster features several elite hitters: Adalynn F (.533), Bella B (.524), Kaliah B (.443), Addy I (.421). Sophia sits well below the team's average production level. In a lineup with that much talent, she is one of the weaker contributors.</div></div>
+      <div class="note-block strength"><div class="note-title">✅ Positive — Walk Rate</div><div class="note-text">20 walks in 54 games (one every 2.7 games) shows some plate discipline and zone awareness. The .380 OBP significantly outpaces the .225 AVG because of those walks — she understands the strike zone even when she can't make contact. That foundation is developable.</div></div>
+      <div class="note-block red"><div class="note-title">📋 Verdict — D · Not a Current Priority</div><div class="note-text">.225 AVG and 38.8% K rate over a 54-game full-season sample puts her at the bottom of the dossier alongside Kynslee Kimball. No pitching data removes any two-way upside. Not recommended for active recruiting at this stage. Monitor into 12U — the walk rate suggests she has the IQ to develop if she can improve bat-to-ball contact significantly.</div></div>
+    </div>
+  </div>
+
+
+  <!-- MAKYLEE C -->
+  <div class="player-report">
+    <div class="player-header-bar" style="background:var(--grade-c)"></div>
+    <div class="player-header">
+      <div class="grade-badge" style="color:var(--grade-c)">C</div>
+      <div class="player-info">
+        <div class="player-team">Pittsburgh Tigers 12U — Suckfiel</div>
+        <div class="player-name">Makylee C</div>
+        <span class="player-role role-tw">Two-Way · Bat Primary</span>
+      </div>
+    </div>
+    <div class="player-stat-row">
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val">.353</div><div class="psr-label">AVG</div></div>
+        <div class="psr-item"><div class="psr-val">.436</div><div class="psr-label">OBP</div></div>
+        <div class="psr-item"><div class="psr-val hi">12</div><div class="psr-label">Hits</div></div>
+        <div class="psr-item"><div class="psr-val hi">17</div><div class="psr-label">RBI</div></div>
+        <div class="psr-item"><div class="psr-val">10</div><div class="psr-label">Runs</div></div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val lo">6.20</div><div class="psr-label">ERA</div></div>
+        <div class="psr-item"><div class="psr-val lo">2.41</div><div class="psr-label">WHIP</div></div>
+        <div class="psr-item"><div class="psr-val">15</div><div class="psr-label">SO pit</div></div>
+        <div class="psr-item"><div class="psr-val">20.1</div><div class="psr-label">IP</div></div>
+        <div class="psr-item"><div class="psr-val warn">14</div><div class="psr-label">BB pit</div></div>
+        <div class="psr-item"><div class="psr-val hi">9</div><div class="psr-label">K bat</div></div>
+      </div>
+    </div>
+    <div class="player-notes">
+      <div class="note-block strength"><div class="note-title">✅ Strength — RBI Production</div><div class="note-text">17 RBI in just 22 games is strong production at 12U — nearly one per game. She hits in run situations and delivers. .353 AVG with only 9 strikeouts in 34 AB (26% K rate) shows solid contact and bat-to-ball ability. Her value is clearly at the plate.</div></div>
+      <div class="note-block concern"><div class="note-title">⚠ Concern — Pitching Not Viable Yet</div><div class="note-text">6.20 ERA and 2.41 WHIP in 20 innings is difficult to project as a pitching asset. 14 BB in 20 innings (0.69 BB/IP) and 35 hits allowed shows both control and contact issues on the mound. She is a bat-first recruit with pitching as a long-term developmental project.</div></div>
+      <div class="note-block concern"><div class="note-title">⚠ Team Context</div><div class="note-text">She plays on one of the best hitting teams in the scouting pool — four teammates hit above .521 AVG. Her .353 AVG sits at the bottom of the Tigers lineup. That context matters: she benefits from a talented lineup around her that generates RBI opportunities. Evaluate her independently in a different setting.</div></div>
+      <div class="note-block verdict"><div class="note-title">📋 Verdict — C · Bat-Only Monitor</div><div class="note-text">The 17 RBI and .353 AVG are respectable, but she sits well below Tigers teammates Allie B (.571, Grade A) in the same lineup. Pitching needs significant development before it adds value. Recruit as a bat with upside if the ERA improves. Small 22-game sample — would benefit from more data before committing recruiting resources. Watch her next season.</div></div>
+    </div>
+  </div>
+
+
+  <!-- EMMA RIPPLE -->
+  <div class="player-report">
+    <div class="player-header-bar" style="background:var(--grade-b)"></div>
+    <div class="player-header">
+      <div class="grade-badge" style="color:var(--grade-b)">B</div>
+      <div class="player-info">
+        <div class="player-team">Pittsburgh Predators Smith 11U · Fall 2025 + Spring 2026</div>
+        <div class="player-name">Emma Ripple</div>
+        <span class="player-role role-bat">Position Player · Consistent Hitter · Two-Season Data</span>
+      </div>
+    </div>
+    <div class="player-stat-row">
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val hi">.400</div><div class="psr-label">Combined AVG</div></div>
+        <div class="psr-item"><div class="psr-val hi">.465</div><div class="psr-label">Combined OBP</div></div>
+        <div class="psr-item"><div class="psr-val hi">30</div><div class="psr-label">Hits</div></div>
+        <div class="psr-item"><div class="psr-val">16</div><div class="psr-label">RBI</div></div>
+        <div class="psr-item"><div class="psr-val">13</div><div class="psr-label">Runs</div></div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="psr-group">
+        <div class="psr-item"><div class="psr-val hi">9</div><div class="psr-label">BB</div></div>
+        <div class="psr-item"><div class="psr-val hi">16</div><div class="psr-label">K's</div></div>
+        <div class="psr-item"><div class="psr-val hi">39</div><div class="psr-label">G total</div></div>
+        <div class="psr-item"><div class="psr-val hi">75</div><div class="psr-label">AB total</div></div>
+        <div class="psr-item"><div class="psr-val warn">9.00</div><div class="psr-label">ERA (4.2 IP)</div></div>
+      </div>
+    </div>
+    <!-- Two-season breakdown sub-table -->
+    <div style="padding:0 28px 16px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div style="background:rgba(0,200,212,0.05);border:1px solid var(--border);border-radius:6px;padding:12px 14px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:8px">Fall 2025 — 26 G</div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <div><div style="font-family:'JetBrains Mono',monospace;font-size:18px;color:#60aaff;font-weight:500">.404</div><div style="font-size:10px;color:var(--muted);text-transform:uppercase">AVG</div></div>
+          <div><div style="font-family:'JetBrains Mono',monospace;font-size:18px;color:#60aaff;font-weight:500">.472</div><div style="font-size:10px;color:var(--muted);text-transform:uppercase">OBP</div></div>
+          <div><div style="font-family:'JetBrains Mono',monospace;font-size:18px;color:var(--white);font-weight:500">13</div><div style="font-size:10px;color:var(--muted);text-transform:uppercase">RBI</div></div>
+          <div><div style="font-family:'JetBrains Mono',monospace;font-size:18px;color:var(--green);font-weight:500">11</div><div style="font-size:10px;color:var(--muted);text-transform:uppercase">K's</div></div>
+        </div>
+      </div>
+      <div style="background:rgba(0,200,212,0.05);border:1px solid var(--border);border-radius:6px;padding:12px 14px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:8px">Spring 2026 — 13 G</div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <div><div style="font-family:'JetBrains Mono',monospace;font-size:18px;color:#60aaff;font-weight:500">.393</div><div style="font-size:10px;color:var(--muted);text-transform:uppercase">AVG</div></div>
+          <div><div style="font-family:'JetBrains Mono',monospace;font-size:18px;color:#60aaff;font-weight:500">.452</div><div style="font-size:10px;color:var(--muted);text-transform:uppercase">OBP</div></div>
+          <div><div style="font-family:'JetBrains Mono',monospace;font-size:18px;color:var(--white);font-weight:500">3</div><div style="font-size:10px;color:var(--muted);text-transform:uppercase">RBI</div></div>
+          <div><div style="font-family:'JetBrains Mono',monospace;font-size:18px;color:var(--green);font-weight:500">5</div><div style="font-size:10px;color:var(--muted);text-transform:uppercase">K's</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="player-notes">
+      <div class="note-block strength"><div class="note-title">✅ Strength — Multi-Season Consistency</div><div class="note-text">This is the key differentiator: .404 AVG in fall, .393 AVG in spring — she hits at .400 across both seasons. Most prospects show regression or variance between seasons. Emma's numbers are remarkably stable, which means the .400 AVG is her true level, not a hot streak. That consistency is rare and valuable.</div></div>
+      <div class="note-block strength"><div class="note-title">✅ Strength — Low K Rate</div><div class="note-text">16 strikeouts in 75 combined AB (21.3% K rate) is solid contact at 11U across two seasons. She doesn't swing and miss excessively. The contact rate holding steady in both fall and spring reinforces that it's a genuine skill, not sample variance.</div></div>
+      <div class="note-block concern"><div class="note-title">⚠ Concern — Moderate Sample Each Season</div><div class="note-text">26 games in fall and 13 in spring — neither season is a massive sample individually. Combined at 39 games it becomes more reliable. The spring RBI total (3) is notably lower than fall (13), likely reflecting fewer games rather than a production drop. More full-season data would increase confidence.</div></div>
+      <div class="note-block verdict"><div class="note-title">📋 Verdict — B · Consistent Bat, Pursue</div><div class="note-text">.400 AVG across two separate seasons is the most important data point in this profile. That kind of multi-season consistency is more valuable than a single high-AVG season. She's a reliable contact hitter who holds her numbers. No pitching value (4.2 IP sample is too small to mean anything). Recommend a live evaluation — she projects as a dependable bat who gets on base and makes contact consistently.</div></div>
+    </div>
+  </div>
+
+<div class="footer">
+  <span>CONFIDENTIAL RECRUITING REPORT · PREPARED FOR COACH ERIC BLUE · 8 PROSPECTS · 7 PROGRAMS</span>
+  <span>GC SCOUT CRAWLER · 2025–26 SEASON DATA · DO NOT DISTRIBUTE</span>
+</div>
+</body>
+</html>
+
