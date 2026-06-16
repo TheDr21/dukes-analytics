@@ -9,44 +9,48 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Inter',system-ui,sans-serif;background:#0B1E35;color:#F2EFE8;min-height:100vh;}
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:52px;border-bottom:1px solid rgba(255,255,255,0.08);position:sticky;top:0;background:#0B1E35;z-index:100;}
-.logo{font-size:14px;font-weight:600;color:#F2EFE8;text-decoration:none;}
-.logo span{color:#E8A020;}
+.logo{font-size:14px;font-weight:600;color:#F2EFE8;text-decoration:none;} .logo span{color:#E8A020;}
 .back{font-size:12px;color:#8A97A6;text-decoration:none;font-family:'DM Mono',monospace;}
 .back:hover{color:#E8A020;}
 .page{max-width:900px;margin:0 auto;padding:2rem;}
-h1{font-size:24px;font-weight:600;margin-bottom:.3rem;}
-h1 span{color:#E8A020;}
+h1{font-size:24px;font-weight:600;margin-bottom:.3rem;} h1 span{color:#E8A020;}
 .sub{font-size:13px;color:#8A97A6;margin-bottom:2rem;}
 .sl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#8A97A6;margin:1.75rem 0 .75rem;padding-bottom:.4rem;border-bottom:1px solid rgba(255,255,255,0.08);}
 .sl:first-child{margin-top:0;}
-.rank-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;margin-bottom:10px;text-decoration:none;color:inherit;display:block;transition:background .15s;}
-.rank-card:hover{background:rgba(255,255,255,0.07);}
+.rc{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;margin-bottom:8px;text-decoration:none;color:inherit;display:block;transition:background .15s;}
+.rc:hover{background:rgba(255,255,255,0.07);}
 .rc-main{display:grid;grid-template-columns:52px 1fr auto;gap:12px;align-items:center;padding:.85rem 1.25rem;}
 .rc-num{font-size:28px;font-weight:600;font-family:'DM Mono',monospace;text-align:center;line-height:1;}
 .rc-name{font-size:15px;font-weight:600;}
 .rc-tier{font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;margin-top:3px;display:inline-block;}
-.rc-record{font-size:11px;color:#8A97A6;margin-top:2px;}
+.rc-rec{font-size:11px;color:#8A97A6;margin-top:2px;}
 .rc-danger{font-size:22px;font-weight:600;font-family:'DM Mono',monospace;text-align:right;}
 .rc-dl{font-size:10px;color:#8A97A6;text-align:right;text-transform:uppercase;letter-spacing:.04em;}
-.rc-bar{padding:0 1.25rem .75rem;}
-.rc-bar-track{background:rgba(255,255,255,0.07);border-radius:3px;height:6px;overflow:hidden;}
+.rc-bar{padding:0 1.25rem .65rem;}
+.rc-bar-track{background:rgba(255,255,255,0.07);border-radius:3px;height:5px;overflow:hidden;}
 .rc-bar-fill{height:100%;border-radius:3px;}
-.rc-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid rgba(255,255,255,0.06);}
+.rc-stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(255,255,255,0.06);}
 .rc-stat{padding:.5rem .75rem;text-align:center;border-right:1px solid rgba(255,255,255,0.06);}
 .rc-stat:last-child{border-right:none;}
 .rc-sv{font-size:13px;font-weight:600;font-family:'DM Mono',monospace;}
 .rc-sl{font-size:10px;color:#8A97A6;}
-.rc-note{font-size:11px;color:#8A97A6;padding:.5rem 1.25rem .75rem;line-height:1.5;border-top:1px solid rgba(255,255,255,0.05);}
-.dukes-ref{background:rgba(232,160,32,0.08);border:1px solid rgba(232,160,32,0.2);border-radius:10px;padding:1rem 1.25rem;margin-bottom:1.5rem;}
-.chart-wrap{background:rgba(255,255,255,0.03);border-radius:10px;padding:1rem;margin-bottom:1.5rem;position:relative;height:280px;}
+.rc-note{font-size:11px;color:#8A97A6;padding:.5rem 1.25rem .7rem;line-height:1.5;border-top:1px solid rgba(255,255,255,0.05);}
+.dukes-ref{background:rgba(232,160,32,0.08);border:1px solid rgba(232,160,32,0.25);border-radius:10px;padding:1rem 1.25rem;margin-bottom:1.5rem;}
+.chart-wrap{background:rgba(255,255,255,0.03);border-radius:10px;padding:1rem;margin-bottom:1.5rem;position:relative;height:300px;}
 .lg{display:flex;gap:12px;font-size:11px;color:#8A97A6;margin-bottom:.5rem;flex-wrap:wrap;}
 .li{display:flex;align-items:center;gap:4px;}
 .ld{width:9px;height:9px;border-radius:2px;}
-.top-table{width:100%;border-collapse:collapse;font-size:12px;}
-.top-table th{text-align:left;padding:6px 8px;font-size:11px;color:#8A97A6;border-bottom:1px solid rgba(255,255,255,0.08);font-weight:500;text-transform:uppercase;letter-spacing:.04em;}
-.top-table td{padding:6px 8px;border-bottom:1px solid rgba(255,255,255,0.05);}
+.top-table{width:100%;border-collapse:collapse;font-size:12px;background:rgba(255,255,255,0.03);border-radius:8px;overflow:hidden;margin-bottom:1rem;}
+.top-table th{text-align:left;padding:7px 10px;font-size:11px;color:#8A97A6;border-bottom:1px solid rgba(255,255,255,0.08);font-weight:500;text-transform:uppercase;letter-spacing:.04em;}
+.top-table td{padding:6px 10px;border-bottom:1px solid rgba(255,255,255,0.04);}
 .top-table tr:hover td{background:rgba(255,255,255,0.03);}
-@media(max-width:600px){.rc-main{grid-template-columns:40px 1fr auto;}.rc-stats{grid-template-columns:repeat(2,1fr);}.page{padding:1.25rem 1rem;}}
+.top-table tr:last-child td{border-bottom:none;}
+.tabs{display:flex;border-bottom:1px solid rgba(255,255,255,0.08);position:sticky;top:52px;background:#0B1E35;z-index:90;padding:0 2rem;margin-bottom:0;}
+.tab{padding:11px 16px;font-size:13px;cursor:pointer;color:#8A97A6;border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;font-family:'Inter',sans-serif;}
+.tab.active{color:#E8A020;border-bottom-color:#E8A020;}
+.section{display:none;max-width:900px;margin:0 auto;padding:2rem;}
+.section.active{display:block;}
+@media(max-width:600px){.rc-main{grid-template-columns:38px 1fr auto;}.rc-stats{grid-template-columns:repeat(2,1fr);}.page,.section{padding:1.25rem 1rem;}.tabs{padding:0 1rem;overflow-x:auto;}}
 </style>
 </head>
 <body>
@@ -54,298 +58,284 @@ h1 span{color:#E8A020;}
   <a href="index.html" class="logo">Lady Dukes <span>Analytics</span></a>
   <a href="index.html" class="back">← Home</a>
 </nav>
-<div class="page">
-<h1>Master <span>Rankings</span></h1>
-<p class="sub">9 teams scouted · Lady Dukes reference included · Ranked by composite danger score</p>
+<div class="tabs">
+  <button class="tab active" onclick="show('rankings',this)">Rankings</button>
+  <button class="tab" onclick="show('hitters',this)">Top hitters</button>
+  <button class="tab" onclick="show('pitchers',this)">Top pitchers</button>
+</div>
 
-<div class="sl">Lady Dukes — reference</div>
+<div class="section active" id="rankings">
+<div class="page" style="padding-top:2rem;">
+<h1>Master <span>Rankings</span></h1>
+<p class="sub">10 teams scouted · All records corrected from actual game data · Click any team to open full scouting report</p>
+
+<div class="sl">Lady Dukes — reference point</div>
 <div class="dukes-ref">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
-    <div style="font-size:15px;font-weight:600;">WPA Lady Dukes 10U</div>
-    <div style="font-size:20px;font-weight:600;font-family:'DM Mono',monospace;color:#E8A020;">8.2</div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;">
+    <div><div style="font-size:15px;font-weight:600;">WPA Lady Dukes 10U</div><div style="font-size:11px;color:#8A97A6;margin-top:2px;">Sits between #8 Outlaws Valore and #9 Predators · Recruits would push to ~#4–5</div></div>
+    <div style="text-align:right;"><div style="font-size:22px;font-weight:600;font-family:'DM Mono',monospace;color:#E8A020;">8.2</div><div style="font-size:10px;color:#8A97A6;">Danger</div></div>
   </div>
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;font-size:12px;text-align:center;">
-    <div><div style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">0.420</div><div style="color:#8A97A6;font-size:10px;">Team OBP</div></div>
-    <div><div style="font-weight:600;font-family:'DM Mono',monospace;">0.931</div><div style="color:#8A97A6;font-size:10px;">Team OPS</div></div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;text-align:center;font-size:12px;">
+    <div><div style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">.420</div><div style="color:#8A97A6;font-size:10px;">Team OBP</div></div>
+    <div><div style="font-weight:600;font-family:'DM Mono',monospace;">.931</div><div style="color:#8A97A6;font-size:10px;">Team OPS</div></div>
     <div><div style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">3.09</div><div style="color:#8A97A6;font-size:10px;">Best ERA</div></div>
     <div><div style="font-weight:600;font-family:'DM Mono',monospace;">40%</div><div style="color:#8A97A6;font-size:10px;">Team K%</div></div>
   </div>
-  <div style="margin-top:.6rem;font-size:11px;color:#8A97A6;">Danger score places Lady Dukes between #7 Outlaws Valore and #8 Pittsburgh Predators — <strong style="color:#E8A020;">middle of the pack vs this competition</strong>. The 3 recruits (Molly J, Evelynn M, Lola B) would push this to roughly #4–5.</div>
 </div>
 
-<div class="sl">Danger score comparison</div>
+<div class="sl">Danger score — all 10 teams</div>
 <div class="lg">
-  <span class="li"><span class="ld" style="background:#E24B4A;"></span>Elite (12+)</span>
-  <span class="li"><span class="ld" style="background:#E8A020;"></span>Strong (9–12)</span>
+  <span class="li"><span class="ld" style="background:#E24B4A;"></span>Elite (11+)</span>
+  <span class="li"><span class="ld" style="background:#E8A020;"></span>Strong (9–11)</span>
   <span class="li"><span class="ld" style="background:#378ADD;"></span>Average (7–9)</span>
-  <span class="li"><span class="ld" style="background:#2DB87C;"></span>Lady Dukes</span>
+  <span class="li"><span class="ld" style="background:#E8A020;opacity:.5;"></span>Lady Dukes ref</span>
 </div>
-<div class="chart-wrap"><canvas id="dangerChart" role="img" aria-label="Danger score bar chart for all 9 teams plus Lady Dukes reference">PA Lady Knights 13.55, TN Mojo 12.92, South Hills Elite 11.13, Silver Creek 10.43, Pittsburgh Tigers 9.43, Outlaws Lambie 9.29, Outlaws Valore 8.95, Lady Dukes 8.18, Pittsburgh Predators 7.81, Devil Dogs 7.69</canvas></div>
+<div class="chart-wrap">
+  <canvas id="dangerChart" role="img" aria-label="Danger score for all 10 teams. PA Lady Knights 13.55, All American 12.97, TN Mojo 12.92, South Hills Elite 11.13, Silver Creek 10.43, Pittsburgh Tigers 9.43, Outlaws Lambie 9.29, Outlaws Valore 8.95, Pittsburgh Predators 7.81, Devil Dogs 7.69. Lady Dukes reference 8.18.">
+    Danger scores: PA Knights 13.55, All American 12.97, TN Mojo 12.92, SHE 11.13, Silver Creek 10.43, Pgh Tigers 9.43, Outlaws L 9.29, Outlaws V 8.95, Pgh Preds 7.81, Devil Dogs 7.69.
+  </canvas>
+</div>
 
-<div class="sl">Full rankings</div>
+<div class="sl">Full rankings — click to open scouting report</div>
+<a href="scout-pa-lady-knights.html" class="rc">
+  <div style="height:3px;background:#E24B4A;opacity:.8;"></div>
+  <div class="rc-main">
+    <div class="rc-num" style="color:#E24B4A;">#1</div>
+    <div>
+      <div class="rc-name">PA Lady Knights</div>
+      <span class="rc-tier" style="background:rgba(226,75,74,0.1);color:#E24B4A;">ELITE</span>
+      <div class="rc-rec">vs Dukes: <span style="color:#F2EFE8;font-weight:600;">1-1-0</span></div>
+    </div>
+    <div><div class="rc-danger" style="color:#E24B4A;">13.6</div><div class="rc-dl">Danger</div></div>
+  </div>
+  <div class="rc-bar"><div class="rc-bar-track"><div class="rc-bar-fill" style="width:97%;background:#E24B4A;"></div></div></div>
+  <div class="rc-stats">
+    <div class="rc-stat"><div class="rc-sv">0.446</div><div class="rc-sl">OBP</div></div>
+    <div class="rc-stat"><div class="rc-sv">0.889</div><div class="rc-sl">OPS</div></div>
+    <div class="rc-stat"><div class="rc-sv">2.35</div><div class="rc-sl">Best ERA</div></div>
+    <div class="rc-stat"><div class="rc-sv">36%</div><div class="rc-sl">K rate</div></div>
+  </div>
+  <div class="rc-note">🏆 Elly L (.402/.538) &nbsp;·&nbsp; ⚾ Elly L (2.35 ERA, 225K) &nbsp;·&nbsp; Best single pitcher in the pool (Elly L). Balanced lineup. Dukes are 1-1 vs them — this is winnable.</div>
+</a>
+<a href="scout-all-american.html" class="rc">
+  <div style="height:3px;background:#E24B4A;opacity:.8;"></div>
+  <div class="rc-main">
+    <div class="rc-num" style="color:#E24B4A;">#2</div>
+    <div>
+      <div class="rc-name">All American Red</div>
+      <span class="rc-tier" style="background:rgba(226,75,74,0.1);color:#E24B4A;">ELITE</span>
+      <div class="rc-rec">vs Dukes: <span style="color:#E24B4A;font-weight:600;">0-5-1</span></div>
+    </div>
+    <div><div class="rc-danger" style="color:#E24B4A;">13.0</div><div class="rc-dl">Danger</div></div>
+  </div>
+  <div class="rc-bar"><div class="rc-bar-track"><div class="rc-bar-fill" style="width:93%;background:#E24B4A;"></div></div></div>
+  <div class="rc-stats">
+    <div class="rc-stat"><div class="rc-sv">0.466</div><div class="rc-sl">OBP</div></div>
+    <div class="rc-stat"><div class="rc-sv">0.922</div><div class="rc-sl">OPS</div></div>
+    <div class="rc-stat"><div class="rc-sv">1.22</div><div class="rc-sl">Best ERA</div></div>
+    <div class="rc-stat"><div class="rc-sv">34%</div><div class="rc-sl">K rate</div></div>
+  </div>
+  <div class="rc-note">🏆 Avry G (.500/.627) &nbsp;·&nbsp; ⚾ Avry G (1.22 ERA, 188K) &nbsp;·&nbsp; Avry G is the most dangerous individual player in the entire pool — .500 BA AND 1.22 ERA/188K. Dukes are 0-5-1 vs them.</div>
+</a>
+<a href="scout-tn-mojo.html" class="rc">
+  <div style="height:3px;background:#E24B4A;opacity:.8;"></div>
+  <div class="rc-main">
+    <div class="rc-num" style="color:#E24B4A;">#3</div>
+    <div>
+      <div class="rc-name">TN Mojo</div>
+      <span class="rc-tier" style="background:rgba(226,75,74,0.1);color:#E24B4A;">ELITE</span>
+      <div class="rc-rec">vs Dukes: <span style="color:#E8A020;font-weight:600;">Not played</span></div>
+    </div>
+    <div><div class="rc-danger" style="color:#E24B4A;">12.9</div><div class="rc-dl">Danger</div></div>
+  </div>
+  <div class="rc-bar"><div class="rc-bar-track"><div class="rc-bar-fill" style="width:92%;background:#E24B4A;"></div></div></div>
+  <div class="rc-stats">
+    <div class="rc-stat"><div class="rc-sv">0.492</div><div class="rc-sl">OBP</div></div>
+    <div class="rc-stat"><div class="rc-sv">1.062</div><div class="rc-sl">OPS</div></div>
+    <div class="rc-stat"><div class="rc-sv">1.26</div><div class="rc-sl">Best ERA</div></div>
+    <div class="rc-stat"><div class="rc-sv">16%</div><div class="rc-sl">K rate</div></div>
+  </div>
+  <div class="rc-note">🏆 Quinn S (.575/.653) &nbsp;·&nbsp; ⚾ Jovi G (1.26 ERA, 82K) &nbsp;·&nbsp; Lowest K rate (15.8%) and highest BA in the pool. Quinn S (.575) is the top individual hitter across all teams. Not played.</div>
+</a>
+<a href="scout-south-hills-elite.html" class="rc">
+  <div style="height:3px;background:#E24B4A;opacity:.8;"></div>
+  <div class="rc-main">
+    <div class="rc-num" style="color:#E24B4A;">#4</div>
+    <div>
+      <div class="rc-name">South Hills Elite</div>
+      <span class="rc-tier" style="background:rgba(226,75,74,0.1);color:#E24B4A;">ELITE</span>
+      <div class="rc-rec">vs Dukes: <span style="color:#F2EFE8;font-weight:600;">2-1-0</span></div>
+    </div>
+    <div><div class="rc-danger" style="color:#E24B4A;">11.1</div><div class="rc-dl">Danger</div></div>
+  </div>
+  <div class="rc-bar"><div class="rc-bar-track"><div class="rc-bar-fill" style="width:80%;background:#E24B4A;"></div></div></div>
+  <div class="rc-stats">
+    <div class="rc-stat"><div class="rc-sv">0.509</div><div class="rc-sl">OBP</div></div>
+    <div class="rc-stat"><div class="rc-sv">1.056</div><div class="rc-sl">OPS</div></div>
+    <div class="rc-stat"><div class="rc-sv">1.75</div><div class="rc-sl">Best ERA</div></div>
+    <div class="rc-stat"><div class="rc-sv">30%</div><div class="rc-sl">K rate</div></div>
+  </div>
+  <div class="rc-note">🏆 Nora K (.533/.629) &nbsp;·&nbsp; ⚾ Brooklyn S (1.75 ERA, 43K) &nbsp;·&nbsp; Highest team OBP (.509). Three hitters above .500 BA. Dukes are 2-1 — the most beatable elite team.</div>
+</a>
+<a href="scout-silver-creek.html" class="rc">
+  <div style="height:3px;background:#E8A020;opacity:.8;"></div>
+  <div class="rc-main">
+    <div class="rc-num" style="color:#E8A020;">#5</div>
+    <div>
+      <div class="rc-name">Silver Creek</div>
+      <span class="rc-tier" style="background:rgba(232,160,32,0.08);color:#E8A020;">STRONG</span>
+      <div class="rc-rec">vs Dukes: <span style="color:#F2EFE8;font-weight:600;">1-3-0</span></div>
+    </div>
+    <div><div class="rc-danger" style="color:#E8A020;">10.4</div><div class="rc-dl">Danger</div></div>
+  </div>
+  <div class="rc-bar"><div class="rc-bar-track"><div class="rc-bar-fill" style="width:74%;background:#E8A020;"></div></div></div>
+  <div class="rc-stats">
+    <div class="rc-stat"><div class="rc-sv">0.528</div><div class="rc-sl">OBP</div></div>
+    <div class="rc-stat"><div class="rc-sv">1.062</div><div class="rc-sl">OPS</div></div>
+    <div class="rc-stat"><div class="rc-sv">2.10</div><div class="rc-sl">Best ERA</div></div>
+    <div class="rc-stat"><div class="rc-sv">32%</div><div class="rc-sl">K rate</div></div>
+  </div>
+  <div class="rc-note">🏆 Maddie D (.478/.647) &nbsp;·&nbsp; ⚾ Zoey C (2.10 ERA, 36K) &nbsp;·&nbsp; Maddie D's .647 OBP is the highest individual mark in the pool. Dukes are 1-3 — Silver Creek has their number.</div>
+</a>
+<a href="scout-pittsburgh-tigers.html" class="rc">
+  <div style="height:3px;background:#E8A020;opacity:.8;"></div>
+  <div class="rc-main">
+    <div class="rc-num" style="color:#E8A020;">#6</div>
+    <div>
+      <div class="rc-name">Pittsburgh Tigers</div>
+      <span class="rc-tier" style="background:rgba(232,160,32,0.08);color:#E8A020;">STRONG</span>
+      <div class="rc-rec">vs Dukes: <span style="color:#E24B4A;font-weight:600;">0-4-0</span></div>
+    </div>
+    <div><div class="rc-danger" style="color:#E8A020;">9.4</div><div class="rc-dl">Danger</div></div>
+  </div>
+  <div class="rc-bar"><div class="rc-bar-track"><div class="rc-bar-fill" style="width:67%;background:#E8A020;"></div></div></div>
+  <div class="rc-stats">
+    <div class="rc-stat"><div class="rc-sv">0.478</div><div class="rc-sl">OBP</div></div>
+    <div class="rc-stat"><div class="rc-sv">0.962</div><div class="rc-sl">OPS</div></div>
+    <div class="rc-stat"><div class="rc-sv">2.33</div><div class="rc-sl">Best ERA</div></div>
+    <div class="rc-stat"><div class="rc-sv">35%</div><div class="rc-sl">K rate</div></div>
+  </div>
+  <div class="rc-note">🏆 Peyton S (.487/.564) &nbsp;·&nbsp; ⚾ Amelia H (2.33 ERA, 310K) &nbsp;·&nbsp; Dukes nemesis (0-4). Amelia H has 310 Ks in 147 IP — most Ks of any pitcher in the pool. Balanced and hard to beat.</div>
+</a>
+<a href="scout-outlaws-lambie.html" class="rc">
+  <div style="height:3px;background:#E8A020;opacity:.8;"></div>
+  <div class="rc-main">
+    <div class="rc-num" style="color:#E8A020;">#7</div>
+    <div>
+      <div class="rc-name">Outlaws Lambie</div>
+      <span class="rc-tier" style="background:rgba(232,160,32,0.08);color:#E8A020;">STRONG</span>
+      <div class="rc-rec">vs Dukes: <span style="color:#F2EFE8;font-weight:600;">1-1-0</span></div>
+    </div>
+    <div><div class="rc-danger" style="color:#E8A020;">9.3</div><div class="rc-dl">Danger</div></div>
+  </div>
+  <div class="rc-bar"><div class="rc-bar-track"><div class="rc-bar-fill" style="width:66%;background:#E8A020;"></div></div></div>
+  <div class="rc-stats">
+    <div class="rc-stat"><div class="rc-sv">0.447</div><div class="rc-sl">OBP</div></div>
+    <div class="rc-stat"><div class="rc-sv">0.875</div><div class="rc-sl">OPS</div></div>
+    <div class="rc-stat"><div class="rc-sv">2.10</div><div class="rc-sl">Best ERA</div></div>
+    <div class="rc-stat"><div class="rc-sv">39%</div><div class="rc-sl">K rate</div></div>
+  </div>
+  <div class="rc-note">🏆 Allie H (.476/.550) &nbsp;·&nbsp; ⚾ Emma B (2.10 ERA, 9K) &nbsp;·&nbsp; Allie H is a genuine offensive threat. Higher K lineup (38.7%) — beatable with command pitching. Dukes are 1-1.</div>
+</a>
+<a href="scout-outlaws-valore.html" class="rc">
+  <div style="height:3px;background:#E8A020;opacity:.8;"></div>
+  <div class="rc-main">
+    <div class="rc-num" style="color:#E8A020;">#8</div>
+    <div>
+      <div class="rc-name">Outlaws Valore</div>
+      <span class="rc-tier" style="background:rgba(232,160,32,0.08);color:#E8A020;">STRONG</span>
+      <div class="rc-rec">vs Dukes: <span style="color:#F2EFE8;font-weight:600;">1-1-0</span></div>
+    </div>
+    <div><div class="rc-danger" style="color:#E8A020;">8.9</div><div class="rc-dl">Danger</div></div>
+  </div>
+  <div class="rc-bar"><div class="rc-bar-track"><div class="rc-bar-fill" style="width:64%;background:#E8A020;"></div></div></div>
+  <div class="rc-stats">
+    <div class="rc-stat"><div class="rc-sv">0.482</div><div class="rc-sl">OBP</div></div>
+    <div class="rc-stat"><div class="rc-sv">0.975</div><div class="rc-sl">OPS</div></div>
+    <div class="rc-stat"><div class="rc-sv">2.78</div><div class="rc-sl">Best ERA</div></div>
+    <div class="rc-stat"><div class="rc-sv">36%</div><div class="rc-sl">K rate</div></div>
+  </div>
+  <div class="rc-note">🏆 Kenley T (.512/.579) &nbsp;·&nbsp; ⚾ Kenley T (2.78 ERA, 262K) &nbsp;·&nbsp; Kenley T does everything — .512 BA and 262 Ks as pitcher. Most dangerous two-way player in pool. Dukes are 1-1.</div>
+</a>
+<a href="scout-pittsburgh-predators.html" class="rc">
+  <div style="height:3px;background:#378ADD;opacity:.8;"></div>
+  <div class="rc-main">
+    <div class="rc-num" style="color:#378ADD;">#9</div>
+    <div>
+      <div class="rc-name">Pittsburgh Predators</div>
+      <span class="rc-tier" style="background:rgba(55,138,221,0.08);color:#378ADD;">AVERAGE</span>
+      <div class="rc-rec">vs Dukes: <span style="color:#2DB87C;font-weight:600;">1-0-0</span></div>
+    </div>
+    <div><div class="rc-danger" style="color:#378ADD;">7.8</div><div class="rc-dl">Danger</div></div>
+  </div>
+  <div class="rc-bar"><div class="rc-bar-track"><div class="rc-bar-fill" style="width:56%;background:#378ADD;"></div></div></div>
+  <div class="rc-stats">
+    <div class="rc-stat"><div class="rc-sv">0.502</div><div class="rc-sl">OBP</div></div>
+    <div class="rc-stat"><div class="rc-sv">0.946</div><div class="rc-sl">OPS</div></div>
+    <div class="rc-stat"><div class="rc-sv">4.31</div><div class="rc-sl">Best ERA</div></div>
+    <div class="rc-stat"><div class="rc-sv">43%</div><div class="rc-sl">K rate</div></div>
+  </div>
+  <div class="rc-note">🏆 Molly D (.460/.554) &nbsp;·&nbsp; ⚾ Ella T (4.31 ERA, 145K) &nbsp;·&nbsp; High OBP but weak pitching (best ERA 4.31). Score early and stay ahead. Dukes are 1-0 vs them.</div>
+</a>
+<a href="scout-devil-dogs.html" class="rc">
+  <div style="height:3px;background:#378ADD;opacity:.8;"></div>
+  <div class="rc-main">
+    <div class="rc-num" style="color:#378ADD;">#10</div>
+    <div>
+      <div class="rc-name">Devil Dogs</div>
+      <span class="rc-tier" style="background:rgba(55,138,221,0.08);color:#378ADD;">AVERAGE</span>
+      <div class="rc-rec">vs Dukes: <span style="color:#2DB87C;font-weight:600;">1-0-0</span></div>
+    </div>
+    <div><div class="rc-danger" style="color:#378ADD;">7.7</div><div class="rc-dl">Danger</div></div>
+  </div>
+  <div class="rc-bar"><div class="rc-bar-track"><div class="rc-bar-fill" style="width:55%;background:#378ADD;"></div></div></div>
+  <div class="rc-stats">
+    <div class="rc-stat"><div class="rc-sv">0.564</div><div class="rc-sl">OBP</div></div>
+    <div class="rc-stat"><div class="rc-sv">1.072</div><div class="rc-sl">OPS</div></div>
+    <div class="rc-stat"><div class="rc-sv">8.34</div><div class="rc-sl">Best ERA</div></div>
+    <div class="rc-stat"><div class="rc-sv">42%</div><div class="rc-sl">K rate</div></div>
+  </div>
+  <div class="rc-note">🏆 Jordan M (.500/.604) &nbsp;·&nbsp; ⚾ Luciana L (8.34 ERA, 142K) &nbsp;·&nbsp; Highest team OBP (.564) but worst pitching staff (8.34 ERA). Score on them. Dukes are 1-0 in the data.</div>
+</a></div></div>
 
-    <a href="scout-pa-lady-knights.html" class="rank-card">
-      <div style="height:3px;background:#E24B4A;opacity:.7;"></div>
-      <div class="rc-main">
-        <div class="rc-num" style="color:#E24B4A;">#1</div>
-        <div>
-          <div class="rc-name">PA Lady Knights</div>
-          <span class="rc-tier" style="background:rgba(226,75,74,0.1);color:#E24B4A;">ELITE</span>
-          <div class="rc-record">vs Dukes: 0-5-1</div>
-        </div>
-        <div>
-          <div class="rc-danger" style="color:#E24B4A;">13.6</div>
-          <div class="rc-dl">Danger</div>
-        </div>
-      </div>
-      <div class="rc-bar">
-        <div class="rc-bar-track"><div class="rc-bar-fill" style="width:97%;background:#E24B4A;"></div></div>
-      </div>
-      <div class="rc-stats">
-        <div class="rc-stat"><div class="rc-sv">0.446</div><div class="rc-sl">OBP</div></div>
-        <div class="rc-stat"><div class="rc-sv">0.889</div><div class="rc-sl">OPS</div></div>
-        <div class="rc-stat"><div class="rc-sv">2.35</div><div class="rc-sl">Best ERA</div></div>
-        <div class="rc-stat"><div class="rc-sv">36%</div><div class="rc-sl">K rate</div></div>
-      </div>
-      <div class="rc-note">🏆 Elly L (.402/.538) &nbsp;·&nbsp; ⚾ Elly L (2.35 ERA, 225K) &nbsp;·&nbsp; Balanced elite team with the best single pitcher in the pool and a stacked lineup. The Dukes went 0-5-1 vs this team.</div>
-    </a>
-    <a href="scout-tn-mojo.html" class="rank-card">
-      <div style="height:3px;background:#E24B4A;opacity:.7;"></div>
-      <div class="rc-main">
-        <div class="rc-num" style="color:#E24B4A;">#2</div>
-        <div>
-          <div class="rc-name">TN Mojo</div>
-          <span class="rc-tier" style="background:rgba(226,75,74,0.1);color:#E24B4A;">ELITE</span>
-          <div class="rc-record">vs Dukes: Unknown</div>
-        </div>
-        <div>
-          <div class="rc-danger" style="color:#E24B4A;">12.9</div>
-          <div class="rc-dl">Danger</div>
-        </div>
-      </div>
-      <div class="rc-bar">
-        <div class="rc-bar-track"><div class="rc-bar-fill" style="width:92%;background:#E24B4A;"></div></div>
-      </div>
-      <div class="rc-stats">
-        <div class="rc-stat"><div class="rc-sv">0.492</div><div class="rc-sl">OBP</div></div>
-        <div class="rc-stat"><div class="rc-sv">1.062</div><div class="rc-sl">OPS</div></div>
-        <div class="rc-stat"><div class="rc-sv">1.26</div><div class="rc-sl">Best ERA</div></div>
-        <div class="rc-stat"><div class="rc-sv">16%</div><div class="rc-sl">K rate</div></div>
-      </div>
-      <div class="rc-note">🏆 Quinn S (.575/.653) &nbsp;·&nbsp; ⚾ Jovi G (1.26 ERA, 82K) &nbsp;·&nbsp; The most dangerous offensive team — lowest K rate in the pool (15.8%) and the best single hitter (Quinn S at .575). Elite pitching to boot.</div>
-    </a>
-    <a href="scout-south-hills-elite.html" class="rank-card">
-      <div style="height:3px;background:#E24B4A;opacity:.7;"></div>
-      <div class="rc-main">
-        <div class="rc-num" style="color:#E24B4A;">#3</div>
-        <div>
-          <div class="rc-name">South Hills Elite</div>
-          <span class="rc-tier" style="background:rgba(226,75,74,0.1);color:#E24B4A;">ELITE</span>
-          <div class="rc-record">vs Dukes: 2-1</div>
-        </div>
-        <div>
-          <div class="rc-danger" style="color:#E24B4A;">11.1</div>
-          <div class="rc-dl">Danger</div>
-        </div>
-      </div>
-      <div class="rc-bar">
-        <div class="rc-bar-track"><div class="rc-bar-fill" style="width:80%;background:#E24B4A;"></div></div>
-      </div>
-      <div class="rc-stats">
-        <div class="rc-stat"><div class="rc-sv">0.509</div><div class="rc-sl">OBP</div></div>
-        <div class="rc-stat"><div class="rc-sv">1.056</div><div class="rc-sl">OPS</div></div>
-        <div class="rc-stat"><div class="rc-sv">1.75</div><div class="rc-sl">Best ERA</div></div>
-        <div class="rc-stat"><div class="rc-sv">30%</div><div class="rc-sl">K rate</div></div>
-      </div>
-      <div class="rc-note">🏆 Nora K (.533/.629) &nbsp;·&nbsp; ⚾ Brooklyn S (1.75 ERA, 43K) &nbsp;·&nbsp; Deep roster with three hitters above .500 BA and solid pitching. Hope V leads the staff at 122 IP. Highest team OBP in the pool (.509).</div>
-    </a>
-    <a href="scout-silver-creek.html" class="rank-card">
-      <div style="height:3px;background:#E8A020;opacity:.7;"></div>
-      <div class="rc-main">
-        <div class="rc-num" style="color:#E8A020;">#4</div>
-        <div>
-          <div class="rc-name">Silver Creek</div>
-          <span class="rc-tier" style="background:rgba(232,160,32,0.08);color:#E8A020;">STRONG</span>
-          <div class="rc-record">vs Dukes: 1-3</div>
-        </div>
-        <div>
-          <div class="rc-danger" style="color:#E8A020;">10.4</div>
-          <div class="rc-dl">Danger</div>
-        </div>
-      </div>
-      <div class="rc-bar">
-        <div class="rc-bar-track"><div class="rc-bar-fill" style="width:74%;background:#E8A020;"></div></div>
-      </div>
-      <div class="rc-stats">
-        <div class="rc-stat"><div class="rc-sv">0.528</div><div class="rc-sl">OBP</div></div>
-        <div class="rc-stat"><div class="rc-sv">1.062</div><div class="rc-sl">OPS</div></div>
-        <div class="rc-stat"><div class="rc-sv">2.10</div><div class="rc-sl">Best ERA</div></div>
-        <div class="rc-stat"><div class="rc-sv">32%</div><div class="rc-sl">K rate</div></div>
-      </div>
-      <div class="rc-note">🏆 Maddie D (.478/.647) &nbsp;·&nbsp; ⚾ Zoey C (2.10 ERA, 36K) &nbsp;·&nbsp; Widest roster (36 players listed) with elite OBP and solid pitching. Maddie D's .647 OBP is the highest individual mark in the pool.</div>
-    </a>
-    <a href="scout-pittsburgh-tigers.html" class="rank-card">
-      <div style="height:3px;background:#E8A020;opacity:.7;"></div>
-      <div class="rc-main">
-        <div class="rc-num" style="color:#E8A020;">#5</div>
-        <div>
-          <div class="rc-name">Pittsburgh Tigers</div>
-          <span class="rc-tier" style="background:rgba(232,160,32,0.08);color:#E8A020;">STRONG</span>
-          <div class="rc-record">vs Dukes: 0-4</div>
-        </div>
-        <div>
-          <div class="rc-danger" style="color:#E8A020;">9.4</div>
-          <div class="rc-dl">Danger</div>
-        </div>
-      </div>
-      <div class="rc-bar">
-        <div class="rc-bar-track"><div class="rc-bar-fill" style="width:67%;background:#E8A020;"></div></div>
-      </div>
-      <div class="rc-stats">
-        <div class="rc-stat"><div class="rc-sv">0.478</div><div class="rc-sl">OBP</div></div>
-        <div class="rc-stat"><div class="rc-sv">0.962</div><div class="rc-sl">OPS</div></div>
-        <div class="rc-stat"><div class="rc-sv">2.33</div><div class="rc-sl">Best ERA</div></div>
-        <div class="rc-stat"><div class="rc-sv">35%</div><div class="rc-sl">K rate</div></div>
-      </div>
-      <div class="rc-note">🏆 Peyton S (.487/.564) &nbsp;·&nbsp; ⚾ Amelia H (2.33 ERA, 310K) &nbsp;·&nbsp; Dukes nemesis (0-4). Amelia H leads all pitchers with 310 Ks in 147 innings. Balanced team with no weak spots — that's why the Dukes struggle.</div>
-    </a>
-    <a href="scout-outlaws-lambie.html" class="rank-card">
-      <div style="height:3px;background:#E8A020;opacity:.7;"></div>
-      <div class="rc-main">
-        <div class="rc-num" style="color:#E8A020;">#6</div>
-        <div>
-          <div class="rc-name">Outlaws Lambie</div>
-          <span class="rc-tier" style="background:rgba(232,160,32,0.08);color:#E8A020;">STRONG</span>
-          <div class="rc-record">vs Dukes: 1-1</div>
-        </div>
-        <div>
-          <div class="rc-danger" style="color:#E8A020;">9.3</div>
-          <div class="rc-dl">Danger</div>
-        </div>
-      </div>
-      <div class="rc-bar">
-        <div class="rc-bar-track"><div class="rc-bar-fill" style="width:66%;background:#E8A020;"></div></div>
-      </div>
-      <div class="rc-stats">
-        <div class="rc-stat"><div class="rc-sv">0.447</div><div class="rc-sl">OBP</div></div>
-        <div class="rc-stat"><div class="rc-sv">0.875</div><div class="rc-sl">OPS</div></div>
-        <div class="rc-stat"><div class="rc-sv">2.10</div><div class="rc-sl">Best ERA</div></div>
-        <div class="rc-stat"><div class="rc-sv">39%</div><div class="rc-sl">K rate</div></div>
-      </div>
-      <div class="rc-note">🏆 Allie H (.476/.550) &nbsp;·&nbsp; ⚾ Emma B (2.10 ERA, 9K) &nbsp;·&nbsp; Allie H is a legitimate 5-threat hitter. Pitching is serviceable. Higher K rate in lineup makes them beatable with good command pitching.</div>
-    </a>
-    <a href="scout-outlaws-valore.html" class="rank-card">
-      <div style="height:3px;background:#E8A020;opacity:.7;"></div>
-      <div class="rc-main">
-        <div class="rc-num" style="color:#E8A020;">#7</div>
-        <div>
-          <div class="rc-name">Outlaws Valore</div>
-          <span class="rc-tier" style="background:rgba(232,160,32,0.08);color:#E8A020;">STRONG</span>
-          <div class="rc-record">vs Dukes: 1-1</div>
-        </div>
-        <div>
-          <div class="rc-danger" style="color:#E8A020;">8.9</div>
-          <div class="rc-dl">Danger</div>
-        </div>
-      </div>
-      <div class="rc-bar">
-        <div class="rc-bar-track"><div class="rc-bar-fill" style="width:64%;background:#E8A020;"></div></div>
-      </div>
-      <div class="rc-stats">
-        <div class="rc-stat"><div class="rc-sv">0.482</div><div class="rc-sl">OBP</div></div>
-        <div class="rc-stat"><div class="rc-sv">0.975</div><div class="rc-sl">OPS</div></div>
-        <div class="rc-stat"><div class="rc-sv">2.78</div><div class="rc-sl">Best ERA</div></div>
-        <div class="rc-stat"><div class="rc-sv">36%</div><div class="rc-sl">K rate</div></div>
-      </div>
-      <div class="rc-note">🏆 Kenley T (.512/.579) &nbsp;·&nbsp; ⚾ Kenley T (2.78 ERA, 262K) &nbsp;·&nbsp; Kenley T is the most dangerous two-way player in the pool — .512 BA AND 262 Ks as a pitcher. Pitching around her is nearly impossible.</div>
-    </a>
-    <a href="scout-pittsburgh-predators.html" class="rank-card">
-      <div style="height:3px;background:#378ADD;opacity:.7;"></div>
-      <div class="rc-main">
-        <div class="rc-num" style="color:#378ADD;">#8</div>
-        <div>
-          <div class="rc-name">Pittsburgh Predators</div>
-          <span class="rc-tier" style="background:rgba(55,138,221,0.08);color:#378ADD;">AVERAGE</span>
-          <div class="rc-record">vs Dukes: Unknown</div>
-        </div>
-        <div>
-          <div class="rc-danger" style="color:#378ADD;">7.8</div>
-          <div class="rc-dl">Danger</div>
-        </div>
-      </div>
-      <div class="rc-bar">
-        <div class="rc-bar-track"><div class="rc-bar-fill" style="width:56%;background:#378ADD;"></div></div>
-      </div>
-      <div class="rc-stats">
-        <div class="rc-stat"><div class="rc-sv">0.502</div><div class="rc-sl">OBP</div></div>
-        <div class="rc-stat"><div class="rc-sv">0.946</div><div class="rc-sl">OPS</div></div>
-        <div class="rc-stat"><div class="rc-sv">4.31</div><div class="rc-sl">Best ERA</div></div>
-        <div class="rc-stat"><div class="rc-sv">43%</div><div class="rc-sl">K rate</div></div>
-      </div>
-      <div class="rc-note">🏆 Molly D (.460/.554) &nbsp;·&nbsp; ⚾ Ella T (4.31 ERA, 145K) &nbsp;·&nbsp; High OBP but high K rate (43%). Pitching is the weakness — best ERA is 4.31. Score early and stay ahead.</div>
-    </a>
-    <a href="scout-devil-dogs.html" class="rank-card">
-      <div style="height:3px;background:#378ADD;opacity:.7;"></div>
-      <div class="rc-main">
-        <div class="rc-num" style="color:#378ADD;">#9</div>
-        <div>
-          <div class="rc-name">Devil Dogs</div>
-          <span class="rc-tier" style="background:rgba(55,138,221,0.08);color:#378ADD;">AVERAGE</span>
-          <div class="rc-record">vs Dukes: 5-0</div>
-        </div>
-        <div>
-          <div class="rc-danger" style="color:#378ADD;">7.7</div>
-          <div class="rc-dl">Danger</div>
-        </div>
-      </div>
-      <div class="rc-bar">
-        <div class="rc-bar-track"><div class="rc-bar-fill" style="width:55%;background:#378ADD;"></div></div>
-      </div>
-      <div class="rc-stats">
-        <div class="rc-stat"><div class="rc-sv">0.564</div><div class="rc-sl">OBP</div></div>
-        <div class="rc-stat"><div class="rc-sv">1.072</div><div class="rc-sl">OPS</div></div>
-        <div class="rc-stat"><div class="rc-sv">8.34</div><div class="rc-sl">Best ERA</div></div>
-        <div class="rc-stat"><div class="rc-sv">42%</div><div class="rc-sl">K rate</div></div>
-      </div>
-      <div class="rc-note">🏆 Jordan M (.500/.604) &nbsp;·&nbsp; ⚾ Luciana L (8.34 ERA, 142K) &nbsp;·&nbsp; Misleading danger score — highest team OBP (.564) but worst pitching staff in pool (best ERA 8.34). Score on them — you will. But they'll score too.</div>
-    </a>
-<div class="sl">Top hitters across all teams</div>
+<div class="section" id="hitters">
+<div class="page" style="padding-top:2rem;">
+<h1>Top <span>hitters</span> — all teams</h1>
+<p class="sub">Cross-team hitting leaderboard · Lady Dukes highlighted</p>
 <table class="top-table">
   <thead><tr><th>#</th><th>Player</th><th>Team</th><th>BA</th><th>OBP</th><th>RBI</th><th>K%</th></tr></thead>
-  <tbody>
-<tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">1</td><td style="font-weight:400;">Quinn S</td><td style="color:#8A97A6;">TN Mojo</td><td style="font-weight:600;font-family:'DM Mono',monospace;">0.575</td><td>0.653</td><td>56</td><td style="color:#2DB87C;">9%</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">2</td><td style="font-weight:400;">Nora K</td><td style="color:#8A97A6;">South Hills Elite</td><td style="font-weight:600;font-family:'DM Mono',monospace;">0.533</td><td>0.629</td><td>41</td><td style="color:#E8A020;">24%</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">3</td><td style="font-weight:400;">Emma C</td><td style="color:#8A97A6;">South Hills Elite</td><td style="font-weight:600;font-family:'DM Mono',monospace;">0.516</td><td>0.620</td><td>30</td><td style="color:#2DB87C;">15%</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">4</td><td style="font-weight:400;">Caroline F</td><td style="color:#8A97A6;">South Hills Elite</td><td style="font-weight:600;font-family:'DM Mono',monospace;">0.512</td><td>0.567</td><td>25</td><td style="color:#E8A020;">26%</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">5</td><td style="font-weight:400;">Kenley T</td><td style="color:#8A97A6;">Outlaws Valore</td><td style="font-weight:600;font-family:'DM Mono',monospace;">0.512</td><td>0.579</td><td>59</td><td style="color:#2DB87C;">17%</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">6</td><td style="font-weight:400;">Jordan M</td><td style="color:#8A97A6;">Devil Dogs</td><td style="font-weight:600;font-family:'DM Mono',monospace;">0.500</td><td>0.604</td><td>15</td><td style="color:#E8A020;">26%</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">7</td><td style="font-weight:400;">Peyton S</td><td style="color:#8A97A6;">Pittsburgh Tigers</td><td style="font-weight:600;font-family:'DM Mono',monospace;">0.487</td><td>0.564</td><td>23</td><td style="color:#E8A020;">27%</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">8</td><td style="font-weight:400;">Preslie E</td><td style="color:#8A97A6;">Silver Creek</td><td style="font-weight:600;font-family:'DM Mono',monospace;">0.427</td><td>0.544</td><td>35</td><td style="color:#E8A020;">32%</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">9</td><td style="font-weight:400;">Lilly B</td><td style="color:#8A97A6;">Silver Creek</td><td style="font-weight:600;font-family:'DM Mono',monospace;">0.483</td><td>0.562</td><td>37</td><td style="color:#2DB87C;">19%</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">10</td><td style="font-weight:400;">Bentley R</td><td style="color:#8A97A6;">TN Mojo</td><td style="font-weight:600;font-family:'DM Mono',monospace;">0.476</td><td>0.546</td><td>21</td><td style="color:#2DB87C;">10%</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">11</td><td style="font-weight:400;">Allie H</td><td style="color:#8A97A6;">Outlaws Lambie</td><td style="font-weight:600;font-family:'DM Mono',monospace;">0.476</td><td>0.550</td><td>43</td><td style="color:#E8A020;">25%</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">12</td><td style="font-weight:400;">Nora J</td><td style="color:#8A97A6;">Silver Creek</td><td style="font-weight:600;font-family:'DM Mono',monospace;">0.471</td><td>0.556</td><td>57</td><td style="color:#E8A020;">31%</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">13</td><td style="font-weight:400;">Molly D</td><td style="color:#8A97A6;">Pittsburgh Predators</td><td style="font-weight:600;font-family:'DM Mono',monospace;">0.460</td><td>0.554</td><td>46</td><td style="color:#E8A020;">34%</td></tr><tr style="background:rgba(232,160,32,0.05);"><td style="color:#8A97A6;font-family:'DM Mono',monospace;">14</td><td style="font-weight:600;color:#E8A020;">Maddie Porter⭐</td><td style="color:#8A97A6;">Lady Dukes</td><td style="font-weight:600;font-family:'DM Mono',monospace;">0.496</td><td>0.549</td><td>53</td><td style="color:#E8A020;">22%</td></tr>
-  </tbody>
+  <tbody><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">1</td><td style="font-weight:400;color:#1D9E75;">Quinn S</td><td style="color:#8A97A6;">TN Mojo</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">0.575</td><td>0.653</td><td>56</td><td style="color:#2DB87C;">9%</td></tr><tr style="background:rgba(226,75,74,0.05);"><td style="color:#8A97A6;font-family:'DM Mono',monospace;">2</td><td style="font-weight:600;color:#E24B4A;">Avry G🆕</td><td style="color:#8A97A6;">All American Red</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">0.500</td><td>0.627</td><td>37</td><td style="color:#2DB87C;">14%</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">3</td><td style="font-weight:400;color:#F2EFE8;">Jordan M</td><td style="color:#8A97A6;">Devil Dogs</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">0.500</td><td>0.604</td><td>15</td><td style="color:#E8A020;">26%</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">4</td><td style="font-weight:400;color:#F2EFE8;">Nora K</td><td style="color:#8A97A6;">South Hills Elite</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">0.533</td><td>0.629</td><td>41</td><td style="color:#E8A020;">24%</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">5</td><td style="font-weight:400;color:#F2EFE8;">Emma C</td><td style="color:#8A97A6;">South Hills Elite</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">0.516</td><td>0.620</td><td>30</td><td style="color:#2DB87C;">15%</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">6</td><td style="font-weight:400;color:#F2EFE8;">Caroline F</td><td style="color:#8A97A6;">South Hills Elite</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">0.512</td><td>0.567</td><td>25</td><td style="color:#E8A020;">26%</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">7</td><td style="font-weight:400;color:#F2EFE8;">Kenley T</td><td style="color:#8A97A6;">Outlaws Valore</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">0.512</td><td>0.579</td><td>59</td><td style="color:#2DB87C;">17%</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">8</td><td style="font-weight:400;color:#F2EFE8;">Bentley R</td><td style="color:#8A97A6;">TN Mojo</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">0.476</td><td>0.546</td><td>21</td><td style="color:#2DB87C;">10%</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">9</td><td style="font-weight:400;color:#F2EFE8;">Allie H</td><td style="color:#8A97A6;">Outlaws Lambie</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">0.476</td><td>0.550</td><td>43</td><td style="color:#E8A020;">25%</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">10</td><td style="font-weight:400;color:#F2EFE8;">Peyton S</td><td style="color:#8A97A6;">Pittsburgh Tigers</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">0.487</td><td>0.564</td><td>23</td><td style="color:#E8A020;">27%</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">11</td><td style="font-weight:400;color:#F2EFE8;">Lilly B</td><td style="color:#8A97A6;">Silver Creek</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">0.483</td><td>0.562</td><td>37</td><td style="color:#2DB87C;">19%</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">12</td><td style="font-weight:400;color:#F2EFE8;">Nora J</td><td style="color:#8A97A6;">Silver Creek</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">0.471</td><td>0.556</td><td>57</td><td style="color:#E8A020;">31%</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">13</td><td style="font-weight:400;color:#F2EFE8;">Maddie D</td><td style="color:#8A97A6;">Silver Creek</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">0.478</td><td>0.647</td><td>3</td><td style="color:#E24B4A;">35%</td></tr><tr style="background:rgba(232,160,32,0.06);"><td style="color:#8A97A6;font-family:'DM Mono',monospace;">14</td><td style="font-weight:600;color:#E8A020;">Maddie Porter⭐</td><td style="color:#8A97A6;">Lady Dukes</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">0.496</td><td>0.549</td><td>53</td><td style="color:#E8A020;">22%</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">15</td><td style="font-weight:400;color:#F2EFE8;">Molly D</td><td style="color:#8A97A6;">Pittsburgh Predators</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">0.460</td><td>0.554</td><td>46</td><td style="color:#E8A020;">34%</td></tr>  </tbody>
 </table>
+</div></div>
 
-<div class="sl">Top pitchers across all teams</div>
+<div class="section" id="pitchers">
+<div class="page" style="padding-top:2rem;">
+<h1>Top <span>pitchers</span> — all teams</h1>
+<p class="sub">Cross-team pitching leaderboard · Lady Dukes highlighted</p>
 <table class="top-table">
   <thead><tr><th>#</th><th>Pitcher</th><th>Team</th><th>ERA</th><th>WHIP</th><th>K</th><th>IP</th></tr></thead>
-  <tbody>
-<tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">1</td><td style="font-weight:400;">Everly D</td><td style="color:#8A97A6;">PA Lady Knights</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">0.00</td><td>1.80</td><td style="font-weight:600;">10</td><td style="color:#8A97A6;">5.0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">2</td><td style="font-weight:400;">Jovi G</td><td style="color:#8A97A6;">TN Mojo</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">1.26</td><td>0.90</td><td style="font-weight:600;">82</td><td style="color:#8A97A6;">52.0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">3</td><td style="font-weight:400;">Brooklyn S</td><td style="color:#8A97A6;">South Hills Elite</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">1.75</td><td>1.36</td><td style="font-weight:600;">43</td><td style="color:#8A97A6;">28.0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">4</td><td style="font-weight:400;">Mya S</td><td style="color:#8A97A6;">TN Mojo</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">1.79</td><td>1.10</td><td style="font-weight:600;">21</td><td style="color:#8A97A6;">15.2</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">5</td><td style="font-weight:400;">Elly L</td><td style="color:#8A97A6;">PA Lady Knights</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">2.35</td><td>1.09</td><td style="font-weight:600;">225</td><td style="color:#8A97A6;">107.1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">6</td><td style="font-weight:400;">Zoey C</td><td style="color:#8A97A6;">Silver Creek</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">2.10</td><td>1.32</td><td style="font-weight:600;">36</td><td style="color:#8A97A6;">16.2</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">7</td><td style="font-weight:400;">Emma B</td><td style="color:#8A97A6;">Outlaws Lambie</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">2.10</td><td>1.80</td><td style="font-weight:600;">9</td><td style="color:#8A97A6;">6.2</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">8</td><td style="font-weight:400;">Bella M</td><td style="color:#8A97A6;">Silver Creek</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">2.47</td><td>1.15</td><td style="font-weight:600;">30</td><td style="color:#8A97A6;">17.0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">9</td><td style="font-weight:400;">Amelia H</td><td style="color:#8A97A6;">Pittsburgh Tigers</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">2.33</td><td>1.02</td><td style="font-weight:600;">310</td><td style="color:#8A97A6;">147.1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">10</td><td style="font-weight:400;">Kenley T</td><td style="color:#8A97A6;">Outlaws Valore</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#E8A020;">2.78</td><td>1.30</td><td style="font-weight:600;">262</td><td style="color:#8A97A6;">115.2</td></tr><tr style="background:rgba(232,160,32,0.05);"><td style="color:#8A97A6;font-family:'DM Mono',monospace;">11</td><td style="font-weight:600;color:#E8A020;">Maddie Porter⭐</td><td style="color:#8A97A6;">Lady Dukes</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#E8A020;">3.09</td><td>0.66</td><td style="font-weight:600;">13</td><td style="color:#8A97A6;">74.8</td></tr>
-  </tbody>
+  <tbody><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">1</td><td style="font-weight:400;color:#F2EFE8;">Everly D</td><td style="color:#8A97A6;">PA Lady Knights</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">0.00</td><td>1.80</td><td style="font-weight:600;">10</td><td style="color:#8A97A6;">5.0</td></tr><tr style="background:rgba(226,75,74,0.05);"><td style="color:#8A97A6;font-family:'DM Mono',monospace;">2</td><td style="font-weight:600;color:#E24B4A;">Avry G🆕</td><td style="color:#8A97A6;">All American Red</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">1.22</td><td>0.78</td><td style="font-weight:600;">188</td><td style="color:#8A97A6;">86.1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">3</td><td style="font-weight:400;color:#F2EFE8;">Jovi G</td><td style="color:#8A97A6;">TN Mojo</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">1.26</td><td>0.90</td><td style="font-weight:600;">82</td><td style="color:#8A97A6;">52.0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">4</td><td style="font-weight:400;color:#F2EFE8;">Brooklyn S</td><td style="color:#8A97A6;">South Hills Elite</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">1.75</td><td>1.36</td><td style="font-weight:600;">43</td><td style="color:#8A97A6;">28.0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">5</td><td style="font-weight:400;color:#F2EFE8;">Mya S</td><td style="color:#8A97A6;">TN Mojo</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#2DB87C;">1.79</td><td>1.10</td><td style="font-weight:600;">21</td><td style="color:#8A97A6;">15.2</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">6</td><td style="font-weight:400;color:#F2EFE8;">Zoey C</td><td style="color:#8A97A6;">Silver Creek</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#E8A020;">2.10</td><td>1.32</td><td style="font-weight:600;">36</td><td style="color:#8A97A6;">16.2</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">7</td><td style="font-weight:400;color:#F2EFE8;">Emma B</td><td style="color:#8A97A6;">Outlaws Lambie</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#E8A020;">2.10</td><td>1.80</td><td style="font-weight:600;">9</td><td style="color:#8A97A6;">6.2</td></tr><tr style="background:rgba(226,75,74,0.05);"><td style="color:#8A97A6;font-family:'DM Mono',monospace;">8</td><td style="font-weight:600;color:#E24B4A;">Brooke K🆕</td><td style="color:#8A97A6;">All American Red</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#E8A020;">2.36</td><td>1.38</td><td style="font-weight:600;">32</td><td style="color:#8A97A6;">29.2</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">9</td><td style="font-weight:400;color:#F2EFE8;">Amelia H</td><td style="color:#8A97A6;">Pittsburgh Tigers</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#E8A020;">2.33</td><td>1.02</td><td style="font-weight:600;">310</td><td style="color:#8A97A6;">147.1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">10</td><td style="font-weight:400;color:#F2EFE8;">Elly L</td><td style="color:#8A97A6;">PA Lady Knights</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#E8A020;">2.35</td><td>1.09</td><td style="font-weight:600;">225</td><td style="color:#8A97A6;">107.1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">11</td><td style="font-weight:400;color:#F2EFE8;">Bella M</td><td style="color:#8A97A6;">Silver Creek</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#E8A020;">2.47</td><td>1.15</td><td style="font-weight:600;">30</td><td style="color:#8A97A6;">17.0</td></tr><tr style="background:rgba(232,160,32,0.06);"><td style="color:#8A97A6;font-family:'DM Mono',monospace;">12</td><td style="font-weight:600;color:#E8A020;">Maddie Porter⭐</td><td style="color:#8A97A6;">Lady Dukes</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#E8A020;">3.09</td><td>0.66</td><td style="font-weight:600;">13</td><td style="color:#8A97A6;">74.8</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">13</td><td style="font-weight:400;color:#F2EFE8;">Kenley T</td><td style="color:#8A97A6;">Outlaws Valore</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#E8A020;">2.78</td><td>1.30</td><td style="font-weight:600;">262</td><td style="color:#8A97A6;">115.2</td></tr><tr style="background:rgba(226,75,74,0.05);"><td style="color:#8A97A6;font-family:'DM Mono',monospace;">14</td><td style="font-weight:600;color:#E24B4A;">Randi L🆕</td><td style="color:#8A97A6;">All American Red</td><td style="font-weight:600;font-family:'DM Mono',monospace;color:#E8A020;">3.00</td><td>1.63</td><td style="font-weight:600;">35</td><td style="color:#8A97A6;">23.1</td></tr>  </tbody>
 </table>
-</div>
+</div></div>
 
 <script>
+function show(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active');btn.classList.add('active');}
 new Chart(document.getElementById('dangerChart'),{
   type:'bar',
   data:{
-    labels:['PA Knights','TN Mojo','SHE','Silver Creek','Pgh Tigers','Outlaws L','Outlaws V','Lady Dukes','Pgh Preds','Devil Dogs'],
-    datasets:[{
-      label:'Danger score',
-      data:[13.55,12.92,11.13,10.43,9.43,9.29,8.95,8.18,7.81,7.69],
-      backgroundColor:['#E24B4A','#E24B4A','#E8A020','#E8A020','#E8A020','#E8A020','#E8A020','#E8A020','#378ADD','#378ADD'],
-      borderRadius:4,
-    }]
+    labels:['PA Knights','All American','TN Mojo','SHE','Silver Creek','Pgh Tigers','Outlaws L','Outlaws V','Pgh Preds','Devil Dogs'],
+    datasets:[
+      {label:'Danger',data:[13.55,12.97,12.92,11.13,10.43,9.43,9.29,8.95,7.81,7.69],
+       backgroundColor:['#E24B4A','#E24B4A','#E24B4A','#E24B4A','#E8A020','#E8A020','#E8A020','#E8A020','#378ADD','#378ADD'],
+       borderRadius:4},
+      {label:'Lady Dukes',data:[8.18,8.18,8.18,8.18,8.18,8.18,8.18,8.18,8.18,8.18],
+       type:'line',borderColor:'#E8A020',borderDash:[4,3],pointRadius:0,borderWidth:2,fill:false}
+    ]
   },
-  options:{
-    responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{display:false}},
-    scales:{
-      x:{grid:{display:false},ticks:{color:'#8A97A6',font:{size:10}}},
-      y:{beginAtZero:true,max:15,grid:{color:'rgba(255,255,255,0.06)'},ticks:{color:'#8A97A6'}}
-    }
-  }
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.datasetIndex===0?`Danger: ${ctx.raw}`:`Dukes ref: ${ctx.raw}`}}},
+    scales:{x:{grid:{display:false},ticks:{color:'#8A97A6',font:{size:10}}},
+            y:{beginAtZero:true,max:15,grid:{color:'rgba(255,255,255,0.06)'},ticks:{color:'#8A97A6'}}}}
 });
 </script>
 </body></html>
