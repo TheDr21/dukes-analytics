@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scouting Report — Lady Dukes 10U</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',system-ui,sans-serif;background:#0B1E35;color:#F2EFE8;min-height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:52px;border-bottom:1px solid rgba(255,255,255,0.08);position:sticky;top:0;background:#0B1E35;z-index:100;}
+.logo{font-size:14px;font-weight:600;color:#F2EFE8;text-decoration:none;}
+.logo span{color:#E8A020;}
+.back{font-size:12px;color:#8A97A6;text-decoration:none;font-family:'DM Mono',monospace;}
+.back:hover{color:#E8A020;}
+.tabs{display:flex;border-bottom:1px solid rgba(255,255,255,0.08);position:sticky;top:52px;background:#0B1E35;z-index:90;padding:0 2rem;}
+.tab{padding:12px 16px;font-size:13px;cursor:pointer;color:#8A97A6;border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;font-family:'Inter',sans-serif;transition:color .15s;}
+.tab:hover{color:#F2EFE8;}
+.tab.active{color:#E8A020;border-bottom-color:#E8A020;}
+.section{display:none;max-width:900px;margin:0 auto;padding:2rem;}
+.section.active{display:block;}
+h1{font-size:26px;font-weight:600;margin-bottom:.3rem;letter-spacing:-.01em;}
+h1 .accent{color:#E8A020;}
+.sub{font-size:13px;color:#8A97A6;margin-bottom:2rem;}
+.sec-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#8A97A6;margin:1.75rem 0 .75rem;padding-bottom:.4rem;border-bottom:1px solid rgba(255,255,255,0.08);}
+.sec-label:first-child{margin-top:0;}
+
+/* Opponent report styles */
+.threat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.5rem;}
+.threat-box{border-radius:10px;padding:1rem 1.25rem;}
+.threat-box.red{background:rgba(226,75,74,0.1);border:1px solid rgba(226,75,74,0.2);}
+.threat-box.green{background:rgba(45,184,124,0.08);border:1px solid rgba(45,184,124,0.2);}
+.threat-title{font-size:12px;font-weight:600;margin-bottom:.6rem;text-transform:uppercase;letter-spacing:.05em;}
+.threat-title.r{color:#E24B4A;}
+.threat-title.g{color:#2DB87C;}
+.threat-item{font-size:12px;color:#B0BDC9;line-height:1.6;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.threat-item:last-child{border-bottom:none;}
+.threat-item strong{color:#F2EFE8;}
+
+/* Hitter card */
+.hitter-cards{display:flex;flex-direction:column;gap:12px;}
+.hc{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;}
+.hc-header{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:.9rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.07);}
+.hc-name{font-size:14px;font-weight:600;}
+.hc-pos{font-size:11px;color:#8A97A6;margin-top:2px;}
+.hc-danger{font-size:22px;font-weight:600;font-family:'DM Mono',monospace;text-align:right;}
+.hc-danger-lbl{font-size:10px;color:#8A97A6;text-align:right;text-transform:uppercase;letter-spacing:.04em;}
+.hc-body{padding:.9rem 1.25rem;}
+.hc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.hc-stat-row{display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px;}
+.hc-stat-row:last-child{border-bottom:none;}
+.hc-stat-lbl{color:#8A97A6;}
+.hc-stat-val{font-weight:600;font-family:'DM Mono',monospace;}
+.approach-box{background:rgba(232,160,32,0.08);border:1px solid rgba(232,160,32,0.2);border-radius:6px;padding:.65rem .9rem;margin-top:.75rem;font-size:12px;color:#F2EFE8;line-height:1.6;}
+.approach-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#E8A020;margin-bottom:3px;}
+.pill{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;margin-right:4px;margin-top:4px;}
+.pill-r{background:rgba(226,75,74,0.2);color:#E24B4A;}
+.pill-g{background:rgba(45,184,124,0.15);color:#2DB87C;}
+.pill-b{background:rgba(55,138,221,0.15);color:#378ADD;}
+.pill-w{background:rgba(232,160,32,0.15);color:#E8A020;}
+.danger-bar{height:4px;border-radius:2px;margin-bottom:.75rem;}
+
+/* Dev report styles */
+.dev-cards{display:flex;flex-direction:column;gap:14px;}
+.dc{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;}
+.dc-header{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.07);}
+.dc-name{font-size:14px;font-weight:600;}
+.dc-role{font-size:11px;color:#8A97A6;margin-top:2px;}
+.grade-badge{font-size:14px;font-weight:600;padding:4px 14px;border-radius:6px;font-family:'DM Mono',monospace;}
+.grade-A{background:rgba(45,184,124,0.15);color:#2DB87C;}
+.grade-B{background:rgba(55,138,221,0.15);color:#378ADD;}
+.grade-C{background:rgba(232,160,32,0.15);color:#E8A020;}
+.grade-D{background:rgba(226,75,74,0.15);color:#E24B4A;}
+.dc-body{padding:.9rem 1.25rem;}
+.dc-two{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:.85rem;}
+.dc-col-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem;}
+.dc-col-label.g{color:#2DB87C;}
+.dc-col-label.r{color:#E24B4A;}
+.dc-item{font-size:12px;color:#B0BDC9;line-height:1.6;padding:3px 0;display:flex;align-items:flex-start;gap:6px;}
+.dc-item::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:6px;}
+.dc-item.good::before{background:#2DB87C;}
+.dc-item.bad::before{background:#E24B4A;}
+.focus-box{background:rgba(55,138,221,0.07);border:1px solid rgba(55,138,221,0.2);border-radius:6px;padding:.65rem .9rem;font-size:12px;color:#B0BDC9;line-height:1.6;}
+.focus-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#378ADD;margin-bottom:3px;}
+.proj-lbl{display:inline-block;font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500;margin-top:.5rem;}
+
+/* Pitching card additions */
+.pitch-stat-row{display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px;}
+.pitch-stat-row:last-child{border-bottom:none;}
+
+@media(max-width:600px){
+  .threat-grid{grid-template-columns:1fr;}
+  .hc-grid{grid-template-columns:1fr;}
+  .dc-two{grid-template-columns:1fr;}
+  .section{padding:1.25rem 1rem;}
+  .tabs{padding:0 1rem;overflow-x:auto;}
+}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a href="index.html" class="logo">Lady Dukes <span>Analytics</span></a>
+  <a href="index.html" class="back">← Back to hub</a>
+</nav>
+
+<div class="tabs">
+  <button class="tab active" onclick="show('opp',this)">Opposing coach</button>
+  <button class="tab" onclick="show('dev',this)">Player development</button>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     OPPOSING COACH REPORT
+══════════════════════════════════════════════ -->
+<div class="section active" id="opp">
+  <h1>How to beat the <span class="accent">Lady Dukes</span></h1>
+  <p class="sub">Opposing coach scouting report · WPA Lady Dukes 10U · 74 games · 2025–26</p>
+
+  <div class="sec-label">Team profile</div>
+  <div class="threat-grid">
+    <div class="threat-box red">
+      <div class="threat-title r">🚨 Respect these</div>
+      <div class="threat-item"><strong>Top-4 offense is elite.</strong> Porter (.496), LaFever (.424), Glomb (.401), Dantry (.407) — all above .400 BA. Do not let these four beat you.</div>
+      <div class="threat-item"><strong>Team speed is extreme.</strong> 414 SBs. LaFever steals 1.2/game. Glomb steals 1.0/game. If they get on, they're going.</div>
+      <div class="threat-item"><strong>Three pitchers also hit.</strong> Porter, Glomb, and Dantry don't rest in the field — they're your 3 best hitters.</div>
+      <div class="threat-item"><strong>+138 run differential.</strong> When this team gets momentum, runs come in bunches. Don't let them string innings.</div>
+    </div>
+    <div class="threat-box green">
+      <div class="threat-title g">✅ Exploit these</div>
+      <div class="threat-item"><strong>Close-game record: 9-17.</strong> They lose 1 and 2-run games at a 65% rate. Make it a grind.</div>
+      <div class="threat-item"><strong>Bottom half K rate 45–79%.</strong> Spots 6–9 go down swinging constantly. Attack them, don't nibble.</div>
+      <div class="threat-item"><strong>Run on their catchers.</strong> 14% caught-stealing rate. Run every time you're on — they cannot throw you out.</div>
+      <div class="threat-item"><strong>Away from home, offense drops.</strong> Top hitters hit .080–.120 lower on the road. This is a home-field team.</div>
+      <div class="threat-item"><strong>Rocco walks batters (3.22/inn).</strong> When she pitches, take pitches — she'll give you the base.</div>
+    </div>
+  </div>
+
+  <div class="sec-label">Game plan</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:1.5rem;">
+    <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:1rem;">
+      <div style="font-size:11px;font-weight:600;color:#E8A020;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem;">Pitching strategy</div>
+      <div style="font-size:12px;color:#B0BDC9;line-height:1.7;">Keep the game close. Limit extra base hits against the top 4. Pitch around Porter if you have to. Attack spots 6–9 aggressively — they will swing and miss. Work up in the zone to Tortorice (extreme groundball hitter).</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:1rem;">
+      <div style="font-size:11px;font-weight:600;color:#378ADD;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem;">Baserunning strategy</div>
+      <div style="font-size:12px;color:#B0BDC9;line-height:1.7;">Run on every pitch. Both catchers throw out fewer than 15% of runners — this is free bases. Set up steals in scoring position early to put pressure on before the big inning.</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:1rem;">
+      <div style="font-size:11px;font-weight:600;color:#2DB87C;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem;">Defensive setup</div>
+      <div style="font-size:12px;color:#B0BDC9;line-height:1.7;">Play up the middle — both CF and 2B see heavy traffic from the groundball-heavy offense (team GB% ~55%). Shift Schmidt at SS — she's an extreme pull hitter with low contact. Shade Tortorice to pull (69% GB).</div>
+    </div>
+  </div>
+
+  <div class="sec-label">Batter-by-batter approach</div>
+  <div class="hitter-cards" id="hitterCards"></div>
+
+  <div class="sec-label">Their pitchers — how to attack</div>
+  <div class="hitter-cards" id="pitcherCards"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PLAYER DEVELOPMENT REPORT
+══════════════════════════════════════════════ -->
+<div class="section" id="dev">
+  <h1>Player <span class="accent">development report</span></h1>
+  <p class="sub">Individual offseason assessment · WPA Lady Dukes 10U · Based on 74-game season</p>
+  <div class="dev-cards" id="devCards"></div>
+</div>
+
+<script>
+function show(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+const hitters=[
+  {
+    n:'Maddie Porter',pos:'3B / Pitcher',threat:9.5,threatColor:'#E24B4A',
+    stats:[
+      {l:'BA',v:'.496'},{l:'OBP',v:'.549'},{l:'OPS',v:'1.223'},
+      {l:'RBI',v:'53'},{l:'K rate',v:'22.0%'},{l:'BA/RISP',v:'.543'}
+    ],
+    pills:['pill-r:DO NOT WALK','pill-r:Pitch around if needed','pill-g:Vulnerable up & away'],
+    approach:"Up and away only. Change speeds constantly — she has the best contact rate on the team (22% K) and will punish anything middle-in. She hits .543 with RISP — do not let her up with runners on base if you can help it. If you must walk her, do it intentionally and take your chances with Dantry."
+  },
+  {
+    n:'Rylan LaFever',pos:'Catcher / Leadoff',threat:9.0,threatColor:'#E24B4A',
+    stats:[
+      {l:'BA',v:'.424'},{l:'OBP',v:'.522'},{l:'SB',v:'78'},{l:'K rate',v:'33.6%'},
+      {l:'P/PA',v:'4.17'},{l:'L BA',v:'.188'}
+    ],
+    pills:['pill-r:FASTEST on team','pill-w:33.6% K — can be beat','pill-g:Away BA just .369'],
+    approach:"Don't walk her under any circumstances — she steals 1.2 bases per game and will score from first on any contact. Throw first-pitch strikes. Her 33.6% K rate means she'll chase if you get ahead. When you get two strikes, expand off the plate. She crumbles in losses (.188 BA) so if you're pitching well, her number drops dramatically."
+  },
+  {
+    n:'Ava Glomb',pos:'CF / Pitcher',threat:9.0,threatColor:'#E24B4A',
+    stats:[
+      {l:'BA',v:'.401'},{l:'OBP',v:'.491'},{l:'SB',v:'73'},{l:'K rate',v:'27.7%'},
+      {l:'LD%',v:'22.8%'},{l:'GB%',v:'55.2%'}
+    ],
+    pills:['pill-r:Also a pitcher','pill-w:Pitch up in zone','pill-g:Away BA .392 (ok but manageable)'],
+    approach:"She hits groundballs 55% of the time — if you pitch up in the zone you might get a flyout, which is the lesser evil. She has a 22.8% LD rate so she makes solid contact. Also your primary pitching threat — she'll throw the most innings on the staff. Don't let her get loose early or she'll settle in."
+  },
+  {
+    n:'Autumn Dantry',pos:'1B / Pitcher',threat:8.5,threatColor:'#E24B4A',
+    stats:[
+      {l:'BA',v:'.407'},{l:'OBP',v:'.510'},{l:'QAB%',v:'64.2%'},{l:'K rate',v:'32.2%'},
+      {l:'P/PA',v:'4.10'},{l:'LD%',v:'33.0%'}
+    ],
+    pills:['pill-r:Works counts (64% QAB)','pill-w:Attack early — 32.2% K','pill-g:BA drops to .171 in losses'],
+    approach:"Attack her early. Her 64.2% QAB and 4.10 P/PA mean she lives to get deep in counts — beat her before she does. First pitch strikes are essential. She has the best line-drive rate on the team (33.0%) so when she makes contact it's solid. As a pitcher late in the season she's struggled (ERA 21.00 in June) — take extra pitches early in her outings."
+  },
+  {
+    n:'Violet Rocco',pos:'LF / Pitcher',threat:6.5,threatColor:'#E8A020',
+    stats:[
+      {l:'BA',v:'.278'},{l:'OBP',v:'.440'},{l:'BB rate',v:'22.4%'},{l:'K rate',v:'43.3%'},
+      {l:'Pit ERA',v:'4.30'},{l:'L BA',v:'.100'}
+    ],
+    pills:['pill-w:High walk rate — she takes walks','pill-g:43% K — attack early','pill-g:BA crashes to .100 in losses'],
+    approach:"She'll take a walk (22.4% BB rate) so you must throw strikes. Her 43.3% K rate at the plate means she'll chase — get ahead early and expand. As a pitcher her main vulnerability is command (52% strike rate, 3.22 BB/inn) — if she pitches, be patient, take pitches, make her work, and you'll get free bases."
+  },
+  {
+    n:'Brooklyn Schmidt',pos:'SS',threat:4.5,threatColor:'#2DB87C',
+    stats:[
+      {l:'BA',v:'.236'},{l:'OPS',v:'.687'},{l:'K rate',v:'56.1%'},
+      {l:'L BA',v:'.114'},{l:'Away BA',v:'.203'},{l:'Jun BA',v:'.100'}
+    ],
+    pills:['pill-g:56% K rate — she will swing','pill-g:Seasonal decline all year','pill-b:Can make errors at SS (25)'],
+    approach:"First pitch fastball every time. She's been in decline all season (.429 Sep → .100 Jun) and has the second-highest K rate on the team. She pops fly balls at a 33% rate. Attack her. If she's on base, she's not a true speed threat either — run the next hitter, not Schmidt."
+  },
+  {
+    n:'Camille McWilliams',pos:'Catcher',threat:4.5,threatColor:'#2DB87C',
+    stats:[
+      {l:'BA',v:'.246'},{l:'BA/RISP',v:'.318'},{l:'K rate',v:'44.9%'},
+      {l:'CS%',v:'14.6%'},{l:'L BA',v:'.111'},{l:'QAB%',v:'36.4%'}
+    ],
+    pills:['pill-r:Dangerous with RISP (.318)','pill-g:44.9% K in other situations','pill-g:Run on her — 14.6% CS'],
+    approach:"Do not let runners get stranded in front of her — she converts RISP opportunities at a .318 clip which is her best skill. In normal count situations attack her (44.9% K rate). As catcher, run aggressive on every pitch — she throws out fewer than 15% of runners all season. She is your biggest base-stealing opportunity."
+  },
+  {
+    n:'Sophia Chimino',pos:'2B / RF',threat:4.0,threatColor:'#2DB87C',
+    stats:[
+      {l:'BA',v:'.238'},{l:'OPS',v:'.640'},{l:'K rate',v:'45.7%'},
+      {l:'BA/RISP',v:'.121'},{l:'Away BA',v:'.140'},{l:'L BA',v:'.083'}
+    ],
+    pills:['pill-g:45.7% K — pure attack','pill-g:Worst RISP on team (.121)','pill-b:Speed threat — 44 SBs'],
+    approach:"Challenge her with fastballs. She K's 46% of the time and hits .121 with RISP — statistically your easiest out in the middle of the lineup. The one caution: 44 SBs means if she gets on base she'll try to run. Don't let her get on — that's easier said than done since she has a 19.5% walk rate."
+  },
+  {
+    n:'Silvia Tortorice',pos:'2B',threat:3.0,threatColor:'#2DB87C',
+    stats:[
+      {l:'BA',v:'.197'},{l:'BABIP',v:'.284'},{l:'GB%',v:'69.9%'},
+      {l:'LD%',v:'9.6%'},{l:'L BA',v:'.135'},{l:'Away BA',v:'.127'}
+    ],
+    pills:['pill-g:Lowest BABIP (.284) — soft contact','pill-g:9.6% LD rate — rarely hits hard','pill-g:Away BA just .127'],
+    approach:"Work low in the zone. Her 69.9% groundball rate means everything stays on the ground — your infield will handle it. She rarely elevates (9.6% LD). Don't walk her — she has 17 BBs and can work a count. Just pound the zone low and let her roll over everything to your 2B."
+  },
+  {
+    n:'Brianna Marple',pos:'1B / LF',threat:1.5,threatColor:'#2DB87C',
+    stats:[
+      {l:'BA',v:'.125'},{l:'K rate',v:'78.8%'},{l:'BA/RISP',v:'.044'},
+      {l:'L BA',v:'.000'},{l:'LOB',v:'62'},{l:'2-out RBI',v:'3'}
+    ],
+    pills:['pill-g:79% K — automatic out','pill-g:0-for-35 in losses','pill-g:Almost no RISP production'],
+    approach:"Throw anything. She has a 78.8% K rate — nearly 4 of every 5 ABs end in a strikeout. She went 0-for-35 in every game the Dukes lost. Her only weapon is her 21.1% walk rate, so don't nibble. Throw strikes and she will swing herself out. Do not walk her."
+  },
+];
+
+const pitchers=[
+  {
+    n:'Maddie Porter (pitcher)',pos:'Ace / Primary closer',threat:9,threatColor:'#E24B4A',
+    stats:[
+      {l:'ERA',v:'3.09'},{l:'WHIP',v:'0.66'},{l:'Strike%',v:'62.7%'},
+      {l:'FPS%',v:'64.3%'},{l:'GO/AO',v:'1.96'},{l:'K/BB',v:'2.15'}
+    ],
+    pills:['pill-r:Gets first pitch strikes 64%','pill-r:Ground ball pitcher — put ball in play','pill-w:Only 13 Ks — not a strikeout pitcher'],
+    approach:"Put the ball in play early. She's not a strikeout pitcher (13 Ks in 74 innings) — she gets grounders and relies on defense. If your infield is solid, making contact is your best strategy. She's a groundball machine (GO/AO 1.96) so putting it on the ground doesn't help you — try to elevate and hit fly balls. Take deep counts to tire her out. Her ERA in losses is 4.91 — if you get to her early, she's beatable."
+  },
+  {
+    n:'Ava Glomb (pitcher)',pos:'Workhorse / Most innings',threat:8,threatColor:'#E24B4A',
+    stats:[
+      {l:'ERA',v:'4.24'},{l:'FIP',v:'2.70'},{l:'WHIP',v:'0.45'},
+      {l:'FPS%',v:'57.3%'},{l:'GO/AO',v:'2.61'},{l:'IP',v:'94.0'}
+    ],
+    pills:['pill-r:Lowest WHIP on staff (.45)','pill-w:FPS% 57% — lower than Porter','pill-g:ERA will regress toward FIP (2.70)'],
+    approach:"FPS% is 57.3% — lower than Porter. If she doesn't throw first-pitch strikes she gets behind in counts. Work deep counts. Her WHIP is outstanding (.45) meaning she doesn't give up free baserunners — you must earn them. As the highest-innings pitcher, she may tire late in tournaments. Save some energy for her second outing."
+  },
+  {
+    n:'Violet Rocco (pitcher)',pos:'Strikeout arm / Wildcard',threat:6,threatColor:'#E8A020',
+    stats:[
+      {l:'ERA',v:'4.30'},{l:'FIP',v:'5.74'},{l:'Strike%',v:'52.1%'},
+      {l:'BB/INN',v:'3.22'},{l:'SwStr%',v:'23.2%'},{l:'FPS%',v:'49.4%'}
+    ],
+    pills:['pill-g:Only 52% strikes — take pitches','pill-g:3.22 BB/inn — free walks','pill-r:23% SwStr — she CAN miss bats'],
+    approach:"Take every pitch she throws. Her strike rate is 52.1% and she walks 3.22 batters per inning — if you simply take pitches you'll get on base for free. When you do swing, be selective — her SwStr% of 23.2% means she can make you miss, but only if you swing. Patient at-bats will break her. FIP of 5.74 says she's been lucky — press the advantage."
+  },
+  {
+    n:'Autumn Dantry (pitcher)',pos:'Middle innings / Late season decline',threat:6,threatColor:'#E8A020',
+    stats:[
+      {l:'ERA',v:'4.63'},{l:'Strike%',v:'54.6%'},{l:'K/BB',v:'1.54'},
+      {l:'Jun ERA',v:'21.00'},{l:'FPS%',v:'61.3%'},{l:'BB/INN',v:'1.86'}
+    ],
+    pills:['pill-g:ERA spiked to 21 in June','pill-w:FPS% decent (61%) but strike% low','pill-g:K/BB 1.54 — walks nearly as many as she Ks'],
+    approach:"She's been declining all season — late tournament play or second outings should find her at her worst. Her June ERA of 21.00 (small sample) shows real vulnerability. Her strike% of 54.6% is the lowest on the staff. Work deep counts and make her throw. K/BB of 1.54 means she's almost as likely to walk you as strike you out — patience wins."
+  },
+];
+
+const hc=document.getElementById('hitterCards');
+hitters.forEach(p=>{
+  const barWidth=Math.round(p.threat/10*100);
+  const pillHTML=p.pills.map(pill=>{
+    const [cls,text]=pill.split(':');
+    return `<span class="pill ${cls}">${text}</span>`;
+  }).join('');
+  hc.innerHTML+=`
+  <div class="hc">
+    <div style="height:4px;background:${p.threatColor};opacity:.6;"></div>
+    <div class="hc-header">
+      <div><div class="hc-name">${p.n}</div><div class="hc-pos">${p.pos}</div></div>
+      <div><div class="hc-danger" style="color:${p.threatColor};">${p.threat}</div><div class="hc-danger-lbl">Threat / 10</div></div>
+    </div>
+    <div class="hc-body">
+      <div class="hc-grid">
+        <div>${p.stats.map(s=>`<div class="hc-stat-row"><span class="hc-stat-lbl">${s.l}</span><span class="hc-stat-val" style="color:${p.threatColor};">${s.v}</span></div>`).join('')}</div>
+        <div><div style="margin-bottom:.5rem;">${pillHTML}</div></div>
+      </div>
+      <div class="approach-box"><div class="approach-lbl">Pitch approach</div>${p.approach}</div>
+    </div>
+  </div>`;
+});
+
+const pc=document.getElementById('pitcherCards');
+pitchers.forEach(p=>{
+  const pillHTML=p.pills.map(pill=>{
+    const [cls,text]=pill.split(':');
+    return `<span class="pill ${cls}">${text}</span>`;
+  }).join('');
+  pc.innerHTML+=`
+  <div class="hc">
+    <div style="height:4px;background:${p.threatColor};opacity:.6;"></div>
+    <div class="hc-header">
+      <div><div class="hc-name">${p.n}</div><div class="hc-pos">${p.pos}</div></div>
+      <div><div class="hc-danger" style="color:${p.threatColor};">${p.threat}</div><div class="hc-danger-lbl">Threat / 10</div></div>
+    </div>
+    <div class="hc-body">
+      <div class="hc-grid">
+        <div>${p.stats.map(s=>`<div class="hc-stat-row"><span class="hc-stat-lbl">${s.l}</span><span class="hc-stat-val" style="color:${p.threatColor};">${s.v}</span></div>`).join('')}</div>
+        <div><div style="margin-bottom:.5rem;">${pillHTML}</div></div>
+      </div>
+      <div class="approach-box"><div class="approach-lbl">How to attack</div>${p.approach}</div>
+    </div>
+  </div>`;
+});
+
+// Development cards
+const devData=[
+  {
+    n:'Maddie Porter',role:'Ace pitcher · 3B · Offensive anchor',grade:'A+',
+    strengths:['Team leader in BA (.496), OPS (1.223), RBI (53)','Best ERA (3.09) and WHIP (0.66) on staff','Best contact rate on team (22% K rate)','Elite BA/RISP (.543) — clutch performer','17 two-out RBIs — produces when it counts'],
+    improvements:['BA drops .256 points in losses — mental consistency','Away BA (.440) significantly below home (.561)','FB% at plate (31.4%) — can elevate into outs','Pitching: refine second pitch for 11U mound distance'],
+    focus:'Develop consistent approach away from home. Work on a changeup or secondary pitch as a pitcher to prepare for 11U where proximity advantage shrinks.',
+    proj:'proj-a',projLabel:'11U outlook: Thrives · No drop-off expected',
+    note:'The complete player. Every development item is refinement, not repair. Priority for fall ball is establishing 11U pitching mechanics.'
+  },
+  {
+    n:'Rylan LaFever',role:'Catcher · Leadoff · Speed specialist',grade:'A',
+    strengths:['Best leadoff hitter on roster (78 SBs, 1.20/game)','OPS 1.026 — top-4 offensive player','.522 OBP — gets on base constantly','Works deepest counts among top bats (4.17 P/PA)','17 two-out RBIs'],
+    improvements:['BA craters to .188 in losses — needs mental coping strategy','Away BA (.369) vs home (.483) — road adjustment needed','14.3% CS% as catcher — throwing mechanics priority','16 passed balls — receiving and framing work needed','33.6% K rate — highest among the top-4 bats'],
+    focus:'Catching mechanics are the single biggest development area. If she can reach 25% CS%, this team\'s defense improves dramatically. This is fall/winter priority.',
+    proj:'proj-b',projLabel:'11U outlook: Strong · Speed translates',
+    note:'The most impactful single improvement available to the team is LaFever\'s throwing from behind the plate. Worth dedicated weekly reps.'
+  },
+  {
+    n:'Ava Glomb',role:'CF · Pitcher · Speed threat',grade:'A',
+    strengths:['Staff workhorse — 94 innings, 10 wins','FIP 2.70 — best underlying pitcher on staff','Lowest WHIP on staff (.45)','73 SBs — second-fastest player','Contact hitter — 27.7% K rate'],
+    improvements:['FPS% (57.3%) — lowest on staff, needs first-pitch strike focus','ERA (4.24) inflated by defense — improve pitch efficiency','10 errors in field — footwork and transfer speed','BA in losses (.333) — consistent but improvable'],
+    focus:'First-pitch strikes. If she throws FPS at Porter\'s rate (64.3%) instead of 57.3%, her efficiency jumps and innings become easier. This is her biggest controllable lever as a pitcher.',
+    proj:'proj-a',projLabel:'11U outlook: Breakout · FIP says more upside',
+    note:'Her FIP (2.70) is dramatically better than ERA (4.24) — she\'s been unlucky. As the defense improves around her, her ERA numbers should catch up to her true skill.'
+  },
+  {
+    n:'Autumn Dantry',role:'1B · Pitcher · Cleanup hitter',grade:'A-',
+    strengths:['Best QAB% on team (64.2%) — elite plate discipline','Highest LD% on team (33.0%) — hits it hard','Works counts better than anyone on roster','Strong first half of season as pitcher'],
+    improvements:['Pitching ERA spiked severely: 4.31 Apr → 11.55 May → 21.00 Jun','Strike% 54.6% — lowest on staff','K/BB 1.54 as pitcher — must improve command','BA crashes to .171 in losses','13 errors in field (.776 FPCT) — cleanest first base on team'],
+    focus:'Pitching mechanics review is urgent before 11U. The late-season collapse (ERA 21.00 June) combined with the mound moving back makes this the priority item. Her hitting needs no work.',
+    proj:'proj-b',projLabel:'11U outlook: Hitter yes · Pitcher uncertain',
+    note:'The most important offseason question for the team: can Dantry recapture her Nov ERA (0.00) form? If yes, the pitching staff is deep. If no, she becomes a full-time 1B/DH.'
+  },
+  {
+    n:'Violet Rocco',role:'LF · Pitcher · High-upside wildcard',grade:'B+',
+    strengths:['Best SwStr% on staff (23.2%) — elite swing-and-miss stuff','Highest walk rate on team as hitter (22.4%) — patient approach','Strikeout stuff is real — misses bats at 11U-capable rate','36 SBs despite modest BA'],
+    improvements:['52.1% strike rate as pitcher — command is THE issue','3.22 BB/INN — highest on staff by nearly 2x','FIP 5.74 — ERA has been fortunate, regression coming','43.3% K rate at plate','BA crashes to .100 in losses','.682 FPCT — worst on team defensively'],
+    focus:'Pitching command is everything. She has the best raw stuff on the staff. If she can reach 58% strikes she becomes a legitimate ace. This is mechanical — grip, release point, and repeatable delivery.',
+    proj:'proj-c',projLabel:'11U outlook: Wildcard · Command = ceiling',
+    note:'The most intriguing player on the roster. Her swing-and-miss rate at 10U projects to be very effective at 11U IF she can command the bigger ball. High risk, high reward.'
+  },
+  {
+    n:'Brooklyn Schmidt',role:'SS · Starting shortstop',grade:'C+',
+    strengths:['Only player who consistently plays SS (210 innings)','September form (.429 BA) shows ceiling exists','BABIP .495 — makes hard contact when connecting','Has shown ability to hit all types of pitching'],
+    improvements:['25 errors — most on team by large margin (.719 FPCT)','Season-long decline: .429 Sep → .222 Oct → .100 Jun','56.1% K rate — second worst on team','BA crashes to .114 in losses','33% FB rate with no power — pops up often'],
+    focus:'Defensive fundamentals at SS first — footwork, transfer, throwing angle. Offensively, mechanical work on contact is needed. The September numbers show the talent is there.',
+    proj:'proj-c',projLabel:'11U outlook: Needs development · Defense priority',
+    note:'The gap between her September form and June form is the biggest coaching opportunity on the roster. If she can stabilize at her September level, she\'s a solid contributor.'
+  },
+  {
+    n:'Camille McWilliams',role:'Catcher · Reserve utility',grade:'B-',
+    strengths:['.318 BA/RISP — clutch at the plate','9 two-out RBIs — produces in big spots','Solid catcher FPCT (.941)','30 RBI total despite modest average'],
+    improvements:['36.4% QAB% — lowest on team','44.9% K rate at plate','14.6% CS% — identical to LaFever (both need arm work)','11 passed balls','BA drops to .111 in losses'],
+    focus:'Catching mechanics — specifically the exchange from receive to throw. Needs to reach 20%+ CS% for 11U. Offensively, improve QAB% by being more selective early in counts.',
+    proj:'proj-c',projLabel:'11U outlook: Steady contributor · Catching depth',
+    note:'Her clutch production (.318 RISP, 30 RBI) punches above her average. As catcher depth behind LaFever, she provides real value if the throwing improves.'
+  },
+  {
+    n:'Sophia Chimino',role:'2B / RF · Speed specialist',grade:'C',
+    strengths:['44 SBs — third fastest on team (0.73/game)','April breakout (.385 BA) shows potential','19.5% walk rate — good patience at plate','Solid defender at 2B and RF'],
+    improvements:['45.7% K rate — contact mechanics primary issue','BA/RISP of .121 — worst on team','Only 1 two-out RBI all season','Away BA just .140','.083 BA in losses'],
+    focus:'Swing mechanics — specifically making contact. Her speed and patience are genuine assets, but a 45.7% K rate at 10U will become worse at 11U. This is the single offseason priority.',
+    proj:'proj-c',projLabel:'11U outlook: Needs mechanical work · Speed remains',
+    note:'The April hot streak (.385 BA) proves the ability is there. She needs to find what she did in April and replicate it. Film comparison of April vs. other months would be instructive.'
+  },
+  {
+    n:'Silvia Tortorice',role:'2B · Defensive specialist',grade:'C-',
+    strengths:['195 innings at 2B — reliable defensive presence','29 RBI despite .197 BA — finds ways to produce','8 two-out RBIs','Consistent in approach — rarely strikes out for her skill level'],
+    improvements:['9.6% LD rate — lowest on team by a wide margin','69.9% GB rate — everything stays on ground','BABIP .284 — soft contact profile','96 LOB — most on team (often left stranded)','Away BA just .127','Needs to elevate the ball more consistently'],
+    focus:'Hitting mechanics — specifically getting under the ball. Her extreme groundball profile works at 10U but is a liability at 11U where infields are better. The goal for the offseason is getting LD% from 9.6% to at least 15%.',
+    proj:'proj-d',projLabel:'11U outlook: High risk · Batted ball must change',
+    note:'Consistent and dependable defensively. Offensively, the contact profile needs a significant change before 11U. A batting tee focused on staying through the ball and driving it up the middle would help.'
+  },
+  {
+    n:'Brianna Marple',role:'1B / LF · Project player',grade:'D+',
+    strengths:['BABIP .526 — highest on team when contact is made','21.1% walk rate — elite patience','4.37 P/PA — works counts the most on team','Can hit the ball hard when she makes contact'],
+    improvements:['78.8% K rate — by far the worst on the team','BA/RISP .044 — near zero clutch production','0-for-35 in losses (literally zero hits)','Only 3 two-out RBIs all season','Contact rate of ~21% is unsustainable at any level'],
+    focus:'This is entirely a contact and swing decision issue. Her patience and raw contact quality (BABIP .526) show real tools. She needs to make contact 35%+ of the time to be viable at 11U. Tee work, soft toss, and machine work focused purely on contact rate.',
+    proj:'proj-d',projLabel:'11U outlook: High upside / high risk · Contact is everything',
+    note:'The BABIP (.526) is the most encouraging number on the team. She hits it hard. She just rarely gets there. If she can halve her K rate to ~40%, she becomes a contributing player quickly.'
+  },
+];
+
+const projColors={'proj-a':'#2DB87C','proj-b':'#378ADD','proj-c':'#E8A020','proj-d':'#E24B4A'};
+const dc=document.getElementById('devCards');
+devData.forEach(p=>{
+  const gradeClass=`grade-${p.grade[0]}`;
+  const projColor=projColors[p.proj];
+  dc.innerHTML+=`
+  <div class="dc">
+    <div class="dc-header">
+      <div><div class="dc-name">${p.n}</div><div class="dc-role">${p.role}</div></div>
+      <span class="grade-badge ${gradeClass}">${p.grade}</span>
+    </div>
+    <div class="dc-body">
+      <div class="dc-two">
+        <div>
+          <div class="dc-col-label g">Strengths</div>
+          ${p.strengths.map(s=>`<div class="dc-item good">${s}</div>`).join('')}
+        </div>
+        <div>
+          <div class="dc-col-label r">Development areas</div>
+          ${p.improvements.map(s=>`<div class="dc-item bad">${s}</div>`).join('')}
+        </div>
+      </div>
+      <div class="focus-box" style="margin-bottom:.75rem;">
+        <div class="focus-lbl">Offseason priority</div>
+        ${p.focus}
+      </div>
+      <div style="font-size:12px;color:#8A97A6;line-height:1.6;margin-bottom:.5rem;font-style:italic;">${p.note}</div>
+      <span class="proj-lbl" style="background:${projColor}22;color:${projColor};">${p.projLabel}</span>
+    </div>
+  </div>`;
+});
+</script>
+</body>
+</html>
