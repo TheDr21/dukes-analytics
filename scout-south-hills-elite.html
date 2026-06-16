@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>South Hills Elite Scouting — Lady Dukes Analytics</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',system-ui,sans-serif;background:#0B1E35;color:#F2EFE8;min-height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:52px;border-bottom:1px solid rgba(255,255,255,0.08);position:sticky;top:0;background:#0B1E35;z-index:100;}
+.logo{font-size:14px;font-weight:600;color:#F2EFE8;text-decoration:none;}
+.logo span{color:#E8A020;}
+.back{font-size:12px;color:#8A97A6;text-decoration:none;font-family:'DM Mono',monospace;}
+.back:hover{color:#E8A020;}
+.page{max-width:900px;margin:0 auto;padding:2rem;}
+h1{font-size:24px;font-weight:600;margin-bottom:.3rem;letter-spacing:-.01em;}
+h1 span{color:#E8A020;}
+.sub{font-size:13px;color:#8A97A6;margin-bottom:1.5rem;}
+.tabs{display:flex;border-bottom:1px solid rgba(255,255,255,0.08);position:sticky;top:52px;background:#0B1E35;z-index:90;padding:0 2rem;}
+.tab{padding:11px 16px;font-size:13px;cursor:pointer;color:#8A97A6;border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;font-family:'Inter',sans-serif;}
+.tab.active{color:#E8A020;border-bottom-color:#E8A020;}
+.section{display:none;max-width:900px;margin:0 auto;padding:2rem;}
+.section.active{display:block;}
+.sl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#8A97A6;margin:1.5rem 0 .75rem;padding-bottom:.4rem;border-bottom:1px solid rgba(255,255,255,0.08);}
+.sl:first-child{margin-top:0;}
+.mg{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:1.25rem;}
+.mc{background:rgba(255,255,255,0.05);border-radius:8px;padding:11px 13px;}
+.mc .l{font-size:11px;color:#8A97A6;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em;}
+.mc .v{font-size:20px;font-weight:600;font-family:'DM Mono',monospace;}
+.mc .s{font-size:10px;color:#8A97A6;margin-top:2px;}
+.hc{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;margin-bottom:10px;}
+.hc-hdr{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:.85rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.07);}
+.hc-name{font-size:14px;font-weight:600;}
+.hc-pos{font-size:11px;color:#8A97A6;margin-top:2px;}
+.hc-t{font-size:22px;font-weight:600;font-family:'DM Mono',monospace;text-align:right;}
+.hc-tl{font-size:10px;color:#8A97A6;text-align:right;text-transform:uppercase;letter-spacing:.04em;}
+.hc-body{padding:.85rem 1.25rem;}
+.hc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:.75rem;}
+.stat-row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px;}
+.stat-row:last-child{border-bottom:none;}
+.stat-l{color:#8A97A6;}
+.stat-v{font-weight:600;font-family:'DM Mono',monospace;}
+.pill{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;margin:2px 2px 0 0;}
+.pr{background:rgba(226,75,74,0.2);color:#E24B4A;}
+.pg{background:rgba(45,184,124,0.15);color:#2DB87C;}
+.pb{background:rgba(55,138,221,0.15);color:#378ADD;}
+.pw{background:rgba(232,160,32,0.15);color:#E8A020;}
+.approach{background:rgba(232,160,32,0.08);border:1px solid rgba(232,160,32,0.2);border-radius:6px;padding:.65rem .9rem;font-size:12px;color:#F2EFE8;line-height:1.6;}
+.al{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#E8A020;margin-bottom:3px;}
+.tw{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem;}
+.box{background:rgba(255,255,255,0.04);border-radius:8px;padding:1rem;}
+.box-t{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem;}
+.box-item{font-size:12px;color:#B0BDC9;line-height:1.65;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.box-item:last-child{border-bottom:none;}
+.box-item strong{color:#F2EFE8;}
+@media(max-width:600px){.hc-grid{grid-template-columns:1fr;}.tw{grid-template-columns:1fr;}.page,.section{padding:1.25rem 1rem;}.tabs{padding:0 1rem;}}
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <a href="index.html" class="logo">Lady Dukes <span>Analytics</span></a>
+  <a href="master-ranking.html" class="back">← Rankings</a>
+</nav>
+<div class="tabs">
+  <button class="tab active" onclick="show('overview',this)">Overview</button>
+  <button class="tab" onclick="show('batters',this)">Batters</button>
+  <button class="tab" onclick="show('pitchers',this)">Pitchers</button>
+</div>
+<div class="section active" id="overview">
+  <h1>Scouting: <span>South Hills Elite</span></h1>
+  <p class="sub">#3 of 9 teams ranked · Danger score 11.1 · Lady Dukes analytics</p>
+  <div class="mg">
+    <div class="mc"><div class="l">Rank</div><div class="v" style="color:#E8A020;">#3</div><div class="s">of 9 teams</div></div>
+    <div class="mc"><div class="l">Tier</div><div class="v" style="color:#E8A020;">STRONG</div></div>
+    <div class="mc"><div class="l">Team OBP</div><div class="v">0.509</div></div>
+    <div class="mc"><div class="l">Team OPS</div><div class="v">1.056</div></div>
+    <div class="mc"><div class="l">Staff ERA</div><div class="v">1.75</div></div>
+    <div class="mc"><div class="l">Team K%</div><div class="v">30%</div></div>
+  </div>
+  <div class="sl">Strengths to respect</div>
+  <div class="box" style="margin-bottom:1rem;border-left:3px solid #E24B4A;border-radius:0 8px 8px 0;">
+    <div class="box-item"><strong>Nora K</strong> hitting .533 — elite individual threat</div><div class="box-item">Team OBP 0.509 — gets on base at elite rate</div><div class="box-item">Elite pitching staff (best ERA 1.75) — hard to score on</div><div class="box-item">Staff has 378 Ks — strikeout power</div>
+  </div>
+  <div class="sl">Vulnerabilities to exploit</div>
+  <div class="box" style="border-left:3px solid #2DB87C;border-radius:0 8px 8px 0;">
+    <div class="box-item">Deep roster — no clear easy outs</div>
+  </div>
+  <div class="sl">Top threats</div>
+  
+        <div class="hc">
+          <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+          <div class="hc-hdr">
+            <div><div class="hc-name">Nora K</div><div class="hc-pos">Batter #1 by OPS</div>
+</div>
+<div class="section" id="batters">
+  <h1>Batter-by-batter</h1>
+  <p class="sub">South Hills Elite · all qualifiers (20+ AB) sorted by OPS</p>
+  
+        <div class="hc">
+          <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+          <div class="hc-hdr">
+            <div><div class="hc-name">Nora K</div><div class="hc-pos">Batter #1 by OPS</div></div>
+            <div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div>
+          </div>
+          <div class="hc-body">
+            <div class="hc-grid">
+              <div>
+                <div class="stat-row"><span class="stat-l">BA</span><span class="stat-v" style="color:#E24B4A;">0.533</span></div>
+                <div class="stat-row"><span class="stat-l">OBP</span><span class="stat-v">0.629</span></div>
+                <div class="stat-row"><span class="stat-l">OPS (est)</span><span class="stat-v">1.349</span></div>
+                <div class="stat-row"><span class="stat-l">RBI</span><span class="stat-v">41</span></div>
+              </div>
+              <div>
+                <div class="stat-row"><span class="stat-l">K rate</span><span class="stat-v">24%</span></div>
+                <div class="stat-row"><span class="stat-l">BB rate</span><span class="stat-v">21%</span></div>
+                <div style="margin-top:.5rem;"><span class="pill pr">DANGER — .450+ BA</span><span class="pill pw">Low K rate</span><span class="pill pr">Patient — throws strikes</span><span class="pill pr">RBI machine (41)</span></div>
+              </div>
+            </div>
+            <div class="approach"><div class="al">Pitch approach</div>Elite contact hitter — change speeds constantly, work up and away, never give her anything middle-in. She's hitting 0.533. Pitch around her with runners on if needed.</div>
+          </div>
+        </div>
+        <div class="hc">
+          <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+          <div class="hc-hdr">
+            <div><div class="hc-name">Emma C</div><div class="hc-pos">Batter #2 by OPS <span class="pill pw">Also pitches 39 IP, 3.03 ERA</span></div></div>
+            <div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div>
+          </div>
+          <div class="hc-body">
+            <div class="hc-grid">
+              <div>
+                <div class="stat-row"><span class="stat-l">BA</span><span class="stat-v" style="color:#E24B4A;">0.516</span></div>
+                <div class="stat-row"><span class="stat-l">OBP</span><span class="stat-v">0.620</span></div>
+                <div class="stat-row"><span class="stat-l">OPS (est)</span><span class="stat-v">1.317</span></div>
+                <div class="stat-row"><span class="stat-l">RBI</span><span class="stat-v">30</span></div>
+              </div>
+              <div>
+                <div class="stat-row"><span class="stat-l">K rate</span><span class="stat-v">15%</span></div>
+                <div class="stat-row"><span class="stat-l">BB rate</span><span class="stat-v">22%</span></div>
+                <div style="margin-top:.5rem;"><span class="pill pr">DANGER — .450+ BA</span><span class="pill pr">Elite contact (15% K)</span><span class="pill pr">Patient — throws strikes</span><span class="pill pw">Two-way player</span></div>
+              </div>
+            </div>
+            <div class="approach"><div class="al">Pitch approach</div>Elite contact hitter — change speeds constantly, work up and away, never give her anything middle-in. She's hitting 0.516. Pitch around her with runners on if needed.</div>
+          </div>
+        </div>
+        <div class="hc">
+          <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+          <div class="hc-hdr">
+            <div><div class="hc-name">Caroline F</div><div class="hc-pos">Batter #3 by OPS <span class="pill pw">Also pitches 20 IP, 4.74 ERA</span></div></div>
+            <div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div>
+          </div>
+          <div class="hc-body">
+            <div class="hc-grid">
+              <div>
+                <div class="stat-row"><span class="stat-l">BA</span><span class="stat-v" style="color:#E24B4A;">0.512</span></div>
+                <div class="stat-row"><span class="stat-l">OBP</span><span class="stat-v">0.567</span></div>
+                <div class="stat-row"><span class="stat-l">OPS (est)</span><span class="stat-v">1.258</span></div>
+                <div class="stat-row"><span class="stat-l">RBI</span><span class="stat-v">25</span></div>
+              </div>
+              <div>
+                <div class="stat-row"><span class="stat-l">K rate</span><span class="stat-v">26%</span></div>
+                <div class="stat-row"><span class="stat-l">BB rate</span><span class="stat-v">11%</span></div>
+                <div style="margin-top:.5rem;"><span class="pill pr">DANGER — .450+ BA</span><span class="pill pw">Two-way player</span></div>
+              </div>
+            </div>
+            <div class="approach"><div class="al">Pitch approach</div>Elite contact hitter — change speeds constantly, work up and away, never give her anything middle-in. She's hitting 0.512. Pitch around her with runners on if needed.</div>
+          </div>
+        </div>
+        <div class="hc">
+          <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+          <div class="hc-hdr">
+            <div><div class="hc-name">Abigail D</div><div class="hc-pos">Batter #4 by OPS</div></div>
+            <div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div>
+          </div>
+          <div class="hc-body">
+            <div class="hc-grid">
+              <div>
+                <div class="stat-row"><span class="stat-l">BA</span><span class="stat-v" style="color:#E24B4A;">0.415</span></div>
+                <div class="stat-row"><span class="stat-l">OBP</span><span class="stat-v">0.493</span></div>
+                <div class="stat-row"><span class="stat-l">OPS (est)</span><span class="stat-v">1.053</span></div>
+                <div class="stat-row"><span class="stat-l">RBI</span><span class="stat-v">33</span></div>
+              </div>
+              <div>
+                <div class="stat-row"><span class="stat-l">K rate</span><span class="stat-v">25%</span></div>
+                <div class="stat-row"><span class="stat-l">BB rate</span><span class="stat-v">13%</span></div>
+                <div style="margin-top:.5rem;"><span class="pill pw">Strong hitter</span></div>
+              </div>
+            </div>
+            <div class="approach"><div class="al">Pitch approach</div>Solid hitter (.415 BA) — Contact-oriented — keep her off the barrel.</div>
+          </div>
+        </div>
+        <div class="hc">
+          <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+          <div class="hc-hdr">
+            <div><div class="hc-name">Tillie M</div><div class="hc-pos">Batter #5 by OPS</div></div>
+            <div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div>
+          </div>
+          <div class="hc-body">
+            <div class="hc-grid">
+              <div>
+                <div class="stat-row"><span class="stat-l">BA</span><span class="stat-v" style="color:#E24B4A;">0.358</span></div>
+                <div class="stat-row"><span class="stat-l">OBP</span><span class="stat-v">0.492</span></div>
+                <div class="stat-row"><span class="stat-l">OPS (est)</span><span class="stat-v">0.975</span></div>
+                <div class="stat-row"><span class="stat-l">RBI</span><span class="stat-v">18</span></div>
+              </div>
+              <div>
+                <div class="stat-row"><span class="stat-l">K rate</span><span class="stat-v">34%</span></div>
+                <div class="stat-row"><span class="stat-l">BB rate</span><span class="stat-v">21%</span></div>
+                <div style="margin-top:.5rem;"><span class="pill pr">Patient — throws strikes</span></div>
+              </div>
+            </div>
+            <div class="approach"><div class="al">Pitch approach</div>Solid hitter (.358 BA) — takes a lot of walks (21% BB rate), throw strikes. Contact-oriented — keep her off the barrel.</div>
+          </div>
+        </div>
+        <div class="hc">
+          <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+          <div class="hc-hdr">
+            <div><div class="hc-name">Quinn P</div><div class="hc-pos">Batter #6 by OPS</div></div>
+            <div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div>
+          </div>
+          <div class="hc-body">
+            <div class="hc-grid">
+              <div>
+                <div class="stat-row"><span class="stat-l">BA</span><span class="stat-v" style="color:#E24B4A;">0.343</span></div>
+                <div class="stat-row"><span class="stat-l">OBP</span><span class="stat-v">0.457</span></div>
+                <div class="stat-row"><span class="stat-l">OPS (est)</span><span class="stat-v">0.920</span></div>
+                <div class="stat-row"><span class="stat-l">RBI</span><span class="stat-v">32</span></div>
+              </div>
+              <div>
+                <div class="stat-row"><span class="stat-l">K rate</span><span class="stat-v">30%</span></div>
+                <div class="stat-row"><span class="stat-l">BB rate</span><span class="stat-v">17%</span></div>
+                <div style="margin-top:.5rem;"></div>
+              </div>
+            </div>
+            <div class="approach"><div class="al">Pitch approach</div>Average hitter (.343 BA) — Work the outer half, induce weak contact.</div>
+          </div>
+        </div>
+        <div class="hc">
+          <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+          <div class="hc-hdr">
+            <div><div class="hc-name">Isabella B</div><div class="hc-pos">Batter #7 by OPS</div></div>
+            <div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div>
+          </div>
+          <div class="hc-body">
+            <div class="hc-grid">
+              <div>
+                <div class="stat-row"><span class="stat-l">BA</span><span class="stat-v" style="color:#E24B4A;">0.325</span></div>
+                <div class="stat-row"><span class="stat-l">OBP</span><span class="stat-v">0.472</span></div>
+                <div class="stat-row"><span class="stat-l">OPS (est)</span><span class="stat-v">0.911</span></div>
+                <div class="stat-row"><span class="stat-l">RBI</span><span class="stat-v">32</span></div>
+              </div>
+              <div>
+                <div class="stat-row"><span class="stat-l">K rate</span><span class="stat-v">42%</span></div>
+                <div class="stat-row"><span class="stat-l">BB rate</span><span class="stat-v">22%</span></div>
+                <div style="margin-top:.5rem;"><span class="pill pr">Patient — throws strikes</span></div>
+              </div>
+            </div>
+            <div class="approach"><div class="al">Pitch approach</div>Average hitter (.325 BA) — Work the outer half, induce weak contact. Has patience (22% BB) — throw strikes.</div>
+          </div>
+        </div>
+        <div class="hc">
+          <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+          <div class="hc-hdr">
+            <div><div class="hc-name">Hope V</div><div class="hc-pos">Batter #8 by OPS <span class="pill pw">Also pitches 122 IP, 3.71 ERA</span></div></div>
+            <div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div>
+          </div>
+          <div class="hc-body">
+            <div class="hc-grid">
+              <div>
+                <div class="stat-row"><span class="stat-l">BA</span><span class="stat-v" style="color:#E24B4A;">0.360</span></div>
+                <div class="stat-row"><span class="stat-l">OBP</span><span class="stat-v">0.403</span></div>
+                <div class="stat-row"><span class="stat-l">OPS (est)</span><span class="stat-v">0.889</span></div>
+                <div class="stat-row"><span class="stat-l">RBI</span><span class="stat-v">55</span></div>
+              </div>
+              <div>
+                <div class="stat-row"><span class="stat-l">K rate</span><span class="stat-v">19%</span></div>
+                <div class="stat-row"><span class="stat-l">BB rate</span><span class="stat-v">7%</span></div>
+                <div style="margin-top:.5rem;"><span class="pill pw">Low K rate</span><span class="pill pr">RBI machine (55)</span><span class="pill pw">Two-way player</span></div>
+              </div>
+            </div>
+            <div class="approach"><div class="al">Pitch approach</div>Solid hitter (.360 BA) — Contact-oriented — keep her off the barrel.</div>
+          </div>
+        </div>
+        <div class="hc">
+          <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+          <div class="hc-hdr">
+            <div><div class="hc-name">Ava J</div><div class="hc-pos">Batter #9 by OPS</div></div>
+            <div><div class="hc-t" style="color:#E24B4A;">8.5</div><div class="hc-tl">Threat/10</div></div>
+          </div>
+          <div class="hc-body">
+            <div class="hc-grid">
+              <div>
+                <div class="stat-row"><span class="stat-l">BA</span><span class="stat-v" style="color:#E24B4A;">0.282</span></div>
+                <div class="stat-row"><span class="stat-l">OBP</span><span class="stat-v">0.450</span></div>
+                <div class="stat-row"><span class="stat-l">OPS (est)</span><span class="stat-v">0.831</span></div>
+                <div class="stat-row"><span class="stat-l">RBI</span><span class="stat-v">18</span></div>
+              </div>
+              <div>
+                <div class="stat-row"><span class="stat-l">K rate</span><span class="stat-v">55%</span></div>
+                <div class="stat-row"><span class="stat-l">BB rate</span><span class="stat-v">23%</span></div>
+                <div style="margin-top:.5rem;"><span class="pill pg">High K — attack</span><span class="pill pr">Patient — throws strikes</span></div>
+              </div>
+            </div>
+            <div class="approach"><div class="al">Pitch approach</div>Average hitter (.282 BA) — Attack aggressively. 55% K rate means she'll swing herself out. Has patience (23% BB) — throw strikes.</div>
+          </div>
+        </div>
+        <div class="hc">
+          <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+          <div class="hc-hdr">
+            <div><div class="hc-name">Brooklyn S</div><div class="hc-pos">Batter #10 by OPS <span class="pill pw">Also pitches 28 IP, 1.75 ERA</span></div></div>
+            <div><div class="hc-t" style="color:#E24B4A;">9.1</div><div class="hc-tl">Threat/10</div></div>
+          </div>
+          <div class="hc-body">
+            <div class="hc-grid">
+              <div>
+                <div class="stat-row"><span class="stat-l">BA</span><span class="stat-v" style="color:#E24B4A;">0.265</span></div>
+                <div class="stat-row"><span class="stat-l">OBP</span><span class="stat-v">0.435</span></div>
+                <div class="stat-row"><span class="stat-l">OPS (est)</span><span class="stat-v">0.793</span></div>
+                <div class="stat-row"><span class="stat-l">RBI</span><span class="stat-v">25</span></div>
+              </div>
+              <div>
+                <div class="stat-row"><span class="stat-l">K rate</span><span class="stat-v">34%</span></div>
+                <div class="stat-row"><span class="stat-l">BB rate</span><span class="stat-v">23%</span></div>
+                <div style="margin-top:.5rem;"><span class="pill pr">Patient — throws strikes</span><span class="pill pw">Two-way player</span></div>
+              </div>
+            </div>
+            <div class="approach"><div class="al">Pitch approach</div>Weak hitter (.265 BA, 34% K rate) — attack with fastballs, she will swing and miss. Don't walk her.</div>
+          </div>
+        </div>
+</div>
+<div class="section" id="pitchers">
+  <h1>Pitching staff</h1>
+  <p class="sub">South Hills Elite · pitchers with 5+ IP</p>
+  
+        <div class="hc">
+          <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+          <div class="hc-hdr">
+            <div><div class="hc-name">Brooklyn S</div><div class="hc-pos">28.0 IP this season · Also bats: 0.265 BA / 0.435 OBP</div></div>
+            <div><div class="hc-t" style="color:#E24B4A;">1.75</div><div class="hc-tl">ERA</div></div>
+          </div>
+          <div class="hc-body">
+            <div class="hc-grid">
+              <div>
+                <div class="stat-row"><span class="stat-l">ERA</span><span class="stat-v" style="color:#E24B4A;">1.75</span></div>
+                <div class="stat-row"><span class="stat-l">WHIP</span><span class="stat-v">1.36</span></div>
+                <div class="stat-row"><span class="stat-l">K</span><span class="stat-v">43</span></div>
+                <div class="stat-row"><span class="stat-l">IP</span><span class="stat-v">28.0</span></div>
+              </div>
+              <div>
+                <div class="stat-row"><span class="stat-l">H allowed</span><span class="stat-v">19</span></div>
+                <div class="stat-row"><span class="stat-l">BB allowed</span><span class="stat-v">19</span></div>
+                <div class="stat-row"><span class="stat-l">K/9</span><span class="stat-v">13.8</span></div>
+              </div>
+            </div>
+            <div class="approach"><div class="al">How to attack</div>Elite pitcher (1.75 ERA, 1.36 WHIP, 43 K in 28 IP). Work deep counts, take pitches, look for walks. She won't give up much — make her throw a lot of pitches early.</div>
+          </div>
+        </div>
+        <div class="hc">
+          <div style="height:4px;background:#E8A020;opacity:.7;"></div>
+          <div class="hc-hdr">
+            <div><div class="hc-name">Emma C</div><div class="hc-pos">39.1 IP this season · Also bats: 0.516 BA / 0.620 OBP</div></div>
+            <div><div class="hc-t" style="color:#E8A020;">3.03</div><div class="hc-tl">ERA</div></div>
+          </div>
+          <div class="hc-body">
+            <div class="hc-grid">
+              <div>
+                <div class="stat-row"><span class="stat-l">ERA</span><span class="stat-v" style="color:#E8A020;">3.03</span></div>
+                <div class="stat-row"><span class="stat-l">WHIP</span><span class="stat-v">1.45</span></div>
+                <div class="stat-row"><span class="stat-l">K</span><span class="stat-v">49</span></div>
+                <div class="stat-row"><span class="stat-l">IP</span><span class="stat-v">39.1</span></div>
+              </div>
+              <div>
+                <div class="stat-row"><span class="stat-l">H allowed</span><span class="stat-v">35</span></div>
+                <div class="stat-row"><span class="stat-l">BB allowed</span><span class="stat-v">22</span></div>
+                <div class="stat-row"><span class="stat-l">K/9</span><span class="stat-v">11.3</span></div>
+              </div>
+            </div>
+            <div class="approach"><div class="al">How to attack</div>Strong pitcher (3.03 ERA, 49 K in 39 IP). Patient approach — she's good but hittable. Look for first-pitch fastball, put pressure on early.</div>
+          </div>
+        </div>
+        <div class="hc">
+          <div style="height:4px;background:#378ADD;opacity:.7;"></div>
+          <div class="hc-hdr">
+            <div><div class="hc-name">Hope V</div><div class="hc-pos">122.2 IP this season · Also bats: 0.360 BA / 0.403 OBP</div></div>
+            <div><div class="hc-t" style="color:#378ADD;">3.71</div><div class="hc-tl">ERA</div></div>
+          </div>
+          <div class="hc-body">
+            <div class="hc-grid">
+              <div>
+                <div class="stat-row"><span class="stat-l">ERA</span><span class="stat-v" style="color:#378ADD;">3.71</span></div>
+                <div class="stat-row"><span class="stat-l">WHIP</span><span class="stat-v">1.30</span></div>
+                <div class="stat-row"><span class="stat-l">K</span><span class="stat-v">214</span></div>
+                <div class="stat-row"><span class="stat-l">IP</span><span class="stat-v">122.2</span></div>
+              </div>
+              <div>
+                <div class="stat-row"><span class="stat-l">H allowed</span><span class="stat-v">117</span></div>
+                <div class="stat-row"><span class="stat-l">BB allowed</span><span class="stat-v">42</span></div>
+                <div class="stat-row"><span class="stat-l">K/9</span><span class="stat-v">15.8</span></div>
+              </div>
+            </div>
+            <div class="approach"><div class="al">How to attack</div>Average pitcher (3.71 ERA). Aggressive approach — attack her early, don't let her get comfortable. Her 1.30 WHIP means she's giving up baserunners.</div>
+          </div>
+        </div>
+        <div class="hc">
+          <div style="height:4px;background:#378ADD;opacity:.7;"></div>
+          <div class="hc-hdr">
+            <div><div class="hc-name">Caroline F</div><div class="hc-pos">20.2 IP this season · Also bats: 0.512 BA / 0.567 OBP</div></div>
+            <div><div class="hc-t" style="color:#378ADD;">4.74</div><div class="hc-tl">ERA</div></div>
+          </div>
+          <div class="hc-body">
+            <div class="hc-grid">
+              <div>
+                <div class="stat-row"><span class="stat-l">ERA</span><span class="stat-v" style="color:#378ADD;">4.74</span></div>
+                <div class="stat-row"><span class="stat-l">WHIP</span><span class="stat-v">1.35</span></div>
+                <div class="stat-row"><span class="stat-l">K</span><span class="stat-v">33</span></div>
+                <div class="stat-row"><span class="stat-l">IP</span><span class="stat-v">20.2</span></div>
+              </div>
+              <div>
+                <div class="stat-row"><span class="stat-l">H allowed</span><span class="stat-v">12</span></div>
+                <div class="stat-row"><span class="stat-l">BB allowed</span><span class="stat-v">16</span></div>
+                <div class="stat-row"><span class="stat-l">K/9</span><span class="stat-v">14.7</span></div>
+              </div>
+            </div>
+            <div class="approach"><div class="al">How to attack</div>Average pitcher (4.74 ERA). Aggressive approach — attack her early, don't let her get comfortable. Her 1.35 WHIP means she's giving up baserunners.</div>
+          </div>
+        </div>
+        <div class="hc">
+          <div style="height:4px;background:#2DB87C;opacity:.7;"></div>
+          <div class="hc-hdr">
+            <div><div class="hc-name">Kylee S</div><div class="hc-pos">13.1 IP this season · Also bats: 0.588 BA / 0.696 OBP</div></div>
+            <div><div class="hc-t" style="color:#2DB87C;">5.25</div><div class="hc-tl">ERA</div></div>
+          </div>
+          <div class="hc-body">
+            <div class="hc-grid">
+              <div>
+                <div class="stat-row"><span class="stat-l">ERA</span><span class="stat-v" style="color:#2DB87C;">5.25</span></div>
+                <div class="stat-row"><span class="stat-l">WHIP</span><span class="stat-v">1.95</span></div>
+                <div class="stat-row"><span class="stat-l">K</span><span class="stat-v">24</span></div>
+                <div class="stat-row"><span class="stat-l">IP</span><span class="stat-v">13.1</span></div>
+              </div>
+              <div>
+                <div class="stat-row"><span class="stat-l">H allowed</span><span class="stat-v">9</span></div>
+                <div class="stat-row"><span class="stat-l">BB allowed</span><span class="stat-v">17</span></div>
+                <div class="stat-row"><span class="stat-l">K/9</span><span class="stat-v">16.5</span></div>
+              </div>
+            </div>
+            <div class="approach"><div class="al">How to attack</div>Average pitcher (5.25 ERA). Aggressive approach — attack her early, don't let her get comfortable. Her 1.95 WHIP means she's giving up baserunners.</div>
+          </div>
+        </div>
+</div>
+<script>
+function show(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active');btn.classList.add('active');}
+</script>
+</body></html>
