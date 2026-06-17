@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Duke 11U Lineup Planner — Coach Eric Blue</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#070E1A;--surface:rgba(255,255,255,.04);--border:rgba(255,255,255,.08);
+  --text:#f1f5f9;--muted:#64748b;--body:#94a3b8;
+  --green:#22c55e;--blue:#60aaff;--amber:#f59e0b;--red:#ef4444;
+  --grade-a:#22c55e;--grade-b:#60aaff;--grade-c:#f59e0b;--grade-d:#ef4444;
+}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* Top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:52px;
+  border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:200;}
+.logo{font-size:14px;font-weight:600;text-decoration:none;color:var(--text);}
+.logo span{color:#60aaff;}
+.back{font-size:12px;color:var(--muted);text-decoration:none;font-family:'DM Mono',monospace;}
+.back:hover{color:#60aaff;}
+
+/* Layout */
+.page{max-width:1100px;margin:0 auto;padding:2rem;}
+.two-col{display:grid;grid-template-columns:1fr 340px;gap:1.5rem;align-items:start;}
+
+/* Section labels */
+.sl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);
+  margin:1.75rem 0 .75rem;padding-bottom:.4rem;border-bottom:1px solid var(--border);}
+.sl:first-child{margin-top:0;}
+
+/* Roster cards */
+.player-row{display:grid;grid-template-columns:auto 1fr auto;gap:0;align-items:stretch;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;
+  margin-bottom:8px;transition:border-color .15s;}
+.player-row.leaving{border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.04);}
+.player-row.leaving-active{border-color:rgba(239,68,68,.6);background:rgba(239,68,68,.08);}
+.grade-bar{width:6px;flex-shrink:0;}
+.player-main{padding:.8rem 1rem;}
+.player-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.player-name{font-size:14px;font-weight:600;}
+.grade-chip{font-family:'DM Mono',monospace;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;}
+.role-chip{font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em;}
+.leaving-chip{font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;background:rgba(239,68,68,.2);color:var(--red);}
+.player-stats{display:flex;gap:16px;flex-wrap:wrap;}
+.stat{text-align:center;}
+.stat-v{font-family:'DM Mono',monospace;font-size:15px;font-weight:600;line-height:1;}
+.stat-l{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
+.player-note{font-size:11px;color:var(--body);line-height:1.55;margin-top:6px;padding-top:6px;border-top:1px solid var(--border);}
+.toggle-btn{display:flex;align-items:center;padding:0 1rem;cursor:pointer;background:none;border:none;
+  border-left:1px solid var(--border);color:var(--muted);font-size:11px;gap:4px;white-space:nowrap;
+  font-family:'Inter',sans-serif;transition:background .15s,color .15s;}
+.toggle-btn:hover{background:rgba(239,68,68,.08);color:var(--red);}
+.toggle-btn.active{background:rgba(239,68,68,.1);color:var(--red);border-left-color:rgba(239,68,68,.3);}
+
+/* Sidebar */
+.sidebar{position:sticky;top:68px;}
+.summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1rem 1.25rem;margin-bottom:1rem;}
+.summary-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.75rem;}
+.impact-item{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;}
+.impact-item:last-child{border-bottom:none;}
+.impact-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:3px;}
+.impact-label{color:var(--body);line-height:1.5;}
+.impact-label strong{color:var(--text);}
+
+/* Scenario tabs */
+.scenario-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem;}
+.stab{padding:6px 14px;font-size:12px;border-radius:6px;border:1px solid var(--border);
+  background:none;color:var(--muted);cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
+.stab.active{background:rgba(96,170,255,.12);border-color:rgba(96,170,255,.4);color:#60aaff;}
+
+/* Recruit cards */
+.rc-section{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.rc-header{padding:.75rem 1rem;border-bottom:1px solid var(--border);
+  font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;}
+.rc-body{padding:.75rem;}
+.rc-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;
+  padding:.85rem;margin-bottom:8px;}
+.rc-card:last-child{margin-bottom:0;}
+
+/* Alert bar */
+.alert-bar{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:8px;
+  padding:.75rem 1rem;margin-bottom:1rem;font-size:12px;line-height:1.6;display:none;}
+.alert-bar.show{display:block;}
+.alert-bar strong{color:var(--red);}
+
+/* Legend */
+.legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:1.25rem;}
+.lg-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);}
+.lg-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
+
+/* Responsive */
+@media(max-width:900px){
+  .two-col{grid-template-columns:1fr;}
+  .sidebar{position:static;}
+}
+@media(max-width:600px){
+  .page{padding:1rem;}
+  .topbar{padding:0 1rem;}
+  .player-stats{gap:10px;}
+}
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <a href="index.html" class="logo">Lady Dukes <span>Analytics</span></a>
+  <a href="eric_blue_recruiting_report.html" class="back">← Recruiting report</a>
+</nav>
+
+<div class="page">
+  <div style="margin-bottom:1.5rem;">
+    <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--blue);margin-bottom:.3rem;">Coach Eric Blue · Confidential</div>
+    <h1 style="font-size:26px;font-weight:700;letter-spacing:-.02em;margin-bottom:.3rem;">Duke 11U <span style="color:var(--blue);">Lineup Planner</span></h1>
+    <p style="font-size:13px;color:var(--body);">Current roster A/B grade analysis · Toggle departures to see impact · Recruit plug-ins from scouting report</p>
+  </div>
+
+  <div class="two-col">
+    <!-- LEFT: Roster -->
+    <div>
+      <div class="legend">
+        <div class="lg-item"><div class="lg-dot" style="background:var(--grade-a);"></div>Grade A — keep at all costs</div>
+        <div class="lg-item"><div class="lg-dot" style="background:var(--grade-b);"></div>Grade B — solid piece</div>
+        <div class="lg-item"><div class="lg-dot" style="background:var(--grade-c);"></div>Grade C — monitor</div>
+        <div class="lg-item"><div class="lg-dot" style="background:var(--grade-d);"></div>Grade D — replaceable</div>
+      </div>
+
+      <div id="alert-aria" class="alert-bar">
+        <strong>⚠ Aria T departing</strong> — This is the most critical loss on the roster. She accounts for 91.2 IP (3.28 ERA, 112 K) AND is the #2 hitter (.390 BA, 41 RBI). The team needs a pitching recruit AND an offensive recruit to replace one player. Riley Hollowood (B+) is the top pitching fill; Ella M (A) is the top offensive fill.
+      </div>
+      <div id="alert-gianna" class="alert-bar">
+        <strong>⚠ Gianna B departing</strong> — Loses a .374 BA / .460 OBP hitter with 28 RBI in 50 games. Her 19 IP at 6.26 ERA is not a real pitching asset — this is purely an offensive hole. Ella M or Gracie M fill it immediately.
+      </div>
+      <div id="alert-kendall" class="alert-bar">
+        <strong>⚠ Kendall C departing</strong> — Loses depth in the order (54 runs, 33 RBI). Replaceable with Addison Rusko or a contact-focused recruit. Not critical but leaves the lineup thinner in spots 5–7.
+      </div>
+      <div id="alert-luciana" class="alert-bar">
+        <strong>⚠ Luciana V departing</strong> — Lowest impact departure. .073 BA but .433 OBP through walks. She's a walk machine with no bat — Emma Richards (B) is a direct upgrade at this role with actual hitting ability.
+      </div>
+
+      <div class="sl">Current A-grade players — core of the team</div>
+<div class="player-row" id="row_caroline_w">
+  <div class="grade-bar" style="background:#22c55e;"></div>
+  <div class="player-main">
+    <div class="player-header">
+      <span class="player-name">Caroline W</span>
+      <span class="grade-chip" style="background:rgba(34,197,94,.12);color:#22c55e;">A</span>
+      <span class="role-chip" style="background:rgba(167,139,250,.12);color:#a78bfa;">Two-way</span>
+      
+    </div>
+    <div class="player-stats">
+      <div class="stat"><div class="stat-v" style="color:#22c55e;">.408</div><div class="stat-l">BA</div></div>
+      <div class="stat"><div class="stat-v">.451</div><div class="stat-l">OBP</div></div>
+      <div class="stat"><div class="stat-v">25</div><div class="stat-l">RBI</div></div>
+      <div class="stat"><div class="stat-v">9%</div><div class="stat-l">K%</div></div>
+      <div class="stat"><div class="stat-v">7%</div><div class="stat-l">BB%</div></div>
+      <div class="stat"><div class="stat-v">64</div><div class="stat-l">G</div></div>
+      <div class="stat"><div class="stat-v" style="color:#f59e0b;">3.97</div><div class="stat-l">ERA</div></div>
+        <div class="stat"><div class="stat-v">52</div><div class="stat-l">K</div></div>
+        <div class="stat"><div class="stat-v">74</div><div class="stat-l">IP</div></div>
+    </div>
+    <div class="player-note">Team captain. Most reliable two-way bat — .408 BA AND 3.97 ERA in 74 IP.</div>
+  </div>
+  
+</div><div class="player-row leaving" id="row_aria_t">
+  <div class="grade-bar" style="background:#22c55e;"></div>
+  <div class="player-main">
+    <div class="player-header">
+      <span class="player-name">Aria T</span>
+      <span class="grade-chip" style="background:rgba(34,197,94,.12);color:#22c55e;">A</span>
+      <span class="role-chip" style="background:rgba(167,139,250,.12);color:#a78bfa;">Two-way</span>
+      <span class='leaving-chip'>⚠ May leave</span>
+    </div>
+    <div class="player-stats">
+      <div class="stat"><div class="stat-v" style="color:#22c55e;">.390</div><div class="stat-l">BA</div></div>
+      <div class="stat"><div class="stat-v">.484</div><div class="stat-l">OBP</div></div>
+      <div class="stat"><div class="stat-v">41</div><div class="stat-l">RBI</div></div>
+      <div class="stat"><div class="stat-v">12%</div><div class="stat-l">K%</div></div>
+      <div class="stat"><div class="stat-v">16%</div><div class="stat-l">BB%</div></div>
+      <div class="stat"><div class="stat-v">62</div><div class="stat-l">G</div></div>
+      <div class="stat"><div class="stat-v" style="color:#22c55e;">3.28</div><div class="stat-l">ERA</div></div>
+        <div class="stat"><div class="stat-v">112</div><div class="stat-l">K</div></div>
+        <div class="stat"><div class="stat-v">91</div><div class="stat-l">IP</div></div>
+    </div>
+    <div class="player-note">Critical loss. The team ace (3.28 ERA, 112 K) AND the top producer (.390 BA, 41 RBI). No direct internal replacement.</div>
+  </div>
+  <button class="toggle-btn" id="btn_aria_t" onclick="toggleLeaving('aria_t','aria')" title="Toggle departure">
+      <span id="icon_aria_t">↩</span> Departing?
+    </button>
+</div><div class="player-row" id="row_melania_k">
+  <div class="grade-bar" style="background:#22c55e;"></div>
+  <div class="player-main">
+    <div class="player-header">
+      <span class="player-name">Melania K</span>
+      <span class="grade-chip" style="background:rgba(34,197,94,.12);color:#22c55e;">A</span>
+      <span class="role-chip" style="background:rgba(167,139,250,.12);color:#a78bfa;">Two-way</span>
+      
+    </div>
+    <div class="player-stats">
+      <div class="stat"><div class="stat-v" style="color:#60aaff;">.346</div><div class="stat-l">BA</div></div>
+      <div class="stat"><div class="stat-v">.411</div><div class="stat-l">OBP</div></div>
+      <div class="stat"><div class="stat-v">32</div><div class="stat-l">RBI</div></div>
+      <div class="stat"><div class="stat-v">11%</div><div class="stat-l">K%</div></div>
+      <div class="stat"><div class="stat-v">10%</div><div class="stat-l">BB%</div></div>
+      <div class="stat"><div class="stat-v">64</div><div class="stat-l">G</div></div>
+      <div class="stat"><div class="stat-v" style="color:#22c55e;">3.36</div><div class="stat-l">ERA</div></div>
+        <div class="stat"><div class="stat-v">79</div><div class="stat-l">K</div></div>
+        <div class="stat"><div class="stat-v">81</div><div class="stat-l">IP</div></div>
+    </div>
+    <div class="player-note">Cornerstone two-way player. 81 innings at 3.36 ERA, .346 BA. Staff anchor if Aria T leaves.</div>
+  </div>
+  
+</div>
+      <div class="sl">B-grade players — contributing pieces</div>
+<div class="player-row leaving" id="row_gianna_b">
+  <div class="grade-bar" style="background:#60aaff;"></div>
+  <div class="player-main">
+    <div class="player-header">
+      <span class="player-name">Gianna B</span>
+      <span class="grade-chip" style="background:rgba(96,170,255,.1);color:#60aaff;">B</span>
+      <span class="role-chip" style="background:rgba(167,139,250,.12);color:#60aaff;">Hitter</span>
+      <span class='leaving-chip'>⚠ May leave</span>
+    </div>
+    <div class="player-stats">
+      <div class="stat"><div class="stat-v" style="color:#60aaff;">.374</div><div class="stat-l">BA</div></div>
+      <div class="stat"><div class="stat-v">.460</div><div class="stat-l">OBP</div></div>
+      <div class="stat"><div class="stat-v">28</div><div class="stat-l">RBI</div></div>
+      <div class="stat"><div class="stat-v">14%</div><div class="stat-l">K%</div></div>
+      <div class="stat"><div class="stat-v">14%</div><div class="stat-l">BB%</div></div>
+      <div class="stat"><div class="stat-v">50</div><div class="stat-l">G</div></div>
+      <div class="stat"><div class="stat-v" style="color:#ef4444;">6.26</div><div class="stat-l">ERA</div></div>
+        <div class="stat"><div class="stat-v">18</div><div class="stat-l">K</div></div>
+        <div class="stat"><div class="stat-v">19</div><div class="stat-l">IP</div></div>
+    </div>
+    <div class="player-note">Strong hitter (.374 BA, .460 OBP, 28 RBI) but pitching is a liability (6.26 ERA). Offensive loss, not pitching.</div>
+  </div>
+  <button class="toggle-btn" id="btn_gianna_b" onclick="toggleLeaving('gianna_b','gianna')" title="Toggle departure">
+      <span id="icon_gianna_b">↩</span> Departing?
+    </button>
+</div><div class="player-row" id="row_briella_q">
+  <div class="grade-bar" style="background:#60aaff;"></div>
+  <div class="player-main">
+    <div class="player-header">
+      <span class="player-name">Briella Q</span>
+      <span class="grade-chip" style="background:rgba(96,170,255,.1);color:#60aaff;">B</span>
+      <span class="role-chip" style="background:rgba(167,139,250,.12);color:#60aaff;">Hitter</span>
+      
+    </div>
+    <div class="player-stats">
+      <div class="stat"><div class="stat-v" style="color:#60aaff;">.357</div><div class="stat-l">BA</div></div>
+      <div class="stat"><div class="stat-v">.449</div><div class="stat-l">OBP</div></div>
+      <div class="stat"><div class="stat-v">24</div><div class="stat-l">RBI</div></div>
+      <div class="stat"><div class="stat-v">18%</div><div class="stat-l">K%</div></div>
+      <div class="stat"><div class="stat-v">14%</div><div class="stat-l">BB%</div></div>
+      <div class="stat"><div class="stat-v">40</div><div class="stat-l">G</div></div>
+      
+    </div>
+    <div class="player-note">.357 BA in 40 games — strong contact hitter with 24 RBI. Key depth piece. Could move up in the order.</div>
+  </div>
+  
+</div><div class="player-row" id="row_chevy_t">
+  <div class="grade-bar" style="background:#60aaff;"></div>
+  <div class="player-main">
+    <div class="player-header">
+      <span class="player-name">Chevy T</span>
+      <span class="grade-chip" style="background:rgba(96,170,255,.1);color:#60aaff;">B</span>
+      <span class="role-chip" style="background:rgba(167,139,250,.12);color:#60aaff;">Hitter</span>
+      
+    </div>
+    <div class="player-stats">
+      <div class="stat"><div class="stat-v" style="color:#60aaff;">.319</div><div class="stat-l">BA</div></div>
+      <div class="stat"><div class="stat-v">.406</div><div class="stat-l">OBP</div></div>
+      <div class="stat"><div class="stat-v">36</div><div class="stat-l">RBI</div></div>
+      <div class="stat"><div class="stat-v">19%</div><div class="stat-l">K%</div></div>
+      <div class="stat"><div class="stat-v">13%</div><div class="stat-l">BB%</div></div>
+      <div class="stat"><div class="stat-v">64</div><div class="stat-l">G</div></div>
+      
+    </div>
+    <div class="player-note">Full-season workhorse. 36 RBI — highest on the team. .319 BA, consistent all year.</div>
+  </div>
+  
+</div><div class="player-row leaving" id="row_kendall_c">
+  <div class="grade-bar" style="background:#60aaff;"></div>
+  <div class="player-main">
+    <div class="player-header">
+      <span class="player-name">Kendall C</span>
+      <span class="grade-chip" style="background:rgba(96,170,255,.1);color:#60aaff;">B</span>
+      <span class="role-chip" style="background:rgba(167,139,250,.12);color:#60aaff;">Hitter</span>
+      <span class='leaving-chip'>⚠ May leave</span>
+    </div>
+    <div class="player-stats">
+      <div class="stat"><div class="stat-v" style="color:#60aaff;">.313</div><div class="stat-l">BA</div></div>
+      <div class="stat"><div class="stat-v">.404</div><div class="stat-l">OBP</div></div>
+      <div class="stat"><div class="stat-v">33</div><div class="stat-l">RBI</div></div>
+      <div class="stat"><div class="stat-v">18%</div><div class="stat-l">K%</div></div>
+      <div class="stat"><div class="stat-v">13%</div><div class="stat-l">BB%</div></div>
+      <div class="stat"><div class="stat-v">61</div><div class="stat-l">G</div></div>
+      
+    </div>
+    <div class="player-note">54 runs and 33 RBI — a reliable table-setter. Replaceable with a similar contact/depth profile.</div>
+  </div>
+  <button class="toggle-btn" id="btn_kendall_c" onclick="toggleLeaving('kendall_c','kendall')" title="Toggle departure">
+      <span id="icon_kendall_c">↩</span> Departing?
+    </button>
+</div><div class="player-row" id="row_corina_c">
+  <div class="grade-bar" style="background:#60aaff;"></div>
+  <div class="player-main">
+    <div class="player-header">
+      <span class="player-name">Corina C</span>
+      <span class="grade-chip" style="background:rgba(96,170,255,.1);color:#60aaff;">B</span>
+      <span class="role-chip" style="background:rgba(167,139,250,.12);color:#60aaff;">Hitter</span>
+      
+    </div>
+    <div class="player-stats">
+      <div class="stat"><div class="stat-v" style="color:#22c55e;">.417</div><div class="stat-l">BA</div></div>
+      <div class="stat"><div class="stat-v">.451</div><div class="stat-l">OBP</div></div>
+      <div class="stat"><div class="stat-v">22</div><div class="stat-l">RBI</div></div>
+      <div class="stat"><div class="stat-v">10%</div><div class="stat-l">K%</div></div>
+      <div class="stat"><div class="stat-v">6%</div><div class="stat-l">BB%</div></div>
+      <div class="stat"><div class="stat-v">21</div><div class="stat-l">G</div></div>
+      
+    </div>
+    <div class="player-note">.417 BA in 21 games — small sample but outstanding. 22 RBI in limited time. Could be a breakout player with more at-bats.</div>
+  </div>
+  
+</div>
+      <div class="sl">C/D grade — depth · monitor development</div>
+<div class="player-row" id="row_claudia_s">
+  <div class="grade-bar" style="background:#f59e0b;"></div>
+  <div class="player-main">
+    <div class="player-header">
+      <span class="player-name">Claudia S</span>
+      <span class="grade-chip" style="background:rgba(245,158,11,.1);color:#f59e0b;">C</span>
+      <span class="role-chip" style="background:rgba(167,139,250,.12);color:#60aaff;">Hitter</span>
+      
+    </div>
+    <div class="player-stats">
+      <div class="stat"><div class="stat-v" style="color:#f59e0b;">.281</div><div class="stat-l">BA</div></div>
+      <div class="stat"><div class="stat-v">.383</div><div class="stat-l">OBP</div></div>
+      <div class="stat"><div class="stat-v">33</div><div class="stat-l">RBI</div></div>
+      <div class="stat"><div class="stat-v">30%</div><div class="stat-l">K%</div></div>
+      <div class="stat"><div class="stat-v">14%</div><div class="stat-l">BB%</div></div>
+      <div class="stat"><div class="stat-v">64</div><div class="stat-l">G</div></div>
+      
+    </div>
+    <div class="player-note">33 RBI shows run production but 30% K rate is the concern. Full-season availability is a plus.</div>
+  </div>
+  
+</div><div class="player-row" id="row_leighton_b">
+  <div class="grade-bar" style="background:#f59e0b;"></div>
+  <div class="player-main">
+    <div class="player-header">
+      <span class="player-name">Leighton B</span>
+      <span class="grade-chip" style="background:rgba(245,158,11,.1);color:#f59e0b;">C</span>
+      <span class="role-chip" style="background:rgba(167,139,250,.12);color:#60aaff;">Hitter</span>
+      
+    </div>
+    <div class="player-stats">
+      <div class="stat"><div class="stat-v" style="color:#ef4444;">.219</div><div class="stat-l">BA</div></div>
+      <div class="stat"><div class="stat-v">.453</div><div class="stat-l">OBP</div></div>
+      <div class="stat"><div class="stat-v">20</div><div class="stat-l">RBI</div></div>
+      <div class="stat"><div class="stat-v">29%</div><div class="stat-l">K%</div></div>
+      <div class="stat"><div class="stat-v">30%</div><div class="stat-l">BB%</div></div>
+      <div class="stat"><div class="stat-v">63</div><div class="stat-l">G</div></div>
+      
+    </div>
+    <div class="player-note">.219 BA but .453 OBP (41 walks). She gets on base a different way — useful leadoff depth but batting average is a floor concern.</div>
+  </div>
+  
+</div><div class="player-row leaving" id="row_luciana_v">
+  <div class="grade-bar" style="background:#ef4444;"></div>
+  <div class="player-main">
+    <div class="player-header">
+      <span class="player-name">Luciana V</span>
+      <span class="grade-chip" style="background:rgba(239,68,68,.1);color:#ef4444;">D</span>
+      <span class="role-chip" style="background:rgba(167,139,250,.12);color:#60aaff;">Hitter</span>
+      <span class='leaving-chip'>⚠ May leave</span>
+    </div>
+    <div class="player-stats">
+      <div class="stat"><div class="stat-v" style="color:#ef4444;">.073</div><div class="stat-l">BA</div></div>
+      <div class="stat"><div class="stat-v">.433</div><div class="stat-l">OBP</div></div>
+      <div class="stat"><div class="stat-v">8</div><div class="stat-l">RBI</div></div>
+      <div class="stat"><div class="stat-v">39%</div><div class="stat-l">K%</div></div>
+      <div class="stat"><div class="stat-v">39%</div><div class="stat-l">BB%</div></div>
+      <div class="stat"><div class="stat-v">36</div><div class="stat-l">G</div></div>
+      
+    </div>
+    <div class="player-note">.073 BA but .433 OBP (26 walks in 41 AB). A pure walk machine — minimal batting impact if she leaves.</div>
+  </div>
+  <button class="toggle-btn" id="btn_luciana_v" onclick="toggleLeaving('luciana_v','luciana')" title="Toggle departure">
+      <span id="icon_luciana_v">↩</span> Departing?
+    </button>
+</div>
+    </div><!-- end left col -->
+
+    <!-- RIGHT: Sidebar -->
+    <div class="sidebar">
+      <div class="summary-box">
+        <div class="summary-title">Roster health</div>
+        <div class="impact-item"><div class="impact-dot" style="background:var(--green);"></div><div class="impact-label"><strong>3 Grade A players</strong> — Caroline W, Aria T, Melania K. Two-way depth that most 11U teams can't match.</div></div>
+        <div class="impact-item"><div class="impact-dot" style="background:var(--blue);"></div><div class="impact-label"><strong>5 Grade B players</strong> — Gianna B, Briella Q, Chevy T, Kendall C, Corina C. Solid core at every spot.</div></div>
+        <div class="impact-item"><div class="impact-dot" style="background:var(--amber);"></div><div class="impact-label"><strong>2 Grade C players</strong> — Claudia S, Leighton B. Full-season availability but development areas.</div></div>
+        <div class="impact-item"><div class="impact-dot" style="background:var(--red);"></div><div class="impact-label"><strong>Luciana V — Grade D</strong> · .073 BA. Walk machine but most replaceable player on the roster.</div></div>
+      </div>
+
+      <div class="summary-box">
+        <div class="summary-title">Departure risk priority</div>
+        <div class="impact-item"><div class="impact-dot" style="background:var(--red);"></div><div class="impact-label"><strong>CRITICAL: Aria T</strong> — loses ace pitcher AND #2 hitter. Hardest single departure to absorb.</div></div>
+        <div class="impact-item"><div class="impact-dot" style="background:var(--amber);"></div><div class="impact-label"><strong>MODERATE: Gianna B</strong> — loses .374 BA / 28 RBI bat. Pitching (6.26 ERA) is not a loss.</div></div>
+        <div class="impact-item"><div class="impact-dot" style="background:var(--amber);"></div><div class="impact-label"><strong>MODERATE: Kendall C</strong> — loses depth at 5–6 spot. 54 runs, 33 RBI. Replaceable profile.</div></div>
+        <div class="impact-item"><div class="impact-dot" style="background:var(--green);"></div><div class="impact-label"><strong>MINIMAL: Luciana V</strong> — .073 BA. Walks are the only value. Emma Richards is a direct upgrade.</div></div>
+      </div>
+
+      <!-- Recruit plug-in panel -->
+      <div class="rc-section">
+        <div class="rc-header">Recruit plug-ins — from scouting report</div>
+        <div style="padding:.75rem .75rem .5rem;">
+          <div style="font-size:11px;color:var(--body);margin-bottom:.65rem;">Select departure to see recruit options:</div>
+          <div class="scenario-tabs">
+            <button class="stab active" onclick="showScenario('aria_t_pitch',this)">Aria T — pitching</button>
+            <button class="stab" onclick="showScenario('aria_t_bat',this)">Aria T — offense</button>
+            <button class="stab" onclick="showScenario('gianna_b',this)">Gianna B</button>
+            <button class="stab" onclick="showScenario('kendall_c',this)">Kendall C</button>
+            <button class="stab" onclick="showScenario('luciana_v',this)">Luciana V</button>
+          </div>
+        </div>
+        <div class="rc-body" id="recruit-panel">
+<div class="rc-card">
+  <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;">
+    <div style="background:rgba(96,170,255,.1);color:#60aaff;font-family:'DM Mono',monospace;font-size:13px;font-weight:700;padding:3px 8px;border-radius:4px;flex-shrink:0;">B+</div>
+    <div>
+      <div style="font-size:13px;font-weight:600;color:#f1f5f9;">Riley Hollowood</div>
+      <div style="font-size:10px;color:#64748b;margin-top:1px;">Predators 12U Santucci</div>
+    </div>
+  </div>
+  <div style="font-size:11px;font-family:'DM Mono',monospace;color:#60aaff;margin-bottom:5px;">2.64 ERA · 114 K · 79.2 IP · 13.0 K/9</div>
+  <div style="font-size:11px;color:#94a3b8;line-height:1.55;">Best pitching prospect in the report. Full two-way — can replace Aria T in the circle. Second-half command concern is the one flag to evaluate in fall.</div>
+</div><div class="rc-card">
+  <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;">
+    <div style="background:rgba(96,170,255,.1);color:#60aaff;font-family:'DM Mono',monospace;font-size:13px;font-weight:700;padding:3px 8px;border-radius:4px;flex-shrink:0;">B+</div>
+    <div>
+      <div style="font-size:13px;font-weight:600;color:#f1f5f9;">Rory C</div>
+      <div style="font-size:10px;color:#64748b;margin-top:1px;">Iron City Dynamite 11U</div>
+    </div>
+  </div>
+  <div style="font-size:11px;font-family:'DM Mono',monospace;color:#60aaff;margin-bottom:5px;">2.02 ERA · 44 K · 62.1 IP</div>
+  <div style="font-size:11px;color:#94a3b8;line-height:1.55;">Best ERA in the report (among full-season arms). Contact suppressor — different style than Riley H. Ideal as a #2 arm.</div>
+</div><div class="rc-card">
+  <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;">
+    <div style="background:rgba(34,197,94,.12);color:#22c55e;font-family:'DM Mono',monospace;font-size:13px;font-weight:700;padding:3px 8px;border-radius:4px;flex-shrink:0;">A+</div>
+    <div>
+      <div style="font-size:13px;font-weight:600;color:#f1f5f9;">Avery Goodman</div>
+      <div style="font-size:10px;color:#64748b;margin-top:1px;">Top prospect</div>
+    </div>
+  </div>
+  <div style="font-size:11px;font-family:'DM Mono',monospace;color:#22c55e;margin-bottom:5px;">Elite arm — top-rated in pool</div>
+  <div style="font-size:11px;color:#94a3b8;line-height:1.55;">Highest-graded pitcher in the report. If available, immediate Aria T replacement. Pursue simultaneously with Riley H.</div>
+</div><div class="rc-card">
+  <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;">
+    <div style="background:rgba(96,170,255,.1);color:#60aaff;font-family:'DM Mono',monospace;font-size:13px;font-weight:700;padding:3px 8px;border-radius:4px;flex-shrink:0;">B</div>
+    <div>
+      <div style="font-size:13px;font-weight:600;color:#f1f5f9;">Cora Kinsey</div>
+      <div style="font-size:10px;color:#64748b;margin-top:1px;">Steel City Athletics 11U</div>
+    </div>
+  </div>
+  <div style="font-size:11px;font-family:'DM Mono',monospace;color:#60aaff;margin-bottom:5px;">9.04 ERA · 67 K · 45.2 IP · 13.3 K/9</div>
+  <div style="font-size:11px;color:#94a3b8;line-height:1.55;">Development arm with elite K rate (13.3 K/9). ERA is a command project. Budget option if Riley H isn't available.</div>
+</div>        </div>
+      </div>
+
+    </div><!-- end sidebar -->
+  </div><!-- end two-col -->
+</div><!-- end page -->
+
+<script>
+const recruits = {"aria_t_pitch": [{"name": "Riley Hollowood", "grade": "B+", "team": "Predators 12U Santucci", "role": "Pitcher", "stats": "2.64 ERA \u00b7 114 K \u00b7 79.2 IP \u00b7 13.0 K/9", "bat": "Also bats .294/.403", "color": "#60aaff", "note": "Best pitching prospect in the report. Full two-way \u2014 can replace Aria T in the circle. Second-half command concern is the one flag to evaluate in fall."}, {"name": "Rory C", "grade": "B+", "team": "Iron City Dynamite 11U", "role": "Pitcher", "stats": "2.02 ERA \u00b7 44 K \u00b7 62.1 IP", "bat": "Also bats .259/.318", "color": "#60aaff", "note": "Best ERA in the report (among full-season arms). Contact suppressor \u2014 different style than Riley H. Ideal as a #2 arm."}, {"name": "Avery Goodman", "grade": "A+", "team": "Top prospect", "role": "Pitcher", "stats": "Elite arm \u2014 top-rated in pool", "bat": "\u2014", "color": "#22c55e", "note": "Highest-graded pitcher in the report. If available, immediate Aria T replacement. Pursue simultaneously with Riley H."}, {"name": "Cora Kinsey", "grade": "B", "team": "Steel City Athletics 11U", "role": "Pitcher", "stats": "9.04 ERA \u00b7 67 K \u00b7 45.2 IP \u00b7 13.3 K/9", "bat": "Also bats .291/.423", "color": "#60aaff", "note": "Development arm with elite K rate (13.3 K/9). ERA is a command project. Budget option if Riley H isn't available."}], "aria_t_bat": [{"name": "Ella M", "grade": "A", "team": "Devil Dogs 11U", "role": "Hitter", "stats": ".538 BA \u00b7 .599 OBP \u00b7 49 RBI \u00b7 11.4% K", "bat": "Pure hitter", "color": "#22c55e", "note": "Best pure hitting prospect in the report. .538/.599 in 132 AB on a legitimate program. Replaces and exceeds Aria T's offensive contribution."}, {"name": "Gracie M", "grade": "B+", "team": "Smash 11U Shaffer", "role": "Hitter", "stats": ".511 BA \u00b7 .566 OBP \u00b7 41 RBI \u00b7 21.6% K", "bat": "Pure hitter", "color": "#60aaff", "note": "Best RBI rate in the pool (.98/game). Schedule quality unknown \u2014 verify before committing. High upside."}], "gianna_b": [{"name": "Ella M", "grade": "A", "team": "Devil Dogs 11U", "role": "Hitter", "stats": ".538 BA \u00b7 .599 OBP \u00b7 49 RBI", "bat": "Pure hitter", "color": "#22c55e", "note": "Significant upgrade over Gianna B's bat. This replaces the lost offense and then some."}, {"name": "Gracie M", "grade": "B+", "team": "Smash 11U Shaffer", "role": "Hitter", "stats": ".511 BA \u00b7 .566 OBP \u00b7 41 RBI", "bat": "Pure hitter", "color": "#60aaff", "note": "Direct offensive match for Gianna B's profile \u2014 high average, high production."}, {"name": "Addison Rusko", "grade": "B", "team": "North Stars 11U", "role": "Hitter", "stats": ".380 BA \u00b7 .462 OBP \u00b7 34 RBI", "bat": "Pure hitter", "color": "#60aaff", "note": "Solid like-for-like replacement. Won't match Gianna B's average, but RBI production is comparable."}], "kendall_c": [{"name": "Addison Rusko", "grade": "B", "team": "North Stars 11U", "role": "Hitter", "stats": ".380 BA \u00b7 .462 OBP \u00b7 34 RBI", "bat": "Pure hitter", "color": "#60aaff", "note": "Best direct match for Kendall C's role \u2014 similar profile, slightly better average, comparable RBI."}, {"name": "Emma Richards", "grade": "B", "team": "Lady Halos 12U", "role": "Hitter", "stats": ".333 BA \u00b7 .345 OBP \u00b7 8.8% K rate", "bat": "Pure hitter", "color": "#60aaff", "note": "Elite contact profile (8.8% K). Less raw production than Kendall but virtually never strikes out \u2014 builds on-base consistency."}, {"name": "Gracie M", "grade": "B+", "team": "Smash 11U Shaffer", "role": "Hitter", "stats": ".511 BA \u00b7 .566 OBP \u00b7 41 RBI", "bat": "Pure hitter", "color": "#60aaff", "note": "Significant upgrade if schedule quality verified. Adds 3-4 spots of lineup value over Kendall C."}], "luciana_v": [{"name": "Emma Richards", "grade": "B", "team": "Lady Halos 12U", "role": "Hitter", "stats": ".333 BA \u00b7 .345 OBP \u00b7 8.8% K rate", "bat": "Pure hitter", "color": "#60aaff", "note": "Best Luciana V replacement \u2014 pure contact hitter who gets on base a different way. Luciana walked her way on; Emma hits her way on."}, {"name": "Addison Rusko", "grade": "B", "team": "North Stars 11U", "role": "Hitter", "stats": ".380 BA \u00b7 .462 OBP \u00b7 34 RBI", "bat": "Pure hitter", "color": "#60aaff", "note": "Adds real offensive production where Luciana V had almost none. Upgrade at the position."}]};
+
+function recruitCard(r) {
+  const bg = r.color === '#22c55e' ? 'rgba(34,197,94,.12)' : r.color === '#60aaff' ? 'rgba(96,170,255,.1)' : 'rgba(245,158,11,.1)';
+  return `<div class="rc-card">
+    <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;">
+      <div style="background:${bg};color:${r.color};font-family:'DM Mono',monospace;font-size:13px;font-weight:700;padding:3px 8px;border-radius:4px;flex-shrink:0;">${r.grade}</div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:#f1f5f9;">${r.name}</div>
+        <div style="font-size:10px;color:#64748b;margin-top:1px;">${r.team}</div>
+      </div>
+    </div>
+    <div style="font-size:11px;font-family:'DM Mono',monospace;color:${r.color};margin-bottom:5px;">${r.stats}</div>
+    <div style="font-size:11px;color:#94a3b8;line-height:1.55;">${r.note}</div>
+  </div>`;
+}
+
+function showScenario(key, btn) {
+  document.querySelectorAll('.stab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const panel = document.getElementById('recruit-panel');
+  const list = recruits[key] || [];
+  panel.innerHTML = list.map(recruitCard).join('');
+}
+
+function toggleLeaving(id, alertKey) {
+  const row = document.getElementById('row_' + id);
+  const btn = document.getElementById('btn_' + id);
+  const isActive = btn.classList.contains('active');
+  btn.classList.toggle('active');
+  row.classList.toggle('leaving-active', !isActive);
+  if (alertKey) {
+    const alertEl = document.getElementById('alert-' + alertKey);
+    if (alertEl) alertEl.classList.toggle('show', !isActive);
+  }
+}
+</script>
+</body></html>
