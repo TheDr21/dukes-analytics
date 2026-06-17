@@ -2,57 +2,54 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Smash Palmer 10U Scouting — Lady Dukes Analytics</title>
+<title>Smash Palmer Scouting — Lady Dukes Analytics</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-*{box-sizing:border-box;margin:0;padding:0;}
+<style>*{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Inter',system-ui,sans-serif;background:#0B1E35;color:#F2EFE8;min-height:100vh;}
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:52px;border-bottom:1px solid rgba(255,255,255,0.08);position:sticky;top:0;background:#0B1E35;z-index:100;}
-.logo{font-size:14px;font-weight:600;color:#F2EFE8;text-decoration:none;}
-.logo span{color:#E8A020;}
-.back{font-size:12px;color:#8A97A6;text-decoration:none;font-family:'DM Mono',monospace;}
-.back:hover{color:#E8A020;}
-.page{max-width:900px;margin:0 auto;padding:2rem;}
-h1{font-size:24px;font-weight:600;margin-bottom:.3rem;letter-spacing:-.01em;}
-h1 span{color:#E8A020;}
-.sub{font-size:13px;color:#8A97A6;margin-bottom:1.5rem;}
-.tabs{display:flex;border-bottom:1px solid rgba(255,255,255,0.08);position:sticky;top:52px;background:#0B1E35;z-index:90;padding:0 2rem;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:52px;border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:0;background:#0B1E35;z-index:100;}
+.logo{font-size:14px;font-weight:600;color:#F2EFE8;text-decoration:none;}.logo span{color:#E8A020;}
+.back{font-size:12px;color:#8A97A6;text-decoration:none;font-family:'DM Mono',monospace;}.back:hover{color:#E8A020;}
+.tabs{display:flex;border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:52px;background:#0B1E35;z-index:90;padding:0 2rem;}
 .tab{padding:11px 16px;font-size:13px;cursor:pointer;color:#8A97A6;border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;font-family:'Inter',sans-serif;}
 .tab.active{color:#E8A020;border-bottom-color:#E8A020;}
-.section{display:none;max-width:900px;margin:0 auto;padding:2rem;}
+.section{display:none;max-width:920px;margin:0 auto;padding:2rem;}
 .section.active{display:block;}
-.sl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#8A97A6;margin:1.5rem 0 .75rem;padding-bottom:.4rem;border-bottom:1px solid rgba(255,255,255,0.08);}
+h1{font-size:22px;font-weight:600;margin-bottom:.3rem;letter-spacing:-.01em;}h1 span{color:#E8A020;}
+.sub{font-size:13px;color:#8A97A6;margin-bottom:1.5rem;}
+.sl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#8A97A6;margin:1.5rem 0 .75rem;padding-bottom:.4rem;border-bottom:1px solid rgba(255,255,255,.08);}
 .sl:first-child{margin-top:0;}
-.mg{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:1.25rem;}
-.mc{background:rgba(255,255,255,0.05);border-radius:8px;padding:11px 13px;}
+.mg{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:1.25rem;}
+.mc{background:rgba(255,255,255,.05);border-radius:8px;padding:11px 13px;}
 .mc .l{font-size:11px;color:#8A97A6;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em;}
-.mc .v{font-size:20px;font-weight:600;font-family:'DM Mono',monospace;}
+.mc .v{font-size:19px;font-weight:600;font-family:'DM Mono',monospace;}
 .mc .s{font-size:10px;color:#8A97A6;margin-top:2px;}
-.hc{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;margin-bottom:10px;}
-.hc-hdr{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:.85rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.07);}
-.hc-name{font-size:14px;font-weight:600;}
-.hc-pos{font-size:11px;color:#8A97A6;margin-top:2px;}
+.hc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;margin-bottom:10px;}
+.hc-hdr{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:.85rem 1.25rem;border-bottom:1px solid rgba(255,255,255,.07);}
+.hc-name{font-size:14px;font-weight:600;}.hc-pos{font-size:11px;color:#8A97A6;margin-top:2px;}
 .hc-t{font-size:22px;font-weight:600;font-family:'DM Mono',monospace;text-align:right;}
 .hc-tl{font-size:10px;color:#8A97A6;text-align:right;text-transform:uppercase;letter-spacing:.04em;}
 .hc-body{padding:.85rem 1.25rem;}
-.hc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:.75rem;}
-.stat-row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px;}
-.stat-row:last-child{border-bottom:none;}
-.stat-l{color:#8A97A6;}
-.stat-v{font-weight:600;font-family:'DM Mono',monospace;}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:.75rem;}
+.sr{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;}
+.sr:last-child{border-bottom:none;}
+.sl2{color:#8A97A6;}.sv{font-weight:600;font-family:'DM Mono',monospace;}
 .pill{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;margin:2px 2px 0 0;}
-.pr{background:rgba(226,75,74,0.2);color:#E24B4A;}
-.pg{background:rgba(45,184,124,0.15);color:#2DB87C;}
-.pw{background:rgba(232,160,32,0.15);color:#E8A020;}
-.pb{background:rgba(55,138,221,0.15);color:#378ADD;}
-.approach{background:rgba(232,160,32,0.08);border:1px solid rgba(232,160,32,0.2);border-radius:6px;padding:.65rem .9rem;font-size:12px;color:#F2EFE8;line-height:1.6;}
+.pr{background:rgba(226,75,74,.2);color:#E24B4A;}.pg{background:rgba(45,184,124,.15);color:#2DB87C;}
+.pw{background:rgba(232,160,32,.15);color:#E8A020;}.pb{background:rgba(55,138,221,.15);color:#378ADD;}
+.approach{background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.2);border-radius:6px;padding:.65rem .9rem;font-size:12px;color:#F2EFE8;line-height:1.65;margin-top:.75rem;}
 .al{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#E8A020;margin-bottom:3px;}
-.box{background:rgba(255,255,255,0.04);border-radius:8px;padding:1rem;}
-.box-item{font-size:12px;color:#B0BDC9;line-height:1.65;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.box{background:rgba(255,255,255,.04);border-radius:8px;padding:1rem;margin-bottom:1rem;}
+.box-item{font-size:12px;color:#B0BDC9;line-height:1.7;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);}
 .box-item:last-child{border-bottom:none;}
 .box-item strong{color:#F2EFE8;}
-@media(max-width:600px){.hc-grid{grid-template-columns:1fr;}.page,.section{padding:1.25rem 1rem;}.tabs{padding:0 1rem;}}
-</style>
+.lineup-table{width:100%;border-collapse:collapse;font-size:12px;background:rgba(255,255,255,.03);border-radius:8px;overflow:hidden;}
+.lineup-table th{text-align:left;padding:7px 10px;font-size:11px;color:#8A97A6;border-bottom:1px solid rgba(255,255,255,.08);font-weight:500;text-transform:uppercase;letter-spacing:.04em;}
+.lineup-table th:not(:first-child){text-align:right;}
+.lineup-table td{padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;}
+.lineup-table td:not(:first-child){text-align:right;font-family:'DM Mono',monospace;}
+.lineup-table tr:last-child td{border-bottom:none;}
+.lineup-table tr:hover td{background:rgba(255,255,255,.03);}
+@media(max-width:600px){.sg{grid-template-columns:1fr;}.section{padding:1.25rem 1rem;}.tabs{padding:0 1rem;}.mg{grid-template-columns:repeat(2,1fr);}}</style>
 </head>
 <body>
 <nav class="topbar">
@@ -61,61 +58,69 @@ h1 span{color:#E8A020;}
 </nav>
 <div class="tabs">
   <button class="tab active" onclick="show('overview',this)">Overview</button>
-  <button class="tab" onclick="show('batters',this)">Batters</button>
+  <button class="tab" onclick="show('lineup',this)">Full lineup</button>
+  <button class="tab" onclick="show('batters',this)">Batter cards</button>
   <button class="tab" onclick="show('pitchers',this)">Pitchers</button>
 </div>
 
 <div class="section active" id="overview">
-  <h1>Scouting: <span>Smash Palmer 10U</span></h1>
-  <p class="sub">#11 of 11 teams · Danger 7.56 · Dukes record: 14-1 blowout win</p>
+  <h1>Scouting: <span>Smash Palmer</span></h1>
+  <p class="sub">#14 of 15 teams · Danger 7.6 · Dukes record: <span style="color:#2DB87C;">W 14-1</span></p>
   <div class="mg">
-    <div class="mc"><div class="l">Rank</div><div class="v" style="color:#378ADD;">#11</div><div class="s">of 11 teams</div></div>
-    <div class="mc"><div class="l">Tier</div><div class="v" style="color:#378ADD;">AVERAGE</div></div>
+    <div class="mc"><div class="l">Rank</div><div class="v" style="color:#378ADD;">#14</div><div class="s">of 15 teams</div></div>
+    <div class="mc"><div class="l">Tier</div><div class="v" style="color:#378ADD;font-size:14px;">AVERAGE</div></div>
     <div class="mc"><div class="l">Team OBP</div><div class="v">.476</div></div>
-    <div class="mc"><div class="l">Team OPS</div><div class="v">.895</div></div>
+    <div class="mc"><div class="l">Team OPS</div><div class="v">.894</div></div>
     <div class="mc"><div class="l">Best ERA</div><div class="v" style="color:#E8A020;">4.94</div></div>
-    <div class="mc"><div class="l">vs Dukes</div><div class="v" style="font-size:14px;color:#2DB87C;">W 14–1</div></div>
+    <div class="mc"><div class="l">Team K%</div><div class="v">54%</div></div>
+    <div class="mc"><div class="l">Staff K</div><div class="v">220</div><div class="s">0 IP</div></div>
+    <div class="mc"><div class="l">vs Dukes</div><div class="v" style="font-size:13px;color:#2DB87C;">W 14-1</div></div>
   </div>
-
-  <div class="sl">Key intel</div>
-  <div class="box" style="margin-bottom:1rem;">
-    <div class="box-item"><strong>Top 3 are dangerous.</strong> Jenna H (.458/.649), Sophia D (.426/.557), Mckinley M (.404/.563) are legitimate threats. All three have .400+ BA and .550+ OBP. Don't let them beat you — pitch around Jenna H with runners on.</div>
-    <div class="box-item"><strong>Massive K rate drop-off.</strong> The lineup splits hard after the top 3. Spots 5–9 all have K rates above 58% — attack them aggressively with fastballs and they will put themselves out.</div>
-    <div class="box-item"><strong>Pitching is exploitable.</strong> Best ERA on staff is 4.94 (Harper V). Baylee L throws the most innings (34 IP) with a 11.12 ERA and 66 walks — take pitches against her and you'll score freely.</div>
-    <div class="box-item"><strong>Dukes won 14-1.</strong> This is a manageable matchup. Key is not letting Jenna H/Sophia D/Mckinley M get into a rhythm at the top of the order.</div>
-  </div>
-
+  <div class="sl">Strengths — respect these</div>
+  <div class="box" style="border-left:3px solid #E24B4A;border-radius:0 8px 8px 0;"><div class="box-item">Staff has <strong>220 strikeouts</strong> on the season — serious punch-out ability across multiple arms.</div></div>
+  <div class="sl">Vulnerabilities — exploit these</div>
+  <div class="box" style="border-left:3px solid #2DB87C;border-radius:0 8px 8px 0;"><div class="box-item"><strong>High team K rate (54%)</strong> — lineup can be shut down by command pitching. Attack the zone, don't nibble.</div>
+<div class="box-item"><strong>Bottom of lineup weak</strong> (avg .171) — attack spots 7–9 aggressively, don't nibble.</div></div>
   <div class="sl">Top threats</div>
-  <div class="hc">
-  <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
-  <div class="hc-hdr">
-    <div><div class="hc-name">Jenna H</div><div class="hc-pos">#1 by OPS · Pitches: 24IP 10.36ERA</div></div>
+  <div class="hc"><div style="height:4px;background:#E24B4A;opacity:.7;"></div><div class="hc-hdr"><div><div class="hc-name">Jenna H</div><div class="hc-pos">#1 — .458 BA / .649 OBP · 8 RBI · 29% K</div></div><div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat</div></div></div><div class="hc-body"><div class="approach"><div class="al">Pitch approach</div><strong>First-pitch strikes are essential.</strong> .458 BA is dangerous. Low K rate (29%) — she makes contact, so location matters more than strikeout attempts. Watch her walk rate (35%) — throw strikes or she takes her base.</div></div></div><div class="hc"><div style="height:4px;background:#E24B4A;opacity:.7;"></div><div class="hc-hdr"><div><div class="hc-name">Sophia D</div><div class="hc-pos">#2 — .426 BA / .557 OBP · 7 RBI · 44% K</div></div><div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat</div></div></div><div class="hc-body"><div class="approach"><div class="al">Pitch approach</div><strong>Attack early in the count.</strong> .426 BA is solid but beatable. She Ks 44% — get ahead and expand. </div></div></div><div class="hc"><div style="height:4px;background:#E24B4A;opacity:.7;"></div><div class="hc-hdr"><div><div class="hc-name">Mckinley M</div><div class="hc-pos">#3 — .404 BA / .563 OBP · 19 RBI · 45% K</div></div><div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat</div></div></div><div class="hc-body"><div class="approach"><div class="al">Pitch approach</div><strong>Attack early in the count.</strong> .404 BA is solid but beatable. She Ks 44% — get ahead and expand. </div></div></div><div class="hc"><div style="height:4px;background:#E24B4A;opacity:.7;"></div><div class="hc-hdr"><div><div class="hc-name">Harper V</div><div class="hc-pos">#4 — .326 BA / .453 OBP · 12 RBI · 42% K</div></div><div><div class="hc-t" style="color:#E24B4A;">9.1</div><div class="hc-tl">Threat</div></div></div><div class="hc-body"><div class="approach"><div class="al">Pitch approach</div><strong>Challenge her.</strong> .326 BA is manageable. Work the outer half, induce weak contact. </div></div></div>
+</div>
+
+<div class="section" id="lineup">
+  <h1>Full lineup</h1>
+  <p class="sub">Smash Palmer · all qualified hitters sorted by OPS</p>
+  <table class="lineup-table">
+    <thead><tr><th>Player</th><th>AB</th><th>BA</th><th>OBP</th><th>OPS</th><th>K%</th><th>BB%</th><th>RBI</th><th>R</th><th>Pit</th></tr></thead>
+    <tbody><tr><td><strong>Jenna H</strong></td><td>24</td><td style="color:#2DB87C;">.458</td><td>.649</td><td>1.267</td><td style="color:#F2EFE8;">29%</td><td>35%</td><td>8</td><td>13</td><td>⚾</td></tr><tr><td><strong>Sophia D</strong></td><td>54</td><td style="color:#2DB87C;">.426</td><td>.557</td><td>1.132</td><td style="color:#F2EFE8;">44%</td><td>23%</td><td>7</td><td>29</td><td></td></tr><tr><td><strong>Mckinley M</strong></td><td>47</td><td style="color:#E8A020;">.404</td><td>.563</td><td>1.108</td><td style="color:#F2EFE8;">45%</td><td>27%</td><td>19</td><td>23</td><td></td></tr><tr><td><strong>Harper V</strong></td><td>43</td><td style="color:#E8A020;">.326</td><td>.453</td><td>0.893</td><td style="color:#F2EFE8;">42%</td><td>19%</td><td>12</td><td>20</td><td>⚾</td></tr><tr><td><strong>Cailyn F</strong></td><td>44</td><td style="color:#F2EFE8;">.318</td><td>.455</td><td>0.884</td><td style="color:#E24B4A;">61%</td><td>20%</td><td>12</td><td>20</td><td></td></tr><tr><td><strong>Emmalyn B</strong></td><td>29</td><td style="color:#F2EFE8;">.241</td><td>.476</td><td>0.801</td><td style="color:#E24B4A;">72%</td><td>31%</td><td>10</td><td>13</td><td></td></tr><tr><td><strong>Bella P</strong></td><td>35</td><td style="color:#E24B4A;">.200</td><td>.440</td><td>0.710</td><td style="color:#E24B4A;">71%</td><td>30%</td><td>8</td><td>9</td><td></td></tr><tr><td><strong>Lillian W</strong></td><td>45</td><td style="color:#F2EFE8;">.244</td><td>.346</td><td>0.675</td><td style="color:#E24B4A;">58%</td><td>13%</td><td>13</td><td>7</td><td></td></tr><tr><td><strong>Baylee L</strong></td><td>46</td><td style="color:#E24B4A;">.174</td><td>.345</td><td>0.580</td><td style="color:#E24B4A;">59%</td><td>21%</td><td>7</td><td>13</td><td>⚾</td></tr><tr><td><strong>Eva</strong></td><td>21</td><td style="color:#E24B4A;">.095</td><td>.296</td><td>0.424</td><td style="color:#E24B4A;">81%</td><td>22%</td><td>2</td><td>3</td><td></td></tr></tbody>
+  </table>
 </div>
 
 <div class="section" id="batters">
-  <h1>Batter-by-batter</h1>
-  <p class="sub">Smash Palmer 10U · all qualifiers sorted by OPS · Dukes won 14-1</p>
+  <h1>Batter-by-batter approach</h1>
+  <p class="sub">Smash Palmer · threat rating + specific pitch approach for each hitter</p>
   <div class="hc">
   <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
   <div class="hc-hdr">
-    <div><div class="hc-name">Jenna H</div><div class="hc-pos">#1 by OPS · Pitches: 24IP 10.36ERA</div></div>
+    <div><div class="hc-name">Jenna H</div><div class="hc-pos">#1 by OPS · 24IP 10.36ERA</div></div>
     <div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div>
   </div>
   <div class="hc-body">
-    <div class="hc-grid">
+    <div class="sg">
       <div>
-        <div class="stat-row"><span class="stat-l">BA</span><span class="stat-v" style="color:#E24B4A;">0.458</span></div>
-        <div class="stat-row"><span class="stat-l">OBP</span><span class="stat-v">0.649</span></div>
-        <div class="stat-row"><span class="stat-l">OPS est</span><span class="stat-v">1.267</span></div>
-        <div class="stat-row"><span class="stat-l">RBI</span><span class="stat-v">8</span></div>
+        <div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E24B4A;">.458</span></div>
+        <div class="sr"><span class="sl2">OBP</span><span class="sv">.649</span></div>
+        <div class="sr"><span class="sl2">AB</span><span class="sv">24</span></div>
+        <div class="sr"><span class="sl2">RBI</span><span class="sv">8</span></div>
+        <div class="sr"><span class="sl2">Runs</span><span class="sv">13</span></div>
       </div>
       <div>
-        <div class="stat-row"><span class="stat-l">K rate</span><span class="stat-v">29%</span></div>
-        <div class="stat-row"><span class="stat-l">BB rate</span><span class="stat-v">35%</span></div>
-        <div style="margin-top:.5rem;"><span class="pill pr">DANGER — .458/.649</span><span class="pill pw">Also pitches 24 IP</span></div>
+        <div class="sr"><span class="sl2">K rate</span><span class="sv"><span>29%</span></span></div>
+        <div class="sr"><span class="sl2">BB rate</span><span class="sv">35%</span></div>
+        <div class="sr"><span class="sl2">BB</span><span class="sv">13</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">7</span></div>
+        <div style="margin-top:.5rem;"><span class="pill pw">Danger hitter</span><span class="pill pr">Very patient — must throw strikes</span><span class="pill pw">Two-way player</span></div>
       </div>
     </div>
-    <div class="approach"><div class="al">Pitch approach</div>Elite contact hitter — .458 BA and .649 OBP in limited games. Change speeds constantly and work the outer half. Her 29% K rate means she makes contact. Don't walk her — she bats near the top and runs well. As a pitcher her ERA is 10.36, so if she pitches, be patient and aggressive early in counts.</div>
+    <div class="approach"><div class="al">Pitch approach</div><strong>First-pitch strikes are essential.</strong> .458 BA is dangerous. Low K rate (29%) — she makes contact, so location matters more than strikeout attempts. Watch her walk rate (35%) — throw strikes or she takes her base.</div>
   </div>
 </div><div class="hc">
   <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
@@ -124,20 +129,23 @@ h1 span{color:#E8A020;}
     <div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div>
   </div>
   <div class="hc-body">
-    <div class="hc-grid">
+    <div class="sg">
       <div>
-        <div class="stat-row"><span class="stat-l">BA</span><span class="stat-v" style="color:#E24B4A;">0.426</span></div>
-        <div class="stat-row"><span class="stat-l">OBP</span><span class="stat-v">0.557</span></div>
-        <div class="stat-row"><span class="stat-l">OPS est</span><span class="stat-v">1.132</span></div>
-        <div class="stat-row"><span class="stat-l">RBI</span><span class="stat-v">7</span></div>
+        <div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E24B4A;">.426</span></div>
+        <div class="sr"><span class="sl2">OBP</span><span class="sv">.557</span></div>
+        <div class="sr"><span class="sl2">AB</span><span class="sv">54</span></div>
+        <div class="sr"><span class="sl2">RBI</span><span class="sv">7</span></div>
+        <div class="sr"><span class="sl2">Runs</span><span class="sv">29</span></div>
       </div>
       <div>
-        <div class="stat-row"><span class="stat-l">K rate</span><span class="stat-v">44%</span></div>
-        <div class="stat-row"><span class="stat-l">BB rate</span><span class="stat-v">23%</span></div>
-        <div style="margin-top:.5rem;"><span class="pill pr">DANGER — .426 BA</span><span class="pill pw">.557 OBP</span></div>
+        <div class="sr"><span class="sl2">K rate</span><span class="sv"><span>44%</span></span></div>
+        <div class="sr"><span class="sl2">BB rate</span><span class="sv">23%</span></div>
+        <div class="sr"><span class="sl2">BB</span><span class="sv">16</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">24</span></div>
+        <div style="margin-top:.5rem;"><span class="pill pw">Danger hitter</span><span class="pill pr">Very patient — must throw strikes</span></div>
       </div>
     </div>
-    <div class="approach"><div class="al">Pitch approach</div>.426 BA in 29 games — legitimate threat at the top of the lineup. Her 44% K rate is exploitable — get ahead early and expand off the plate with two strikes. Don't give her anything middle-in. She draws walks (23% BB rate) so throw strikes.</div>
+    <div class="approach"><div class="al">Pitch approach</div><strong>Attack early in the count.</strong> .426 BA is solid but beatable. She Ks 44% — get ahead and expand. </div>
   </div>
 </div><div class="hc">
   <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
@@ -146,42 +154,48 @@ h1 span{color:#E8A020;}
     <div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div>
   </div>
   <div class="hc-body">
-    <div class="hc-grid">
+    <div class="sg">
       <div>
-        <div class="stat-row"><span class="stat-l">BA</span><span class="stat-v" style="color:#E24B4A;">0.404</span></div>
-        <div class="stat-row"><span class="stat-l">OBP</span><span class="stat-v">0.563</span></div>
-        <div class="stat-row"><span class="stat-l">OPS est</span><span class="stat-v">1.108</span></div>
-        <div class="stat-row"><span class="stat-l">RBI</span><span class="stat-v">19</span></div>
+        <div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E24B4A;">.404</span></div>
+        <div class="sr"><span class="sl2">OBP</span><span class="sv">.563</span></div>
+        <div class="sr"><span class="sl2">AB</span><span class="sv">47</span></div>
+        <div class="sr"><span class="sl2">RBI</span><span class="sv">19</span></div>
+        <div class="sr"><span class="sl2">Runs</span><span class="sv">23</span></div>
       </div>
       <div>
-        <div class="stat-row"><span class="stat-l">K rate</span><span class="stat-v">45%</span></div>
-        <div class="stat-row"><span class="stat-l">BB rate</span><span class="stat-v">27%</span></div>
-        <div style="margin-top:.5rem;"><span class="pill pr">19 RBI — cleanup hitter</span><span class="pill pw">.563 OBP</span></div>
+        <div class="sr"><span class="sl2">K rate</span><span class="sv"><span>45%</span></span></div>
+        <div class="sr"><span class="sl2">BB rate</span><span class="sv">27%</span></div>
+        <div class="sr"><span class="sl2">BB</span><span class="sv">17</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">21</span></div>
+        <div style="margin-top:.5rem;"><span class="pill pr">Very patient — must throw strikes</span></div>
       </div>
     </div>
-    <div class="approach"><div class="al">Pitch approach</div>The RBI machine — 19 RBI in 29 games is the best production mark on the team. High OBP (.563) through walks and hits. 45% K rate means she'll chase — attack with first-pitch strikes and expand with two strikes. Do not let her hit with runners on base.</div>
+    <div class="approach"><div class="al">Pitch approach</div><strong>Attack early in the count.</strong> .404 BA is solid but beatable. She Ks 44% — get ahead and expand. </div>
   </div>
 </div><div class="hc">
   <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
   <div class="hc-hdr">
-    <div><div class="hc-name">Harper V</div><div class="hc-pos">#4 by OPS · Pitches: 28IP 4.94ERA</div></div>
+    <div><div class="hc-name">Harper V</div><div class="hc-pos">#4 by OPS · 28IP 4.94ERA</div></div>
     <div><div class="hc-t" style="color:#E24B4A;">9.1</div><div class="hc-tl">Threat/10</div></div>
   </div>
   <div class="hc-body">
-    <div class="hc-grid">
+    <div class="sg">
       <div>
-        <div class="stat-row"><span class="stat-l">BA</span><span class="stat-v" style="color:#E24B4A;">0.326</span></div>
-        <div class="stat-row"><span class="stat-l">OBP</span><span class="stat-v">0.453</span></div>
-        <div class="stat-row"><span class="stat-l">OPS est</span><span class="stat-v">0.893</span></div>
-        <div class="stat-row"><span class="stat-l">RBI</span><span class="stat-v">12</span></div>
+        <div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E24B4A;">.326</span></div>
+        <div class="sr"><span class="sl2">OBP</span><span class="sv">.453</span></div>
+        <div class="sr"><span class="sl2">AB</span><span class="sv">43</span></div>
+        <div class="sr"><span class="sl2">RBI</span><span class="sv">12</span></div>
+        <div class="sr"><span class="sl2">Runs</span><span class="sv">20</span></div>
       </div>
       <div>
-        <div class="stat-row"><span class="stat-l">K rate</span><span class="stat-v">42%</span></div>
-        <div class="stat-row"><span class="stat-l">BB rate</span><span class="stat-v">19%</span></div>
-        <div style="margin-top:.5rem;"><span class="pill pw">Two-way player</span><span class="pill pb">Best pitcher on staff (4.94 ERA)</span></div>
+        <div class="sr"><span class="sl2">K rate</span><span class="sv"><span>42%</span></span></div>
+        <div class="sr"><span class="sl2">BB rate</span><span class="sv">19%</span></div>
+        <div class="sr"><span class="sl2">BB</span><span class="sv">10</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">18</span></div>
+        <div style="margin-top:.5rem;"><span class="pill pw">Patient — throw strikes</span><span class="pill pw">Two-way player</span></div>
       </div>
     </div>
-    <div class="approach"><div class="al">Pitch approach</div>Two-way threat. At the plate: solid .326/.453, 42% K rate — attack her. As pitcher she's their best arm (4.94 ERA, 58 K in 28 innings). When she pitches, put the ball in play early — she's getting outs but giving up contact. Her 23 walks in 28 innings means patience will get you on base.</div>
+    <div class="approach"><div class="al">Pitch approach</div><strong>Challenge her.</strong> .326 BA is manageable. Work the outer half, induce weak contact. </div>
   </div>
 </div><div class="hc">
   <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
@@ -190,42 +204,48 @@ h1 span{color:#E8A020;}
     <div><div class="hc-t" style="color:#E24B4A;">8.5</div><div class="hc-tl">Threat/10</div></div>
   </div>
   <div class="hc-body">
-    <div class="hc-grid">
+    <div class="sg">
       <div>
-        <div class="stat-row"><span class="stat-l">BA</span><span class="stat-v" style="color:#E24B4A;">0.318</span></div>
-        <div class="stat-row"><span class="stat-l">OBP</span><span class="stat-v">0.455</span></div>
-        <div class="stat-row"><span class="stat-l">OPS est</span><span class="stat-v">0.884</span></div>
-        <div class="stat-row"><span class="stat-l">RBI</span><span class="stat-v">12</span></div>
+        <div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E24B4A;">.318</span></div>
+        <div class="sr"><span class="sl2">OBP</span><span class="sv">.455</span></div>
+        <div class="sr"><span class="sl2">AB</span><span class="sv">44</span></div>
+        <div class="sr"><span class="sl2">RBI</span><span class="sv">12</span></div>
+        <div class="sr"><span class="sl2">Runs</span><span class="sv">20</span></div>
       </div>
       <div>
-        <div class="stat-row"><span class="stat-l">K rate</span><span class="stat-v">61%</span></div>
-        <div class="stat-row"><span class="stat-l">BB rate</span><span class="stat-v">20%</span></div>
-        <div style="margin-top:.5rem;"><span class="pill pw">61% K rate — attack aggressively</span></div>
+        <div class="sr"><span class="sl2">K rate</span><span class="sv"><span style='color:#E24B4A'>61%</span></span></div>
+        <div class="sr"><span class="sl2">BB rate</span><span class="sv">20%</span></div>
+        <div class="sr"><span class="sl2">BB</span><span class="sv">11</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">27</span></div>
+        <div style="margin-top:.5rem;"><span class="pill pg">High K — attack</span><span class="pill pw">Patient — throw strikes</span></div>
       </div>
     </div>
-    <div class="approach"><div class="al">Pitch approach</div>61% strikeout rate is the highest among their core lineup. Attack with fastballs — she will swing and miss. Limit walks (20% BB rate) by throwing strikes and she becomes an automatic out. 12 RBI shows she can hurt you when she connects, so don't give in with two strikes.</div>
+    <div class="approach"><div class="al">Pitch approach</div><strong>Challenge her.</strong> .318 BA is manageable. High K rate (61%) — attack with fastballs, she will swing and miss. </div>
   </div>
 </div><div class="hc">
   <div style="height:4px;background:#E8A020;opacity:.7;"></div>
   <div class="hc-hdr">
     <div><div class="hc-name">Emmalyn B</div><div class="hc-pos">#6 by OPS</div></div>
-    <div><div class="hc-t" style="color:#E8A020;">7.5</div><div class="hc-tl">Threat/10</div></div>
+    <div><div class="hc-t" style="color:#E8A020;">7.4</div><div class="hc-tl">Threat/10</div></div>
   </div>
   <div class="hc-body">
-    <div class="hc-grid">
+    <div class="sg">
       <div>
-        <div class="stat-row"><span class="stat-l">BA</span><span class="stat-v" style="color:#E8A020;">0.241</span></div>
-        <div class="stat-row"><span class="stat-l">OBP</span><span class="stat-v">0.476</span></div>
-        <div class="stat-row"><span class="stat-l">OPS est</span><span class="stat-v">0.801</span></div>
-        <div class="stat-row"><span class="stat-l">RBI</span><span class="stat-v">10</span></div>
+        <div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E8A020;">.241</span></div>
+        <div class="sr"><span class="sl2">OBP</span><span class="sv">.476</span></div>
+        <div class="sr"><span class="sl2">AB</span><span class="sv">29</span></div>
+        <div class="sr"><span class="sl2">RBI</span><span class="sv">10</span></div>
+        <div class="sr"><span class="sl2">Runs</span><span class="sv">13</span></div>
       </div>
       <div>
-        <div class="stat-row"><span class="stat-l">K rate</span><span class="stat-v">72%</span></div>
-        <div class="stat-row"><span class="stat-l">BB rate</span><span class="stat-v">31%</span></div>
-        <div style="margin-top:.5rem;"><span class="pill pw">72% K rate</span><span class="pill pb">31% walk rate — throw strikes</span></div>
+        <div class="sr"><span class="sl2">K rate</span><span class="sv"><span style='color:#E24B4A'>72%</span></span></div>
+        <div class="sr"><span class="sl2">BB rate</span><span class="sv">31%</span></div>
+        <div class="sr"><span class="sl2">BB</span><span class="sv">13</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">21</span></div>
+        <div style="margin-top:.5rem;"><span class="pill pg">High K — attack</span><span class="pill pr">Very patient — must throw strikes</span></div>
       </div>
     </div>
-    <div class="approach"><div class="al">Pitch approach</div>72% strikeout rate but 31% walk rate — she'll take pitches. Must throw strikes or she'll draw a walk. When you do get ahead, expand off the plate — she rarely makes contact. 10 RBI from this profile suggests she delivers occasionally but is an easy strikeout most trips.</div>
+    <div class="approach"><div class="al">Pitch approach</div><strong>Attack aggressively every pitch.</strong> .241 BA, 72% K rate — fastballs in the zone and she will put herself out. Do not walk her.</div>
   </div>
 </div><div class="hc">
   <div style="height:4px;background:#378ADD;opacity:.7;"></div>
@@ -234,20 +254,23 @@ h1 span{color:#E8A020;}
     <div><div class="hc-t" style="color:#378ADD;">6.7</div><div class="hc-tl">Threat/10</div></div>
   </div>
   <div class="hc-body">
-    <div class="hc-grid">
+    <div class="sg">
       <div>
-        <div class="stat-row"><span class="stat-l">BA</span><span class="stat-v" style="color:#378ADD;">0.200</span></div>
-        <div class="stat-row"><span class="stat-l">OBP</span><span class="stat-v">0.440</span></div>
-        <div class="stat-row"><span class="stat-l">OPS est</span><span class="stat-v">0.710</span></div>
-        <div class="stat-row"><span class="stat-l">RBI</span><span class="stat-v">8</span></div>
+        <div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#378ADD;">.200</span></div>
+        <div class="sr"><span class="sl2">OBP</span><span class="sv">.440</span></div>
+        <div class="sr"><span class="sl2">AB</span><span class="sv">35</span></div>
+        <div class="sr"><span class="sl2">RBI</span><span class="sv">8</span></div>
+        <div class="sr"><span class="sl2">Runs</span><span class="sv">9</span></div>
       </div>
       <div>
-        <div class="stat-row"><span class="stat-l">K rate</span><span class="stat-v">71%</span></div>
-        <div class="stat-row"><span class="stat-l">BB rate</span><span class="stat-v">30%</span></div>
-        <div style="margin-top:.5rem;"><span class="pill pg">71% K rate — automatic out</span><span class="pill pw">Watch walk rate (30%)</span></div>
+        <div class="sr"><span class="sl2">K rate</span><span class="sv"><span style='color:#E24B4A'>71%</span></span></div>
+        <div class="sr"><span class="sl2">BB rate</span><span class="sv">30%</span></div>
+        <div class="sr"><span class="sl2">BB</span><span class="sv">15</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">25</span></div>
+        <div style="margin-top:.5rem;"><span class="pill pg">High K — attack</span><span class="pill pr">Very patient — must throw strikes</span></div>
       </div>
     </div>
-    <div class="approach"><div class="al">Pitch approach</div>71% K rate makes her a near-automatic out when you throw strikes. Her 30% walk rate is the danger — must attack the zone. When ahead, go off the plate and she'll swing through it. 8 RBI despite a .200 AVG means she occasionally gets a big hit — don't get careless.</div>
+    <div class="approach"><div class="al">Pitch approach</div><strong>Attack aggressively every pitch.</strong> .200 BA, 71% K rate — fastballs in the zone and she will put herself out. Do not walk her.</div>
   </div>
 </div><div class="hc">
   <div style="height:4px;background:#E8A020;opacity:.7;"></div>
@@ -256,136 +279,194 @@ h1 span{color:#E8A020;}
     <div><div class="hc-t" style="color:#E8A020;">7.0</div><div class="hc-tl">Threat/10</div></div>
   </div>
   <div class="hc-body">
-    <div class="hc-grid">
+    <div class="sg">
       <div>
-        <div class="stat-row"><span class="stat-l">BA</span><span class="stat-v" style="color:#E8A020;">0.244</span></div>
-        <div class="stat-row"><span class="stat-l">OBP</span><span class="stat-v">0.346</span></div>
-        <div class="stat-row"><span class="stat-l">OPS est</span><span class="stat-v">0.675</span></div>
-        <div class="stat-row"><span class="stat-l">RBI</span><span class="stat-v">13</span></div>
+        <div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E8A020;">.244</span></div>
+        <div class="sr"><span class="sl2">OBP</span><span class="sv">.346</span></div>
+        <div class="sr"><span class="sl2">AB</span><span class="sv">45</span></div>
+        <div class="sr"><span class="sl2">RBI</span><span class="sv">13</span></div>
+        <div class="sr"><span class="sl2">Runs</span><span class="sv">7</span></div>
       </div>
       <div>
-        <div class="stat-row"><span class="stat-l">K rate</span><span class="stat-v">58%</span></div>
-        <div class="stat-row"><span class="stat-l">BB rate</span><span class="stat-v">13%</span></div>
-        <div style="margin-top:.5rem;"><span class="pill pg">58% K rate — attack</span><span class="pill pg">Low walk rate — throw strikes freely</span></div>
+        <div class="sr"><span class="sl2">K rate</span><span class="sv"><span style='color:#E24B4A'>58%</span></span></div>
+        <div class="sr"><span class="sl2">BB rate</span><span class="sv">13%</span></div>
+        <div class="sr"><span class="sl2">BB</span><span class="sv">7</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">26</span></div>
+        <div style="margin-top:.5rem;"><span class="pill pg">High K — attack</span></div>
       </div>
     </div>
-    <div class="approach"><div class="al">Pitch approach</div>58% K rate and only 13% walk rate — throw fastballs and she will put herself out. 13 RBI from a .244 AVG suggests she bats in run situations, so don't give in. Otherwise attack early and often.</div>
+    <div class="approach"><div class="al">Pitch approach</div><strong>Attack aggressively every pitch.</strong> .244 BA, 58% K rate — fastballs in the zone and she will put herself out. Do not walk her.</div>
   </div>
 </div><div class="hc">
   <div style="height:4px;background:#378ADD;opacity:.7;"></div>
   <div class="hc-hdr">
-    <div><div class="hc-name">Baylee L</div><div class="hc-pos">#9 by OPS · Pitches: 34IP 11.12ERA</div></div>
+    <div><div class="hc-name">Baylee L</div><div class="hc-pos">#9 by OPS · 34IP 11.12ERA</div></div>
     <div><div class="hc-t" style="color:#378ADD;">6.0</div><div class="hc-tl">Threat/10</div></div>
   </div>
   <div class="hc-body">
-    <div class="hc-grid">
+    <div class="sg">
       <div>
-        <div class="stat-row"><span class="stat-l">BA</span><span class="stat-v" style="color:#378ADD;">0.174</span></div>
-        <div class="stat-row"><span class="stat-l">OBP</span><span class="stat-v">0.345</span></div>
-        <div class="stat-row"><span class="stat-l">OPS est</span><span class="stat-v">0.580</span></div>
-        <div class="stat-row"><span class="stat-l">RBI</span><span class="stat-v">7</span></div>
+        <div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#378ADD;">.174</span></div>
+        <div class="sr"><span class="sl2">OBP</span><span class="sv">.345</span></div>
+        <div class="sr"><span class="sl2">AB</span><span class="sv">46</span></div>
+        <div class="sr"><span class="sl2">RBI</span><span class="sv">7</span></div>
+        <div class="sr"><span class="sl2">Runs</span><span class="sv">13</span></div>
       </div>
       <div>
-        <div class="stat-row"><span class="stat-l">K rate</span><span class="stat-v">59%</span></div>
-        <div class="stat-row"><span class="stat-l">BB rate</span><span class="stat-v">21%</span></div>
-        <div style="margin-top:.5rem;"><span class="pill pg">59% K rate</span><span class="pill pw">Also pitches — 11.12 ERA</span></div>
+        <div class="sr"><span class="sl2">K rate</span><span class="sv"><span style='color:#E24B4A'>59%</span></span></div>
+        <div class="sr"><span class="sl2">BB rate</span><span class="sv">21%</span></div>
+        <div class="sr"><span class="sl2">BB</span><span class="sv">12</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">27</span></div>
+        <div style="margin-top:.5rem;"><span class="pill pg">High K — attack</span><span class="pill pw">Patient — throw strikes</span><span class="pill pw">Two-way player</span></div>
       </div>
     </div>
-    <div class="approach"><div class="al">Pitch approach</div>Weakest hitter in the regular lineup (.174 BA, 59% K). Attack every time. As pitcher she throws the most innings on staff (34 IP) but ERA of 11.12 and 66 walks — be extremely patient when she pitches, take pitches, and draw walks freely.</div>
+    <div class="approach"><div class="al">Pitch approach</div><strong>Attack aggressively every pitch.</strong> .174 BA, 59% K rate — fastballs in the zone and she will put herself out. Do not walk her.</div>
+  </div>
+</div><div class="hc">
+  <div style="height:4px;background:#2DB87C;opacity:.7;"></div>
+  <div class="hc-hdr">
+    <div><div class="hc-name">Eva</div><div class="hc-pos">#10 by OPS</div></div>
+    <div><div class="hc-t" style="color:#2DB87C;">4.0</div><div class="hc-tl">Threat/10</div></div>
+  </div>
+  <div class="hc-body">
+    <div class="sg">
+      <div>
+        <div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#2DB87C;">.095</span></div>
+        <div class="sr"><span class="sl2">OBP</span><span class="sv">.296</span></div>
+        <div class="sr"><span class="sl2">AB</span><span class="sv">21</span></div>
+        <div class="sr"><span class="sl2">RBI</span><span class="sv">2</span></div>
+        <div class="sr"><span class="sl2">Runs</span><span class="sv">3</span></div>
+      </div>
+      <div>
+        <div class="sr"><span class="sl2">K rate</span><span class="sv"><span style='color:#E24B4A'>81%</span></span></div>
+        <div class="sr"><span class="sl2">BB rate</span><span class="sv">22%</span></div>
+        <div class="sr"><span class="sl2">BB</span><span class="sv">6</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">17</span></div>
+        <div style="margin-top:.5rem;"><span class="pill pg">High K — attack</span><span class="pill pr">Very patient — must throw strikes</span></div>
+      </div>
+    </div>
+    <div class="approach"><div class="al">Pitch approach</div><strong>Attack aggressively every pitch.</strong> .095 BA, 81% K rate — fastballs in the zone and she will put herself out. Do not walk her.</div>
   </div>
 </div>
 </div>
 
 <div class="section" id="pitchers">
   <h1>Pitching staff</h1>
-  <p class="sub">Smash Palmer 10U · 4 pitchers with 5+ IP</p>
+  <p class="sub">Smash Palmer · pitchers with 5+ IP · how to attack each arm</p>
   <div class="hc">
-  <div style="height:4px;background:#E8A020;opacity:.7;"></div>
+  <div style="height:4px;background:#378ADD;opacity:.7;"></div>
   <div class="hc-hdr">
-    <div><div class="hc-name">Harper V</div><div class="hc-pos">28.1 IP this season</div></div>
-    <div><div class="hc-t" style="color:#E8A020;">4.94</div><div class="hc-tl">ERA</div></div>
+    <div><div class="hc-name">Harper V</div><div class="hc-pos">28.1 IP · Also bats: .326 BA / .453 OBP</div></div>
+    <div><div class="hc-t" style="color:#E24B4A;">4.94</div><div class="hc-tl">ERA</div></div>
   </div>
   <div class="hc-body">
-    <div class="hc-grid">
+    <div class="sg">
       <div>
-        <div class="stat-row"><span class="stat-l">ERA</span><span class="stat-v" style="color:#E8A020;">4.94</span></div>
-        <div class="stat-row"><span class="stat-l">WHIP</span><span class="stat-v">1.87</span></div>
-        <div class="stat-row"><span class="stat-l">K</span><span class="stat-v">58</span></div>
-        <div class="stat-row"><span class="stat-l">IP</span><span class="stat-v">28.1</span></div>
+        <div class="sr"><span class="sl2">ERA</span><span class="sv" style="color:#E24B4A;">4.94</span></div>
+        <div class="sr"><span class="sl2">WHIP</span><span class="sv">1.87</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">58</span></div>
+        <div class="sr"><span class="sl2">IP</span><span class="sv">28.1</span></div>
       </div>
       <div>
-        <div class="stat-row"><span class="stat-l">H allowed</span><span class="stat-v">30</span></div>
-        <div class="stat-row"><span class="stat-l">BB allowed</span><span class="stat-v">23</span></div>
-        <div class="stat-row"><span class="stat-l">K/9</span><span class="stat-v">18.6</span></div>
+        <div class="sr"><span class="sl2">K/9</span><span class="sv">18.6</span></div>
+        <div class="sr"><span class="sl2">H allowed</span><span class="sv">30</span></div>
+        <div class="sr"><span class="sl2">BB allowed</span><span class="sv">23</span></div>
+        <div class="sr"><span class="sl2">BB/inn</span><span class="sv">0.82</span></div>
       </div>
     </div>
-    <div class="approach"><div class="al">How to attack</div>Best arm on staff. 58 K in 28 innings is a good rate (18.5 K/9). ERA 4.94 means she's giving up runs but she can miss bats. Work deep counts to get her pitch count up. Her 23 walks shows some command inconsistency — patience will get you on base.</div>
+    <div class="approach"><div class="al">How to attack</div><strong>Be aggressive from pitch one.</strong> 4.94 ERA — score on her freely. Swing early, put it in play hard.  Runs will come.</div>
   </div>
 </div><div class="hc">
-  <div style="height:4px;background:#E8A020;opacity:.7;"></div>
+  <div style="height:4px;background:#2DB87C;opacity:.7;"></div>
   <div class="hc-hdr">
-    <div><div class="hc-name">J C</div><div class="hc-pos">11.1 IP this season</div></div>
-    <div><div class="hc-t" style="color:#E8A020;">5.56</div><div class="hc-tl">ERA</div></div>
+    <div><div class="hc-name">J C</div><div class="hc-pos">11.1 IP · Also bats: —</div></div>
+    <div><div class="hc-t" style="color:#E24B4A;">5.56</div><div class="hc-tl">ERA</div></div>
   </div>
   <div class="hc-body">
-    <div class="hc-grid">
+    <div class="sg">
       <div>
-        <div class="stat-row"><span class="stat-l">ERA</span><span class="stat-v" style="color:#E8A020;">5.56</span></div>
-        <div class="stat-row"><span class="stat-l">WHIP</span><span class="stat-v">1.85</span></div>
-        <div class="stat-row"><span class="stat-l">K</span><span class="stat-v">24</span></div>
-        <div class="stat-row"><span class="stat-l">IP</span><span class="stat-v">11.1</span></div>
+        <div class="sr"><span class="sl2">ERA</span><span class="sv" style="color:#E24B4A;">5.56</span></div>
+        <div class="sr"><span class="sl2">WHIP</span><span class="sv">1.85</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">24</span></div>
+        <div class="sr"><span class="sl2">IP</span><span class="sv">11.1</span></div>
       </div>
       <div>
-        <div class="stat-row"><span class="stat-l">H allowed</span><span class="stat-v">13</span></div>
-        <div class="stat-row"><span class="stat-l">BB allowed</span><span class="stat-v">8</span></div>
-        <div class="stat-row"><span class="stat-l">K/9</span><span class="stat-v">19.5</span></div>
+        <div class="sr"><span class="sl2">K/9</span><span class="sv">19.5</span></div>
+        <div class="sr"><span class="sl2">H allowed</span><span class="sv">13</span></div>
+        <div class="sr"><span class="sl2">BB allowed</span><span class="sv">8</span></div>
+        <div class="sr"><span class="sl2">BB/inn</span><span class="sv">0.72</span></div>
       </div>
     </div>
-    <div class="approach"><div class="al">How to attack</div>Small sample (11 innings) but 24 K shows strikeout ability. 5.56 ERA — hittable. Put the ball in play on first pitches, don't give her free strikeouts by chasing.</div>
+    <div class="approach"><div class="al">How to attack</div><strong>Be aggressive from pitch one.</strong> 5.56 ERA — score on her freely. Swing early, put it in play hard.  Runs will come.</div>
   </div>
 </div><div class="hc">
-  <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+  <div style="height:4px;background:#2DB87C;opacity:.7;"></div>
   <div class="hc-hdr">
-    <div><div class="hc-name">Jenna H</div><div class="hc-pos">24.1 IP this season</div></div>
+    <div><div class="hc-name">Jenna H</div><div class="hc-pos">24.1 IP · Also bats: .458 BA / .649 OBP</div></div>
     <div><div class="hc-t" style="color:#E24B4A;">10.36</div><div class="hc-tl">ERA</div></div>
   </div>
   <div class="hc-body">
-    <div class="hc-grid">
+    <div class="sg">
       <div>
-        <div class="stat-row"><span class="stat-l">ERA</span><span class="stat-v" style="color:#E24B4A;">10.36</span></div>
-        <div class="stat-row"><span class="stat-l">WHIP</span><span class="stat-v">2.59</span></div>
-        <div class="stat-row"><span class="stat-l">K</span><span class="stat-v">52</span></div>
-        <div class="stat-row"><span class="stat-l">IP</span><span class="stat-v">24.1</span></div>
+        <div class="sr"><span class="sl2">ERA</span><span class="sv" style="color:#E24B4A;">10.36</span></div>
+        <div class="sr"><span class="sl2">WHIP</span><span class="sv">2.59</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">52</span></div>
+        <div class="sr"><span class="sl2">IP</span><span class="sv">24.1</span></div>
       </div>
       <div>
-        <div class="stat-row"><span class="stat-l">H allowed</span><span class="stat-v">44</span></div>
-        <div class="stat-row"><span class="stat-l">BB allowed</span><span class="stat-v">19</span></div>
-        <div class="stat-row"><span class="stat-l">K/9</span><span class="stat-v">19.4</span></div>
+        <div class="sr"><span class="sl2">K/9</span><span class="sv">19.4</span></div>
+        <div class="sr"><span class="sl2">H allowed</span><span class="sv">44</span></div>
+        <div class="sr"><span class="sl2">BB allowed</span><span class="sv">19</span></div>
+        <div class="sr"><span class="sl2">BB/inn</span><span class="sv">0.79</span></div>
       </div>
     </div>
-    <div class="approach"><div class="al">How to attack</div>10.36 ERA across 24 innings — be aggressive from pitch one. She gives up 44 hits in 24 innings (1.8/inn). Swing early in counts, put the ball in play hard, runs will come.</div>
+    <div class="approach"><div class="al">How to attack</div><strong>Be aggressive from pitch one.</strong> 10.36 ERA — score on her freely. Swing early, put it in play hard.  Runs will come.</div>
   </div>
 </div><div class="hc">
-  <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+  <div style="height:4px;background:#2DB87C;opacity:.7;"></div>
   <div class="hc-hdr">
-    <div><div class="hc-name">Baylee L</div><div class="hc-pos">34.0 IP this season</div></div>
+    <div><div class="hc-name">Baylee L</div><div class="hc-pos">34.0 IP · Also bats: .174 BA / .345 OBP</div></div>
     <div><div class="hc-t" style="color:#E24B4A;">11.12</div><div class="hc-tl">ERA</div></div>
   </div>
   <div class="hc-body">
-    <div class="hc-grid">
+    <div class="sg">
       <div>
-        <div class="stat-row"><span class="stat-l">ERA</span><span class="stat-v" style="color:#E24B4A;">11.12</span></div>
-        <div class="stat-row"><span class="stat-l">WHIP</span><span class="stat-v">3.35</span></div>
-        <div class="stat-row"><span class="stat-l">K</span><span class="stat-v">74</span></div>
-        <div class="stat-row"><span class="stat-l">IP</span><span class="stat-v">34.0</span></div>
+        <div class="sr"><span class="sl2">ERA</span><span class="sv" style="color:#E24B4A;">11.12</span></div>
+        <div class="sr"><span class="sl2">WHIP</span><span class="sv">3.35</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">74</span></div>
+        <div class="sr"><span class="sl2">IP</span><span class="sv">34.0</span></div>
       </div>
       <div>
-        <div class="stat-row"><span class="stat-l">H allowed</span><span class="stat-v">48</span></div>
-        <div class="stat-row"><span class="stat-l">BB allowed</span><span class="stat-v">66</span></div>
-        <div class="stat-row"><span class="stat-l">K/9</span><span class="stat-v">19.6</span></div>
+        <div class="sr"><span class="sl2">K/9</span><span class="sv">19.6</span></div>
+        <div class="sr"><span class="sl2">H allowed</span><span class="sv">48</span></div>
+        <div class="sr"><span class="sl2">BB allowed</span><span class="sv">66</span></div>
+        <div class="sr"><span class="sl2">BB/inn</span><span class="sv">1.94</span></div>
       </div>
     </div>
-    <div class="approach"><div class="al">How to attack</div>Most innings pitched but worst command — 66 walks in 34 innings (1.9 BB/inn). Take every pitch. She will walk you. When you do swing, attack mistakes. ERA of 11.12 means she gives up runs consistently — run your offense and score.</div>
+    <div class="approach"><div class="al">How to attack</div><strong>Be aggressive from pitch one.</strong> 11.12 ERA — score on her freely. Swing early, put it in play hard. She walks 1.9/inn — take pitches and let her give you bases. Runs will come.</div>
+  </div>
+</div><div class="hc">
+  <div style="height:4px;background:#2DB87C;opacity:.7;"></div>
+  <div class="hc-hdr">
+    <div><div class="hc-name">Nichols T</div><div class="hc-pos">5.1 IP · Also bats: .231 BA / .444 OBP</div></div>
+    <div><div class="hc-t" style="color:#E24B4A;">14.44</div><div class="hc-tl">ERA</div></div>
+  </div>
+  <div class="hc-body">
+    <div class="sg">
+      <div>
+        <div class="sr"><span class="sl2">ERA</span><span class="sv" style="color:#E24B4A;">14.44</span></div>
+        <div class="sr"><span class="sl2">WHIP</span><span class="sv">3.75</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">12</span></div>
+        <div class="sr"><span class="sl2">IP</span><span class="sv">5.1</span></div>
+      </div>
+      <div>
+        <div class="sr"><span class="sl2">K/9</span><span class="sv">21.2</span></div>
+        <div class="sr"><span class="sl2">H allowed</span><span class="sv">9</span></div>
+        <div class="sr"><span class="sl2">BB allowed</span><span class="sv">11</span></div>
+        <div class="sr"><span class="sl2">BB/inn</span><span class="sv">2.16</span></div>
+      </div>
+    </div>
+    <div class="approach"><div class="al">How to attack</div><strong>Be aggressive from pitch one.</strong> 14.44 ERA — score on her freely. Swing early, put it in play hard. She walks 2.2/inn — take pitches and let her give you bases. Runs will come.</div>
   </div>
 </div>
 </div>
