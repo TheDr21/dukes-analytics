@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Unity 10U — Team Breakdown · Coach Greg McWilliams</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0D0A1A;--surface:rgba(255,255,255,.05);--border:rgba(255,255,255,.09);
+  --text:#F2EEF8;--muted:#6B5E82;--body:#9D90B5;
+  --purple:#7B3FE4;--orange:#F5601E;--light-purple:#A87EF0;
+  --green:#2DB87C;--amber:#E8A020;--red:#E24B4A;
+}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* Hero */
+.hero{background:linear-gradient(135deg,#0D0A1A 0%,#1A0D2E 50%,#0D0A1A 100%);
+  border-bottom:1px solid rgba(123,63,228,.3);padding:0;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 70% 50%,rgba(123,63,228,.15) 0%,transparent 70%),
+             radial-gradient(ellipse 30% 50% at 20% 80%,rgba(245,96,30,.1) 0%,transparent 60%);}
+.hero-inner{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:3rem 2rem;
+  display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center;}
+.hero-eyebrow{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;
+  color:var(--orange);margin-bottom:.75rem;}
+.hero-title{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.1;margin-bottom:.5rem;}
+.hero-title span{color:var(--light-purple);}
+.hero-sub{font-size:14px;color:var(--body);line-height:1.6;max-width:480px;}
+.hero-logo{width:200px;opacity:.92;}
+.hero-stats{display:flex;gap:2rem;margin-top:1.5rem;}
+.hs{text-align:center;}
+.hs-v{font-family:'DM Mono',monospace;font-size:28px;font-weight:600;color:var(--light-purple);line-height:1;}
+.hs-l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-top:3px;}
+
+/* Nav */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:50px;
+  border-bottom:1px solid var(--border);background:rgba(13,10,26,.9);backdrop-filter:blur(10px);
+  position:sticky;top:0;z-index:100;}
+.logo-link{font-size:13px;font-weight:600;text-decoration:none;color:var(--text);}
+.logo-link span{color:var(--light-purple);}
+.back{font-size:12px;color:var(--muted);text-decoration:none;font-family:'DM Mono',monospace;}
+.back:hover{color:var(--light-purple);}
+
+/* Tabs */
+.tabs{display:flex;border-bottom:1px solid var(--border);background:rgba(13,10,26,.8);
+  position:sticky;top:50px;z-index:90;padding:0 2rem;}
+.tab{padding:12px 18px;font-size:13px;cursor:pointer;color:var(--muted);
+  border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;
+  font-family:'Inter',sans-serif;transition:color .15s;}
+.tab.active{color:var(--light-purple);border-bottom-color:var(--light-purple);}
+.tab:hover:not(.active){color:var(--text);}
+
+/* Sections */
+.section{display:none;max-width:980px;margin:0 auto;padding:2rem;}
+.section.active{display:block;}
+
+/* Section label */
+.sl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);
+  margin:2rem 0 .75rem;padding-bottom:.4rem;border-bottom:1px solid var(--border);}
+.sl:first-child{margin-top:0;}
+
+/* Player cards */
+.player-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;}
+.pc{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color .15s;}
+.pc:hover{border-color:rgba(123,63,228,.4);}
+.pc-stripe{height:4px;}
+.pc-inner{padding:.9rem 1rem;}
+.pc-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.6rem;}
+.pc-name{font-size:14px;font-weight:600;}
+.pc-meta{font-size:10px;color:var(--muted);margin-top:2px;}
+.pc-badge{font-family:'DM Mono',monospace;font-size:20px;font-weight:600;text-align:right;line-height:1;}
+.pc-badge-l{font-size:9px;color:var(--muted);text-align:right;text-transform:uppercase;letter-spacing:.05em;}
+.pc-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:.6rem;}
+.stat{background:rgba(255,255,255,.03);border-radius:5px;padding:5px 4px;text-align:center;}
+.stat-v{font-family:'DM Mono',monospace;font-size:13px;font-weight:600;line-height:1;}
+.stat-l{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:2px;}
+.pc-note{font-size:11px;color:var(--body);line-height:1.55;padding-top:.6rem;
+  border-top:1px solid var(--border);}
+.pill{display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;margin:2px 2px 0 0;text-transform:uppercase;letter-spacing:.04em;}
+.pill-p{background:rgba(168,126,240,.15);color:var(--light-purple);}
+.pill-g{background:rgba(45,184,124,.15);color:var(--green);}
+.pill-a{background:rgba(232,160,32,.15);color:var(--amber);}
+.pill-r{background:rgba(226,75,74,.15);color:var(--red);}
+
+/* Coaching notes */
+.note-card{background:rgba(123,63,228,.06);border:1px solid rgba(123,63,228,.2);
+  border-radius:10px;padding:1rem 1.25rem;margin-bottom:10px;}
+.note-title{font-size:12px;font-weight:600;color:var(--light-purple);text-transform:uppercase;
+  letter-spacing:.06em;margin-bottom:.5rem;}
+.note-body{font-size:12px;color:var(--body);line-height:1.7;}
+.note-body strong{color:var(--text);}
+
+/* Overview grid */
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:1.25rem;}
+.ov-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px;}
+.ov-v{font-family:'DM Mono',monospace;font-size:22px;font-weight:600;line-height:1;}
+.ov-l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:3px;}
+.ov-s{font-size:10px;color:var(--body);margin-top:2px;}
+
+/* Pitching note banner */
+.dev-banner{background:rgba(245,96,30,.06);border:1px solid rgba(245,96,30,.2);
+  border-radius:8px;padding:.85rem 1.1rem;margin-bottom:1.25rem;font-size:12px;color:var(--body);line-height:1.6;}
+.dev-banner strong{color:var(--orange);}
+
+/* Full roster table */
+.rtable{width:100%;border-collapse:collapse;font-size:12px;}
+.rtable th{text-align:left;padding:7px 10px;font-size:10px;color:var(--muted);
+  border-bottom:1px solid var(--border);font-weight:600;text-transform:uppercase;letter-spacing:.06em;}
+.rtable th:not(:first-child){text-align:right;}
+.rtable td{padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;}
+.rtable td:not(:first-child){text-align:right;font-family:'DM Mono',monospace;}
+.rtable tr:hover td{background:rgba(255,255,255,.02);}
+.rtable tr:last-child td{border-bottom:none;}
+
+@media(max-width:700px){
+  .hero-inner{grid-template-columns:1fr;}.hero-logo{width:150px;order:-1;}
+  .section{padding:1.25rem 1rem;}.tabs{padding:0 1rem;overflow-x:auto;}
+  .player-grid{grid-template-columns:1fr;}.hero-stats{gap:1rem;}
+}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a href="index.html" class="logo-link">Lady Dukes <span>Analytics</span></a>
+  <a href="index.html" class="back">← Home</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">Coach Greg McWilliams · Confidential Team Breakdown</div>
+      <h1 class="hero-title">Unity <span>10U</span></h1>
+      <p class="hero-sub">Formerly Pittsburgh Tigers 9U Palermo. 2025–26 fall season data. Transitioning to 10U competition under new leadership. This report identifies your core players, evaluates each bat and arm, and sets development priorities for the spring.</p>
+      <div class="hero-stats">
+        <div class="hs"><div class="hs-v">11</div><div class="hs-l">Full-season players</div></div>
+        <div class="hs"><div class="hs-v">.541</div><div class="hs-l">Top BA (Natalie D)</div></div>
+        <div class="hs"><div class="hs-v">.603</div><div class="hs-l">Top OBP (Summer S)</div></div>
+        <div class="hs"><div class="hs-v">3</div><div class="hs-l">Pitching prospects</div></div>
+      </div>
+    </div>
+    <img src="unity-logo.webp" alt="Unity Softball" class="hero-logo">
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="show('overview',this)">Overview</button>
+  <button class="tab" onclick="show('hitters',this)">Hitters</button>
+  <button class="tab" onclick="show('pitching',this)">Pitching</button>
+  <button class="tab" onclick="show('roster',this)">Full roster</button>
+  <button class="tab" onclick="show('coaching',this)">Coaching notes</button>
+</div>
+
+<!-- OVERVIEW -->
+<div class="section active" id="overview">
+  <div class="sl">Team snapshot — 2025–26 fall season</div>
+  <div class="ov-grid">
+    <div class="ov-card"><div class="ov-v" style="color:var(--light-purple);">11</div><div class="ov-l">Core players</div><div class="ov-s">30+ games played</div></div>
+    <div class="ov-card"><div class="ov-v" style="color:var(--green);">.541</div><div class="ov-l">Top BA</div><div class="ov-s">Natalie D</div></div>
+    <div class="ov-card"><div class="ov-v" style="color:var(--green);">.603</div><div class="ov-l">Top OBP</div><div class="ov-s">Summer S</div></div>
+    <div class="ov-card"><div class="ov-v" style="color:var(--amber);">.406</div><div class="ov-l">Team avg BA</div><div class="ov-s">Top 5 hitters</div></div>
+    <div class="ov-card"><div class="ov-v" style="color:var(--orange);">3</div><div class="ov-l">Pitchers</div><div class="ov-s">50+ IP logged</div></div>
+    <div class="ov-card"><div class="ov-v" style="color:var(--amber);">1.56</div><div class="ov-l">Best ERA</div><div class="ov-s">Finley G (6 G)</div></div>
+  </div>
+
+  <div class="dev-banner">
+    <strong>⚠ A note on pitching ERAs:</strong> All pitching numbers in this report come from 9U fall ball — a developmental level where ERAs of 11–28 are completely normal. These are 2016-born players learning the pitching mechanics in a kid-pitch environment for the first time. The ERA numbers should not be used to evaluate pitching talent. What matters is (1) how many innings they logged (commitment and endurance), (2) strikeout rate (raw stuff), and (3) improvement trajectory. Coach McWilliams should evaluate all pitchers in live practice before making staff decisions for 10U.
+  </div>
+
+  <div class="sl">Core players — top 5 by batting average</div>
+  <div class="player-grid">
+    <div class="pc">
+      <div class="pc-stripe" style="background:#7B3FE4;"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Natalie D</div><div class="pc-meta">41 games · 61 AB</div></div>
+          <div><div class="pc-badge" style="color:#A87EF0;">.541</div><div class="pc-badge-l">BA</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:#2DB87C;">.541</div><div class="stat-l">BA</div></div>
+          <div class="stat"><div class="stat-v">.632</div><div class="stat-l">OBP</div></div>
+          <div class="stat"><div class="stat-v">18</div><div class="stat-l">RBI</div></div>
+          <div class="stat"><div class="stat-v">10%</div><div class="stat-l">K%</div></div>
+        </div>
+        
+        <div class="pc-note">Best hitter on the roster. .541 BA / .632 OBP in a full 41-game season. Draws walks (15 BB) and rarely strikes out (6 K). Natural top-of-order bat — gets on base constantly and sets the table. Priority: protect her in the lineup.</div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pc-stripe" style="background:#7B3FE4;"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Summer S</div><div class="pc-meta">40 games · 59 AB</div></div>
+          <div><div class="pc-badge" style="color:#A87EF0;">.475</div><div class="pc-badge-l">BA</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:#2DB87C;">.475</div><div class="stat-l">BA</div></div>
+          <div class="stat"><div class="stat-v">.603</div><div class="stat-l">OBP</div></div>
+          <div class="stat"><div class="stat-v">25</div><div class="stat-l">RBI</div></div>
+          <div class="stat"><div class="stat-v">27%</div><div class="stat-l">K%</div></div>
+        </div>
+        
+        <div class="pc-note">.475 BA / .603 OBP — the highest OBP on the roster. 19 walks vs 16 Ks shows excellent plate patience. 25 RBI from a leadoff/2-hole hitter is outstanding. She gets on base and delivers. Top 2 hitter.</div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pc-stripe" style="background:#A87EF0;"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Chloe S</div><div class="pc-meta">41 games · 69 AB · Two-way</div></div>
+          <div><div class="pc-badge" style="color:#A87EF0;">.406</div><div class="pc-badge-l">BA</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:#A87EF0;">.406</div><div class="stat-l">BA</div></div>
+          <div class="stat"><div class="stat-v">.512</div><div class="stat-l">OBP</div></div>
+          <div class="stat"><div class="stat-v">26</div><div class="stat-l">RBI</div></div>
+          <div class="stat"><div class="stat-v">30%</div><div class="stat-l">K%</div></div>
+        </div>
+        <span class="pill pill-p">Pitches 52IP</span>
+        <div class="pc-note">.406 BA / .512 OBP in the most at-bats on the team (69 AB). Logged 52 innings pitching — 9U ERA is meaningless but the 63 Ks in 52 IP (10.9 K/9) shows genuine arm strength. Two-way player to develop — biggest developmental upside on the roster.</div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pc-stripe" style="background:#60aaff;"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Annabelle F</div><div class="pc-meta">38 games · 55 AB</div></div>
+          <div><div class="pc-badge" style="color:#60aaff;">.309</div><div class="pc-badge-l">BA</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:#E8A020;">.309</div><div class="stat-l">BA</div></div>
+          <div class="stat"><div class="stat-v">.424</div><div class="stat-l">OBP</div></div>
+          <div class="stat"><div class="stat-v">15</div><div class="stat-l">RBI</div></div>
+          <div class="stat"><div class="stat-v">38%</div><div class="stat-l">K%</div></div>
+        </div>
+        
+        <div class="pc-note">.309 BA / .424 OBP in 38 games. Consistent mid-lineup bat with 15 RBI. 21 Ks is on the higher side — contact quality is the development area. Reliable depth piece.</div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pc-stripe" style="background:#60aaff;"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Murphy D</div><div class="pc-meta">41 games · 56 AB</div></div>
+          <div><div class="pc-badge" style="color:#60aaff;">.321</div><div class="pc-badge-l">BA</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:#E8A020;">.321</div><div class="stat-l">BA</div></div>
+          <div class="stat"><div class="stat-v">.531</div><div class="stat-l">OBP</div></div>
+          <div class="stat"><div class="stat-v">4</div><div class="stat-l">RBI</div></div>
+          <div class="stat"><div class="stat-v">54%</div><div class="stat-l">K%</div></div>
+        </div>
+        
+        <div class="pc-note">The plate discipline standout: .321 BA but .531 OBP. She walks more than anyone on the roster (25 BB). Low RBI (4) despite being on base constantly — she's not driving the ball yet. Ideal leadoff candidate if the swing develops. 30 Ks is the growth area.</div>
+      </div>
+    </div>
+  </div><!-- end player-grid -->
+
+  <div class="sl">Development watch — full-season players who need focus</div>
+  <div class="player-grid">
+    <div class="pc">
+      <div class="pc-stripe" style="background:var(--amber);"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Brooklyn S</div><div class="pc-meta">41 games · 58 AB</div></div>
+          <div><div class="pc-badge" style="color:#ef4444;">.241</div><div class="pc-badge-l">BA</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:#ef4444;">.241</div><div class="stat-l">BA</div></div>
+          <div class="stat"><div class="stat-v">.457</div><div class="stat-l">OBP</div></div>
+          <div class="stat"><div class="stat-v">17</div><div class="stat-l">RBI</div></div>
+          <div class="stat"><div class="stat-v">45%</div><div class="stat-l">K%</div></div>
+        </div>
+        <span class="pill pill-p">Pitches 60IP</span>
+        <div class="pc-note">Bats .241 but gets on base at .457 through walks (23 BB). As a pitcher she logged 60 innings with 101 Ks — 15.1 K/9 raw. ERA is 9U noise. She has a real arm with swing-and-miss stuff. The bat needs work on contact quality. Second most promising pitching arm on the team.</div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pc-stripe" style="background:var(--amber);"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">June M</div><div class="pc-meta">40 games · 49 AB</div></div>
+          <div><div class="pc-badge" style="color:#ef4444;">.245</div><div class="pc-badge-l">BA</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:#ef4444;">.245</div><div class="stat-l">BA</div></div>
+          <div class="stat"><div class="stat-v">.431</div><div class="stat-l">OBP</div></div>
+          <div class="stat"><div class="stat-v">13</div><div class="stat-l">RBI</div></div>
+          <div class="stat"><div class="stat-v">55%</div><div class="stat-l">K%</div></div>
+        </div>
+        
+        <div class="pc-note">.245 BA / .431 OBP — patient approach with 16 walks. RBI production (13) is decent. Contact quality needs development — 27 Ks is high. Should improve with reps at 10U. Likely a depth piece.</div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pc-stripe" style="background:var(--amber);"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Annie P</div><div class="pc-meta">41 games · 64 AB</div></div>
+          <div><div class="pc-badge" style="color:#E8A020;">.297</div><div class="pc-badge-l">BA</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:#E8A020;">.297</div><div class="stat-l">BA</div></div>
+          <div class="stat"><div class="stat-v">.444</div><div class="stat-l">OBP</div></div>
+          <div class="stat"><div class="stat-v">8</div><div class="stat-l">RBI</div></div>
+          <div class="stat"><div class="stat-v">50%</div><div class="stat-l">K%</div></div>
+        </div>
+        
+        <div class="pc-note">.297 BA / .444 OBP in 64 at-bats — plenty of playing time. Only 8 RBI despite regular lineup presence suggests she's batting near the bottom. 32 Ks is the contact concern. Draws walks well. With coaching on her swing, she has the plate patience to be useful.</div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pc-stripe" style="background:var(--amber);"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Mia S</div><div class="pc-meta">41 games · 49 AB</div></div>
+          <div><div class="pc-badge" style="color:#ef4444;">.204</div><div class="pc-badge-l">BA</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:#ef4444;">.204</div><div class="stat-l">BA</div></div>
+          <div class="stat"><div class="stat-v">.435</div><div class="stat-l">OBP</div></div>
+          <div class="stat"><div class="stat-v">9</div><div class="stat-l">RBI</div></div>
+          <div class="stat"><div class="stat-v">47%</div><div class="stat-l">K%</div></div>
+        </div>
+        <span class="pill pill-p">Pitches 15IP</span>
+        <div class="pc-note">.204 BA but .435 OBP — walks (20 BB) are compensating for weak contact. As a pitcher, ERA is developmental noise. 23 Ks in 15 IP (13.8 K/9) is a notable strikeout rate. Worth watching in fall practice to see if her pitching mechanics have improved.</div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pc-stripe" style="background:var(--amber);"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Ellie K</div><div class="pc-meta">40 games · 43 AB</div></div>
+          <div><div class="pc-badge" style="color:#ef4444;">.047</div><div class="pc-badge-l">BA</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:#ef4444;">.047</div><div class="stat-l">BA</div></div>
+          <div class="stat"><div class="stat-v">.281</div><div class="stat-l">OBP</div></div>
+          <div class="stat"><div class="stat-v">5</div><div class="stat-l">RBI</div></div>
+          <div class="stat"><div class="stat-v">81%</div><div class="stat-l">K%</div></div>
+        </div>
+        
+        <div class="pc-note">.047 BA in 40 games is a contact concern. She draws walks (14 BB) so the baseball IQ is there, but the bat-to-ball skill needs significant work. The 35 Ks in 43 AB (81%) tells the story. Development priority: fundamental contact mechanics.</div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pc-stripe" style="background:var(--amber);"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Piper S</div><div class="pc-meta">39 games · 41 AB</div></div>
+          <div><div class="pc-badge" style="color:#ef4444;">.073</div><div class="pc-badge-l">BA</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:#ef4444;">.073</div><div class="stat-l">BA</div></div>
+          <div class="stat"><div class="stat-v">.333</div><div class="stat-l">OBP</div></div>
+          <div class="stat"><div class="stat-v">5</div><div class="stat-l">RBI</div></div>
+          <div class="stat"><div class="stat-v">71%</div><div class="stat-l">K%</div></div>
+        </div>
+        
+        <div class="pc-note">.073 BA in 39 games. Similar profile to Ellie K — draws walks (16 BB, .333 OBP) but not making contact. This is a mechanical issue that coaching can address. Both Piper and Ellie should be high-priority tee work and soft toss reps going into spring.</div>
+      </div>
+    </div>
+  </div>
+</div><!-- end overview section -->
+
+<!-- HITTERS -->
+<div class="section" id="hitters">
+  <div class="sl">All hitters ranked by OBP — full-season players</div>
+  <div class="player-grid">
+    <div class="pc">
+      <div class="pc-stripe" style="background:#7B3FE4;"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Natalie D</div><div class="pc-meta">41 games · 61 AB</div></div>
+          <div><div class="pc-badge" style="color:#2DB87C;">.632</div><div class="pc-badge-l">OBP</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:#2DB87C;">.541</div><div class="stat-l">BA</div></div>
+          <div class="stat"><div class="stat-v">.632</div><div class="stat-l">OBP</div></div>
+          <div class="stat"><div class="stat-v">18</div><div class="stat-l">RBI</div></div>
+          <div class="stat"><div class="stat-v">10%</div><div class="stat-l">K%</div></div>
+        </div>
+        <div class="pc-note">Top bat on the roster. .541/.632 — consistently on base all season. Protect her spot at the top of the order.</div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pc-stripe" style="background:#7B3FE4;"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Summer S</div><div class="pc-meta">40 games · 59 AB</div></div>
+          <div><div class="pc-badge" style="color:#2DB87C;">.603</div><div class="pc-badge-l">OBP</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:#2DB87C;">.475</div><div class="stat-l">BA</div></div>
+          <div class="stat"><div class="stat-v">.603</div><div class="stat-l">OBP</div></div>
+          <div class="stat"><div class="stat-v">25</div><div class="stat-l">RBI</div></div>
+          <div class="stat"><div class="stat-v">27%</div><div class="stat-l">K%</div></div>
+        </div>
+        <div class="pc-note">Best run producer per at-bat. 25 RBI from the top of the order. Elite OBP through both hits and walks.</div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pc-stripe" style="background:#E8A020;"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Murphy D</div><div class="pc-meta">41 games · 56 AB</div></div>
+          <div><div class="pc-badge" style="color:#E8A020;">.531</div><div class="pc-badge-l">OBP</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:#E8A020;">.321</div><div class="stat-l">BA</div></div>
+          <div class="stat"><div class="stat-v">.531</div><div class="stat-l">OBP</div></div>
+          <div class="stat"><div class="stat-v">4</div><div class="stat-l">RBI</div></div>
+          <div class="stat"><div class="stat-v">54%</div><div class="stat-l">K%</div></div>
+        </div>
+        <div class="pc-note">Walk machine — .531 OBP despite .321 BA. 25 BB shows elite plate patience. Low RBI means she's not driving the ball yet — work on gap power.</div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pc-stripe" style="background:#A87EF0;"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Chloe S</div><div class="pc-meta">41 games · 69 AB</div></div>
+          <div><div class="pc-badge" style="color:#A87EF0;">.512</div><div class="pc-badge-l">OBP</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:#A87EF0;">.406</div><div class="stat-l">BA</div></div>
+          <div class="stat"><div class="stat-v">.512</div><div class="stat-l">OBP</div></div>
+          <div class="stat"><div class="stat-v">26</div><div class="stat-l">RBI</div></div>
+          <div class="stat"><div class="stat-v">30%</div><div class="stat-l">K%</div></div>
+        </div>
+        <div class="pc-note">Most at-bats on team. .406/.512 is dependable production. Two-way player — see pitching tab.</div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pc-stripe" style="background:#E8A020;"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Brooklyn S</div><div class="pc-meta">41 games · 58 AB</div></div>
+          <div><div class="pc-badge" style="color:#E8A020;">.457</div><div class="pc-badge-l">OBP</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:#E8A020;">.241</div><div class="stat-l">BA</div></div>
+          <div class="stat"><div class="stat-v">.457</div><div class="stat-l">OBP</div></div>
+          <div class="stat"><div class="stat-v">17</div><div class="stat-l">RBI</div></div>
+          <div class="stat"><div class="stat-v">45%</div><div class="stat-l">K%</div></div>
+        </div>
+        <div class="pc-note">Below-average BA but above-average OBP through walks. Two-way player — see pitching tab. Bat needs contact work.</div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pc-stripe" style="background:#E8A020;"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Annie P</div><div class="pc-meta">41 games · 64 AB</div></div>
+          <div><div class="pc-badge" style="color:#E8A020;">.444</div><div class="pc-badge-l">OBP</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:#E8A020;">.297</div><div class="stat-l">BA</div></div>
+          <div class="stat"><div class="stat-v">.444</div><div class="stat-l">OBP</div></div>
+          <div class="stat"><div class="stat-v">8</div><div class="stat-l">RBI</div></div>
+          <div class="stat"><div class="stat-v">50%</div><div class="stat-l">K%</div></div>
+        </div>
+        <div class="pc-note">Most ABs after Chloe S. .297/.444 is usable. 32 Ks is the concern — swing mechanics need work.</div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pc-stripe" style="background:#ef4444;"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Mia S</div><div class="pc-meta">41 games · 49 AB</div></div>
+          <div><div class="pc-badge" style="color:#ef4444;">.435</div><div class="pc-badge-l">OBP</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:#ef4444;">.204</div><div class="stat-l">BA</div></div>
+          <div class="stat"><div class="stat-v">.435</div><div class="stat-l">OBP</div></div>
+          <div class="stat"><div class="stat-v">9</div><div class="stat-l">RBI</div></div>
+          <div class="stat"><div class="stat-v">47%</div><div class="stat-l">K%</div></div>
+        </div>
+        <div class="pc-note">Walks (20 BB) are the only hitting value right now. Contact mechanics are the priority.</div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pc-stripe" style="background:#E8A020;"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">June M</div><div class="pc-meta">40 games · 49 AB</div></div>
+          <div><div class="pc-badge" style="color:#E8A020;">.431</div><div class="pc-badge-l">OBP</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:#E8A020;">.245</div><div class="stat-l">BA</div></div>
+          <div class="stat"><div class="stat-v">.431</div><div class="stat-l">OBP</div></div>
+          <div class="stat"><div class="stat-v">13</div><div class="stat-l">RBI</div></div>
+          <div class="stat"><div class="stat-v">55%</div><div class="stat-l">K%</div></div>
+        </div>
+        <div class="pc-note">.245 BA but patient approach. Depth piece with development upside.</div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pc-stripe" style="background:#E8A020;"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Annabelle F</div><div class="pc-meta">38 games · 55 AB</div></div>
+          <div><div class="pc-badge" style="color:#E8A020;">.424</div><div class="pc-badge-l">OBP</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:#E8A020;">.309</div><div class="stat-l">BA</div></div>
+          <div class="stat"><div class="stat-v">.424</div><div class="stat-l">OBP</div></div>
+          <div class="stat"><div class="stat-v">15</div><div class="stat-l">RBI</div></div>
+          <div class="stat"><div class="stat-v">38%</div><div class="stat-l">K%</div></div>
+        </div>
+        <div class="pc-note">Solid .309/.424 contributor. Consistent depth piece. K rate (38%) is the area to tighten up.</div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pc-stripe" style="background:#ef4444;"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Piper S</div><div class="pc-meta">39 games · 41 AB</div></div>
+          <div><div class="pc-badge" style="color:#ef4444;">.333</div><div class="pc-badge-l">OBP</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:#ef4444;">.073</div><div class="stat-l">BA</div></div>
+          <div class="stat"><div class="stat-v">.333</div><div class="stat-l">OBP</div></div>
+          <div class="stat"><div class="stat-v">5</div><div class="stat-l">RBI</div></div>
+          <div class="stat"><div class="stat-v">71%</div><div class="stat-l">K%</div></div>
+        </div>
+        <div class="pc-note">Similar to Ellie K — plate patience exists, contact does not yet. High-priority tee work.</div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pc-stripe" style="background:#ef4444;"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Ellie K</div><div class="pc-meta">40 games · 43 AB</div></div>
+          <div><div class="pc-badge" style="color:#ef4444;">.281</div><div class="pc-badge-l">OBP</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:#ef4444;">.047</div><div class="stat-l">BA</div></div>
+          <div class="stat"><div class="stat-v">.281</div><div class="stat-l">OBP</div></div>
+          <div class="stat"><div class="stat-v">5</div><div class="stat-l">RBI</div></div>
+          <div class="stat"><div class="stat-v">81%</div><div class="stat-l">K%</div></div>
+        </div>
+        <div class="pc-note">Contact development priority. Walks show she understands the zone — now needs to hit the ball.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PITCHING -->
+<div class="section" id="pitching">
+  <div class="dev-banner">
+    <strong>Important context on all ERA numbers below:</strong> These stats are from 9U fall ball — a developmental environment where kid-pitch begins. ERAs of 11–28 are completely normal at this level across the country. Do not evaluate pitching quality based on ERA. Evaluate based on: (1) innings pitched — commitment and coachability; (2) K/9 — raw arm stuff that translates to higher levels; (3) what you see in live practice. All three pitchers who logged significant innings are worth developing.
+  </div>
+  <div class="sl">Pitching staff — full-season arms (50+ IP)</div>
+  <div class="player-grid">
+    <div class="pc">
+      <div class="pc-stripe" style="background:var(--purple);"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Chloe S</div><div class="pc-meta">52.1 IP pitched · Also bats .406</div></div>
+          <div><div class="pc-badge" style="color:var(--light-purple);">10.9</div><div class="pc-badge-l">K/9</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:var(--amber);">14.04</div><div class="stat-l">ERA (9U)</div></div>
+          <div class="stat"><div class="stat-v" style="color:var(--green);">63</div><div class="stat-l">K</div></div>
+          <div class="stat"><div class="stat-v">52</div><div class="stat-l">IP</div></div>
+          <div class="stat"><div class="stat-v">62</div><div class="stat-l">BB pit</div></div>
+        </div>
+        <div class="pc-note">The most advanced two-way player on the roster. 63 Ks in 52 innings (10.9 K/9) shows legitimate arm strength — she misses bats at a rate that projects. At 9U, 62 walks is normal and will tighten dramatically with coaching on release point and stride. Her .406 BA means she contributes even when not in the circle. Priority #1 pitching investment.</div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pc-stripe" style="background:var(--purple);"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Brooklyn S</div><div class="pc-meta">60.2 IP pitched · Also bats .241</div></div>
+          <div><div class="pc-badge" style="color:var(--light-purple);">15.1</div><div class="pc-badge-l">K/9</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:var(--amber);">11.65</div><div class="stat-l">ERA (9U)</div></div>
+          <div class="stat"><div class="stat-v" style="color:var(--green);">101</div><div class="stat-l">K</div></div>
+          <div class="stat"><div class="stat-v">60</div><div class="stat-l">IP</div></div>
+          <div class="stat"><div class="stat-v">65</div><div class="stat-l">BB pit</div></div>
+        </div>
+        <div class="pc-note">101 strikeouts in 60 innings is the headline — 15.1 K/9 raw. She misses more bats than Chloe S per inning. Her batting average is lower but she gets on base through walks. This could be a power arm to develop — the K rate is real and doesn't lie even at 9U. Pair her K rate with Chloe S's consistency and you have a two-arm staff.</div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pc-stripe" style="background:var(--purple);"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Mia S</div><div class="pc-meta">15.0 IP pitched · Also bats .204</div></div>
+          <div><div class="pc-badge" style="color:var(--light-purple);">13.8</div><div class="pc-badge-l">K/9</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:var(--amber);">20.07</div><div class="stat-l">ERA (9U)</div></div>
+          <div class="stat"><div class="stat-v" style="color:var(--green);">23</div><div class="stat-l">K</div></div>
+          <div class="stat"><div class="stat-v">15</div><div class="stat-l">IP</div></div>
+          <div class="stat"><div class="stat-v">35</div><div class="stat-l">BB pit</div></div>
+        </div>
+        <div class="pc-note">15 innings in a limited role. 23 Ks in 15 IP (13.8 K/9) is a strong rate — she has arm stuff. Walk rate (35 BB in 15 IP) is the entire concern. Mechanical — coachable. Worth a fall bullpen session to see if she has the release point to build on.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sl">Promising partial-season arms</div>
+  <div class="player-grid">
+    <div class="pc">
+      <div class="pc-stripe" style="background:var(--orange);"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Finley G</div><div class="pc-meta">6 games · 18 IP</div></div>
+          <div><div class="pc-badge" style="color:var(--orange);">19</div><div class="pc-badge-l">K/9</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:var(--amber);">1.56</div><div class="stat-l">ERA (9U)</div></div>
+          <div class="stat"><div class="stat-v" style="color:var(--green);">38</div><div class="stat-l">K</div></div>
+          <div class="stat"><div class="stat-v">18</div><div class="stat-l">IP</div></div>
+          <div class="stat"><div class="stat-v">0.83</div><div class="stat-l">WHIP</div></div>
+        </div>
+        <div class="pc-note">Best ERA in the file (1.56) but only 6 games. 38 Ks in 18 innings (19.0 K/9) is extraordinary for any level. Small sample but worth a closer look — if she's joining Unity for 10U, she may be the immediate ace.</div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pc-stripe" style="background:var(--orange);"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Harper S</div><div class="pc-meta">5 games · 16 IP</div></div>
+          <div><div class="pc-badge" style="color:var(--orange);">19</div><div class="pc-badge-l">K/9</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:var(--amber);">5.14</div><div class="stat-l">ERA (9U)</div></div>
+          <div class="stat"><div class="stat-v" style="color:var(--green);">34</div><div class="stat-l">K</div></div>
+          <div class="stat"><div class="stat-v">16</div><div class="stat-l">IP</div></div>
+          <div class="stat"><div class="stat-v">1.65</div><div class="stat-l">WHIP</div></div>
+        </div>
+        <div class="pc-note">34 Ks in 16 innings (18.7 K/9) — another high-K arm. Also bats .818 in 5 games (tiny sample). Limited data but the K rate is real. Investigate her availability for Unity 10U.</div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pc-stripe" style="background:var(--orange);"></div>
+      <div class="pc-inner">
+        <div class="pc-header">
+          <div><div class="pc-name">Brooklynn T</div><div class="pc-meta">6 games · 5 IP</div></div>
+          <div><div class="pc-badge" style="color:var(--orange);">18</div><div class="pc-badge-l">K/9</div></div>
+        </div>
+        <div class="pc-stats">
+          <div class="stat"><div class="stat-v" style="color:var(--amber);">5.60</div><div class="stat-l">ERA (9U)</div></div>
+          <div class="stat"><div class="stat-v" style="color:var(--green);">10</div><div class="stat-l">K</div></div>
+          <div class="stat"><div class="stat-v">5</div><div class="stat-l">IP</div></div>
+          <div class="stat"><div class="stat-v">2.40</div><div class="stat-l">WHIP</div></div>
+        </div>
+        <div class="pc-note">10 Ks in 5 innings — 18.0 K/9. Third arm with a strong K rate in limited innings. Development candidate. Bats .400/.538 in 6 games. Could be a utility two-way player.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FULL ROSTER TABLE -->
+<div class="section" id="roster">
+  <div class="sl">Full-season roster — 30+ games</div>
+  <div style="overflow-x:auto;">
+  <table class="rtable">
+    <thead><tr><th>Player</th><th>G</th><th>AB</th><th>BA</th><th>OBP</th><th>RBI</th><th>BB</th><th>K</th><th>K%</th><th>IP</th><th>K/9</th></tr></thead>
+    <tbody><tr><td><strong>Natalie D</strong></td><td>41</td><td>61</td><td style="color:#2DB87C;">.541</td><td>.632</td><td>18</td><td>15</td><td>6</td><td>10%</td><td>—</td><td>—</td></tr><tr><td><strong>Summer S</strong></td><td>40</td><td>59</td><td style="color:#2DB87C;">.475</td><td>.603</td><td>25</td><td>19</td><td>16</td><td>27%</td><td>—</td><td>—</td></tr><tr><td><strong>Chloe S</strong></td><td>41</td><td>69</td><td style="color:#A87EF0;">.406</td><td>.512</td><td>26</td><td>15</td><td>21</td><td>30%</td><td>52</td><td>10.9</td></tr><tr><td><strong>Annabelle F</strong></td><td>38</td><td>55</td><td style="color:#A87EF0;">.309</td><td>.424</td><td>15</td><td>11</td><td>21</td><td>38%</td><td>—</td><td>—</td></tr><tr><td><strong>Murphy D</strong></td><td>41</td><td>56</td><td style="color:#A87EF0;">.321</td><td>.531</td><td>4</td><td>25</td><td>30</td><td>54%</td><td>—</td><td>—</td></tr><tr><td><strong>Annie P</strong></td><td>41</td><td>64</td><td style="color:#E8A020;">.297</td><td>.444</td><td>8</td><td>17</td><td>32</td><td>50%</td><td>—</td><td>—</td></tr><tr><td><strong>June M</strong></td><td>40</td><td>49</td><td style="color:#E8A020;">.245</td><td>.431</td><td>13</td><td>16</td><td>27</td><td>55%</td><td>—</td><td>—</td></tr><tr><td><strong>Brooklyn S</strong></td><td>41</td><td>58</td><td style="color:#E8A020;">.241</td><td>.457</td><td>17</td><td>23</td><td>26</td><td>45%</td><td>60</td><td>15.1</td></tr><tr><td><strong>Mia S</strong></td><td>41</td><td>49</td><td style="color:#E8A020;">.204</td><td>.435</td><td>9</td><td>20</td><td>23</td><td>47%</td><td>15</td><td>13.8</td></tr><tr><td><strong>Piper S</strong></td><td>39</td><td>41</td><td style="color:#ef4444;">.073</td><td>.333</td><td>5</td><td>16</td><td>29</td><td>71%</td><td>—</td><td>—</td></tr><tr><td><strong>Ellie K</strong></td><td>40</td><td>43</td><td style="color:#ef4444;">.047</td><td>.281</td><td>5</td><td>14</td><td>35</td><td>81%</td><td>—</td><td>—</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- COACHING NOTES -->
+<div class="section" id="coaching">
+  <div class="sl">For Coach Greg McWilliams — confidential</div>
+  <div class="note-card">
+    <div class="note-title">🔑 Your lineup is better than the batting averages suggest</div>
+    <div class="note-body">At 9U, a lot of runs score on walks rather than hits. Look at your OBP column: Natalie D (.632), Summer S (.603), Murphy D (.531), Chloe S (.512), Brooklyn S (.457). Five players getting on base at .450+. At 10U where pitchers throw more strikes, the players with the real swing fundamentals will separate. <strong>Natalie D and Summer S are your franchise pieces.</strong></div>
+  </div>
+  <div class="note-card">
+    <div class="note-title">🔑 Pitching — K rate is the only number that matters right now</div>
+    <div class="note-body">Ignore all the ERAs. Here's what to pay attention to: Brooklyn S has <strong>101 Ks in 60 IP (15.1 K/9)</strong>. Chloe S has <strong>63 Ks in 52 IP (10.9 K/9)</strong>. If Finley G and Harper S are coming with the team to 10U, they showed <strong>19.0 and 18.7 K/9</strong> respectively in small samples. Any pitcher with a K/9 above 12 at this age has real arm stuff that coaching can develop into an effective 10U arm. Focus your bullpen sessions on walk reduction — the strikeout ability is already there.</div>
+  </div>
+  <div class="note-card">
+    <div class="note-title">🔑 Two players need contact priority attention</div>
+    <div class="note-body"><strong>Ellie K</strong> (.047 BA, 81% K rate) and <strong>Piper S</strong> (.073 BA) are your two contact-development priorities. Both draw walks, which means they understand the strike zone — that's the hardest thing to teach and they already have it. The issue is purely mechanical contact. Get them on the tee 3x per week and in soft-toss. Both players have the baseball IQ to improve quickly.</div>
+  </div>
+  <div class="note-card">
+    <div class="note-title">🔑 Murphy D is a hidden gem</div>
+    <div class="note-body">She hits .321 but gets on base at .531. That .210 gap between BA and OBP is enormous — it means <strong>she walks constantly</strong> (25 BB in 56 AB). She's your ideal leadoff hitter in a world where 10U pitchers still struggle to throw strikes. Her only weakness is low RBI (4) — she's getting on base but not driving the ball. Work on her to use the whole field and hit grounders through the gaps. She could develop into a table-setter and genuine threat.</div>
+  </div>
+  <div class="note-card">
+    <div class="note-title">🔑 Suggested opening lineup for 10U</div>
+    <div class="note-body">
+      <strong>1. Murphy D</strong> — walks, gets on base, sets the table<br>
+      <strong>2. Natalie D</strong> — best BA on team, protected behind Murphy<br>
+      <strong>3. Summer S</strong> — high OBP + RBI production<br>
+      <strong>4. Chloe S</strong> — most ABs, two-way anchor<br>
+      <strong>5. Annabelle F</strong> — solid .309 BA depth<br>
+      <strong>6. Annie P</strong> — .297/.444, contact is the work area<br>
+      <strong>7. June M / Brooklyn S</strong> — rotate based on matchup<br>
+      <strong>8. Mia S</strong> — patience at the plate, development<br>
+      <strong>9. Ellie K / Piper S</strong> — contact work is ongoing<br>
+      <span style="color:var(--muted);font-size:11px;margin-top:.5rem;display:block;">Adjust based on spring tryout results and incoming players.</span>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body></html>
