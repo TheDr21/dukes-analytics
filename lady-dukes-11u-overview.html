@@ -24,13 +24,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .back:hover{color:var(--gold-mid);}
 
 /* Hero */
-.hero{background:linear-gradient(135deg,#1B2A4A 0%,#243660 100%);padding:3rem 2rem;text-align:center;
-  border-bottom:4px solid var(--gold-mid);}
-.hero-eyebrow{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.15em;
-  color:var(--gold-mid);margin-bottom:.5rem;}
-.hero-title{font-size:36px;font-weight:700;color:#FFFFFF;letter-spacing:-.02em;margin-bottom:.25rem;}
-.hero-subtitle{font-size:18px;font-weight:400;color:rgba(255,255,255,.7);margin-bottom:.75rem;}
-.hero-meta{font-size:13px;color:rgba(255,255,255,.5);letter-spacing:.04em;}
+.hero{display:block;line-height:0;}
 
 /* Content */
 .content{max-width:760px;margin:0 auto;padding:3rem 2rem;}
@@ -112,10 +106,22 @@ a:hover{color:var(--gold);}
 </nav>
 
 <div class="hero">
-  <div class="hero-eyebrow">2026–2027 Season</div>
-  <h1 class="hero-title">Lady Dukes WPA 2033</h1>
-  <div class="hero-subtitle">Team LaFever &nbsp;·&nbsp; 11U Season Overview</div>
-  <div class="hero-meta">Lady Dukes WPA &nbsp;|&nbsp; Wilson · EVO Shield · Mizuno</div>
+  <svg width="100%" viewBox="0 0 680 220" role="img" style="display:block;">
+    <title>Lady Dukes WPA</title>
+    <desc>Lady Dukes WPA header in royal blue on black</desc>
+    <rect x="0" y="0" width="680" height="220" fill="#0A0D1A"/>
+    <rect x="0" y="0" width="680" height="4" fill="#1A1AFF"/>
+    <rect x="0" y="216" width="680" height="4" fill="#1A1AFF"/>
+    <polygon points="38,110 54,94 70,110 54,126" fill="#1A1AFF" opacity="0.5"/>
+    <polygon points="42,110 54,98 66,110 54,122" fill="#0A0D1A"/>
+    <polygon points="610,110 626,94 642,110 626,126" fill="#1A1AFF" opacity="0.5"/>
+    <polygon points="614,110 626,98 638,110 626,122" fill="#0A0D1A"/>
+    <text x="340" y="72" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="22" font-weight="700" fill="#1A1AFF" letter-spacing="18">LADY</text>
+    <line x1="200" y1="80" x2="480" y2="80" stroke="#1A1AFF" stroke-width="0.75" opacity="0.5"/>
+    <text x="340" y="162" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="82" font-weight="700" fill="#1A1AFF" letter-spacing="4">Dukes</text>
+    <line x1="240" y1="178" x2="440" y2="178" stroke="#1A1AFF" stroke-width="0.75" opacity="0.5"/>
+    <text x="340" y="200" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="13" fill="#1A1AFF" letter-spacing="10">W P A</text>
+  </svg>
 </div>
 
 <div class="content">
