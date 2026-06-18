@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Pitching Trends — Lady Dukes 10U Analytics</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',system-ui,sans-serif;background:#0B1E35;color:#F2EFE8;min-height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:52px;
+  border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:0;background:#0B1E35;z-index:100;}
+.logo{font-size:14px;font-weight:600;color:#F2EFE8;text-decoration:none;}
+.logo span{color:#E8A020;}
+.back{font-size:12px;color:#8A97A6;text-decoration:none;font-family:'DM Mono',monospace;}
+.back:hover{color:#E8A020;}
+.page{max-width:960px;margin:0 auto;padding:2rem;}
+h1{font-size:22px;font-weight:600;margin-bottom:.3rem;}
+h1 span{color:#E8A020;}
+.sub{font-size:13px;color:#8A97A6;margin-bottom:1.75rem;}
+.sl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#8A97A6;
+  margin:2rem 0 .75rem;padding-bottom:.4rem;border-bottom:1px solid rgba(255,255,255,.08);}
+.sl:first-child{margin-top:0;}
+
+/* Pitcher selector tabs */
+.pitcher-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.5rem;}
+.ptab{padding:8px 18px;font-size:13px;font-weight:600;border-radius:6px;cursor:pointer;
+  border:2px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#8A97A6;
+  font-family:'Inter',sans-serif;transition:all .15s;}
+.ptab:hover{border-color:rgba(255,255,255,.25);color:#F2EFE8;}
+.ptab.active{color:#F2EFE8;}
+
+/* Summary cards */
+.summary-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:1.5rem;}
+.scard{background:rgba(255,255,255,.05);border-radius:8px;padding:12px 14px;}
+.scard-v{font-family:'DM Mono',monospace;font-size:22px;font-weight:600;line-height:1;}
+.scard-l{font-size:10px;color:#8A97A6;text-transform:uppercase;letter-spacing:.06em;margin-top:3px;}
+
+/* Split ERA comparison */
+.split-bar{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.5rem;}
+.split-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:1rem 1.25rem;text-align:center;}
+.split-era{font-family:'DM Mono',monospace;font-size:36px;font-weight:700;line-height:1;}
+.split-label{font-size:11px;color:#8A97A6;text-transform:uppercase;letter-spacing:.08em;margin-top:4px;}
+.split-note{font-size:11px;color:#8A97A6;margin-top:6px;line-height:1.5;}
+
+/* Chart containers */
+.chart-wrap{background:rgba(255,255,255,.03);border-radius:10px;padding:1.25rem;margin-bottom:1.25rem;}
+.chart-title{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#8A97A6;margin-bottom:.75rem;}
+.chart-canvas{position:relative;height:200px;}
+
+/* Game log table */
+.game-table{width:100%;border-collapse:collapse;font-size:12px;}
+.game-table th{text-align:left;padding:7px 10px;font-size:10px;color:#8A97A6;
+  border-bottom:1px solid rgba(255,255,255,.08);font-weight:600;text-transform:uppercase;letter-spacing:.06em;}
+.game-table th:not(:first-child):not(:nth-child(2)){text-align:right;}
+.game-table td{padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;}
+.game-table td:not(:first-child):not(:nth-child(2)){text-align:right;font-family:'DM Mono',monospace;}
+.game-table tr:hover td{background:rgba(255,255,255,.025);}
+.game-table tr:last-child td{border-bottom:none;}
+.era-cell{font-weight:600;}
+.good{color:#2DB87C;}.warn{color:#E8A020;}.bad{color:#E24B4A;}
+
+/* Trend insight box */
+.insight{background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.2);
+  border-radius:8px;padding:.9rem 1.1rem;margin-bottom:1.25rem;font-size:12px;color:#F2EFE8;line-height:1.65;}
+.insight-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#E8A020;margin-bottom:4px;}
+
+/* Hidden sections */
+.pitcher-section{display:none;}.pitcher-section.active{display:block;}
+
+@media(max-width:600px){
+  .page{padding:1.25rem 1rem;}
+  .split-bar{grid-template-columns:1fr;}
+  .split-era{font-size:28px;}
+}
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <a href="index.html" class="logo">Lady Dukes <span>Analytics</span></a>
+  <a href="index.html" class="back">← Home</a>
+</nav>
+<div class="page">
+  <h1>Pitching <span>Trends</span></h1>
+  <p class="sub">Lady Dukes WPA 10U · Sep 2025 – Jun 2026 · Monthly ERA trends + game-by-game log · All ERAs capped at 15 for chart clarity (outlier micro-innings excluded from trend)</p>
+
+  <div class="pitcher-tabs">
+    <button class="ptab active" style="border-color:#FF5722;color:#FF5722;" onclick="showPitcher('Rocco',this)">Violet Rocco</button>
+    <button class="ptab" onclick="showPitcher('Porter',this)">Maddie Porter</button>
+    <button class="ptab" onclick="showPitcher('Glomb',this)">Ava Glomb</button>
+    <button class="ptab" onclick="showPitcher('Dantry',this)">Autumn Dantry</button>
+  </div>
+
+<div class="pitcher-section " id="section-Porter">
+  <div class="summary-row">
+    <div class="scard"><div class="scard-v" style="color:#2196F3;">2.58</div><div class="scard-l">Fall ERA</div></div>
+    <div class="scard"><div class="scard-v" style="color:#2196F3;">3.43</div><div class="scard-l">Spring ERA</div></div>
+    <div class="scard"><div class="scard-v">74.8</div><div class="scard-l">Total IP</div></div>
+    <div class="scard"><div class="scard-v">13</div><div class="scard-l">Total K</div></div>
+    <div class="scard"><div class="scard-v">33</div><div class="scard-l">Appearances</div></div>
+  </div>
+
+  <div class="insight"><div class="insight-label">📈 Trend analysis</div>Maddie had an excellent mid-season stretch — near 0 ERA November through April — before the wheels came off in May/June (6.18 and 5.19 ERA). The late-season decline is a workload and development note heading into 11U. Her Oct–Apr stretch (0.00 → 1.13 → 1.62 ERA) is exactly what you want from an ace.</div>
+
+  <div class="split-bar">
+    <div class="split-card" style="border-left:4px solid #2DB87C;">
+      <div class="split-era" style="color:#2DB87C;">2.58</div>
+      <div class="split-label">Fall ERA (Sep–Nov)</div>
+      <div class="split-note">Pre-winter · learning the team</div>
+    </div>
+    <div class="split-card" style="border-left:4px solid #E8A020;">
+      <div class="split-era" style="color:#E8A020;">3.43</div>
+      <div class="split-label">Spring ERA (Jan–Jun)</div>
+      <div class="split-note" style="color:#E8A020;">Better in Fall — late-season decline</div>
+    </div>
+  </div>
+
+  <div class="chart-wrap">
+    <div class="chart-title">Monthly ERA trend (capped at 15)</div>
+    <div class="chart-canvas"><canvas id="era-chart-Porter"></canvas></div>
+  </div>
+
+  <div class="chart-wrap">
+    <div class="chart-title">Innings pitched per month</div>
+    <div class="chart-canvas"><canvas id="ip-chart-Porter"></canvas></div>
+  </div>
+
+  <div class="sl">Game-by-game log</div>
+  <table class="game-table">
+    <thead><tr><th>Date</th><th>Opponent</th><th>IP</th><th>ERA</th><th>K</th><th>BB</th></tr></thead>
+    <tbody><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Sep 6</td><td>PA Lady Knights</td><td>4.0</td><td class="era-cell warn">3.50</td><td>1</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Sep 11</td><td>Karas 9U</td><td>2.0</td><td class="era-cell bad">10.50</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Sep 13</td><td>Athletix</td><td>2.1</td><td class="era-cell warn">3.33</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Sep 27</td><td>Pgh Power</td><td>1.0</td><td class="era-cell good">0.00</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Sep 27</td><td>Queen Bee</td><td>1.1</td><td class="era-cell bad">12.73</td><td>1</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Oct 4</td><td>Silver Creek</td><td>5.0</td><td class="era-cell warn">1.40</td><td>1</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Oct 4</td><td>Pgh Power</td><td>0.2</td><td class="era-cell good">0.00</td><td>1</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Oct 5</td><td>North Stars</td><td>4.0</td><td class="era-cell good">0.00</td><td>1</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Oct 25</td><td>PLR Blue</td><td>0.2</td><td class="era-cell bad">15.0+</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Oct 25</td><td>SHE</td><td>0.1</td><td class="era-cell good">0.00</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Oct 25</td><td>All American</td><td>2.0</td><td class="era-cell good">0.00</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Oct 26</td><td>PLR Blue</td><td>3.2</td><td class="era-cell good">0.00</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Nov 14</td><td>Corry Posse</td><td>2.0</td><td class="era-cell good">0.00</td><td>1</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Nov 21</td><td>Diamond Divas</td><td>1.0</td><td class="era-cell good">0.00</td><td>0</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Nov 22</td><td>Diamond Divas</td><td>2.0</td><td class="era-cell good">0.00</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Jan 17</td><td>Pgh Predators</td><td>1.0</td><td class="era-cell good">0.00</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Jan 23</td><td>Pgh Tigers</td><td>2.0</td><td class="era-cell warn">3.50</td><td>0</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Feb 1</td><td>PA Lady Knights</td><td>2.2</td><td class="era-cell warn">3.18</td><td>1</td><td>2</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Feb 7</td><td>All American</td><td>1.2</td><td class="era-cell bad">5.83</td><td>0</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Feb 13</td><td>Diamond Divas</td><td>1.0</td><td class="era-cell good">0.00</td><td>0</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Mar 7</td><td>River City</td><td>3.0</td><td class="era-cell good">0.00</td><td>0</td><td>2</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Mar 22</td><td>Pgh Power</td><td>2.2</td><td class="era-cell warn">3.18</td><td>2</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Mar 29</td><td>Devil Dogs</td><td>1.0</td><td class="era-cell good">0.00</td><td>1</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Apr 18</td><td>PA Elite</td><td>3.0</td><td class="era-cell good">0.00</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Apr 25</td><td>All American</td><td>3.0</td><td class="era-cell warn">2.33</td><td>1</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Apr 26</td><td>Pgh Spirit</td><td>3.0</td><td class="era-cell bad">4.67</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Apr 26</td><td>All American</td><td>4.0</td><td class="era-cell good">0.00</td><td>1</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">May 16</td><td>Pgh Power</td><td>1.2</td><td class="era-cell bad">15.0+</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">May 23</td><td>Ohio Lasers</td><td>4.0</td><td class="era-cell warn">3.50</td><td>0</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">May 24</td><td>FP Select</td><td>5.0</td><td class="era-cell bad">4.20</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Jun 6</td><td>Athletix</td><td>4.0</td><td class="era-cell warn">3.50</td><td>1</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Jun 6</td><td>Ohio Wolfpack</td><td>0.1</td><td class="era-cell bad">15.0+</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Jun 7</td><td>Honey Badgers</td><td>4.0</td><td class="era-cell warn">1.75</td><td>0</td><td>0</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+(function(){
+  const months_Porter = ["Sep '25", "Oct '25", "Nov '25", "Jan '26", "Feb '26", "Mar '26", "Apr '26", "May '26", "Jun '26"];
+  const eras_Porter = [5.49, 1.43, 0.0, 2.33, 3.18, 1.13, 1.62, 6.18, 5.19];
+  const ips_Porter = [10.2, 14.7, 5.0, 3.0, 4.4, 6.2, 13.0, 10.2, 8.1];
+  const color_Porter = '#2196F3';
+
+  function makeEraChart() {
+    const ctx = document.getElementById('era-chart-Porter');
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: months_Porter,
+        datasets: [{
+          label: 'Monthly ERA',
+          data: eras_Porter,
+          borderColor: color_Porter,
+          backgroundColor: color_Porter + '22',
+          borderWidth: 2.5,
+          pointRadius: 5,
+          pointHoverRadius: 7,
+          fill: true,
+          tension: 0.3,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false },
+          tooltip: { callbacks: { label: ctx => 'ERA: ' + ctx.raw.toFixed(2) } } },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: '#8A97A6', font: { size: 10 } } },
+          y: { beginAtZero: true, max: 16, reverse: false,
+            grid: { color: 'rgba(255,255,255,.06)' },
+            ticks: { color: '#8A97A6',
+              callback: v => v === 16 ? '15+' : v.toFixed(0) } }
+        }
+      }
+    });
+  }
+
+  function makeIpChart() {
+    const ctx = document.getElementById('ip-chart-Porter');
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: months_Porter,
+        datasets: [{
+          label: 'IP',
+          data: ips_Porter,
+          backgroundColor: color_Porter + '55',
+          borderColor: color_Porter,
+          borderWidth: 1.5,
+          borderRadius: 3,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: '#8A97A6', font: { size: 10 } } },
+          y: { beginAtZero: true,
+            grid: { color: 'rgba(255,255,255,.06)' },
+            ticks: { color: '#8A97A6' } }
+        }
+      }
+    });
+  }
+
+  if (document.getElementById('section-Porter').classList.contains('active')) {
+    makeEraChart(); makeIpChart();
+  }
+
+  window._initCharts_Porter = function() { makeEraChart(); makeIpChart(); };
+})();
+</script>
+
+<div class="pitcher-section " id="section-Glomb">
+  <div class="summary-row">
+    <div class="scard"><div class="scard-v" style="color:#9C27B0;">3.54</div><div class="scard-l">Fall ERA</div></div>
+    <div class="scard"><div class="scard-v" style="color:#9C27B0;">4.67</div><div class="scard-l">Spring ERA</div></div>
+    <div class="scard"><div class="scard-v">94.0</div><div class="scard-l">Total IP</div></div>
+    <div class="scard"><div class="scard-v">23</div><div class="scard-l">Total K</div></div>
+    <div class="scard"><div class="scard-v">37</div><div class="scard-l">Appearances</div></div>
+  </div>
+
+  <div class="insight"><div class="insight-label">📈 Trend analysis</div>Ava had the heaviest workload (94 IP) but the most inconsistent ERA. A rocky September (6.22) gave way to an excellent October/November (near 0 ERA), then struggled consistently through the spring. Her FIP (2.70 season average) suggests she was better than her ERA indicated — defense played a role. The June finish (3.04 ERA) is a positive sign.</div>
+
+  <div class="split-bar">
+    <div class="split-card" style="border-left:4px solid #E8A020;">
+      <div class="split-era" style="color:#E8A020;">3.54</div>
+      <div class="split-label">Fall ERA (Sep–Nov)</div>
+      <div class="split-note">Pre-winter · learning the team</div>
+    </div>
+    <div class="split-card" style="border-left:4px solid #E8A020;">
+      <div class="split-era" style="color:#E8A020;">4.67</div>
+      <div class="split-label">Spring ERA (Jan–Jun)</div>
+      <div class="split-note" style="color:#E8A020;">Better in Fall — spring workload caught up</div>
+    </div>
+  </div>
+
+  <div class="chart-wrap">
+    <div class="chart-title">Monthly ERA trend (capped at 15)</div>
+    <div class="chart-canvas"><canvas id="era-chart-Glomb"></canvas></div>
+  </div>
+
+  <div class="chart-wrap">
+    <div class="chart-title">Innings pitched per month</div>
+    <div class="chart-canvas"><canvas id="ip-chart-Glomb"></canvas></div>
+  </div>
+
+  <div class="sl">Game-by-game log</div>
+  <table class="game-table">
+    <thead><tr><th>Date</th><th>Opponent</th><th>IP</th><th>ERA</th><th>K</th><th>BB</th></tr></thead>
+    <tbody><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Sep 6</td><td>Pgh Power</td><td>5.0</td><td class="era-cell bad">4.20</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Sep 11</td><td>Karas 9U</td><td>1.0</td><td class="era-cell good">0.00</td><td>1</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Sep 13</td><td>Ohio Storm</td><td>3.0</td><td class="era-cell warn">2.33</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Sep 14</td><td>FP Select</td><td>4.0</td><td class="era-cell bad">7.00</td><td>0</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Sep 27</td><td>Pgh Power</td><td>2.0</td><td class="era-cell bad">14.00</td><td>2</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Sep 28</td><td>Queen Bee</td><td>3.0</td><td class="era-cell bad">9.33</td><td>2</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Oct 4</td><td>Pgh Power</td><td>3.1</td><td class="era-cell good">0.00</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Oct 5</td><td>Pgh Tigers</td><td>2.0</td><td class="era-cell warn">3.50</td><td>0</td><td>2</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Oct 25</td><td>PLR Blue</td><td>3.1</td><td class="era-cell good">0.00</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Oct 26</td><td>All American</td><td>1.2</td><td class="era-cell bad">5.83</td><td>0</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Nov 14</td><td>Pgh Spirit</td><td>4.0</td><td class="era-cell good">0.00</td><td>1</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Nov 21</td><td>FP Select</td><td>1.2</td><td class="era-cell good">0.00</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Nov 22</td><td>FP Select</td><td>3.0</td><td class="era-cell good">0.00</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Jan 17</td><td>Flood City</td><td>1.0</td><td class="era-cell good">0.00</td><td>2</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Jan 17</td><td>Silver Creek</td><td>2.2</td><td class="era-cell bad">6.36</td><td>1</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Jan 17</td><td>Outlaws L</td><td>4.2</td><td class="era-cell warn">1.67</td><td>1</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Jan 23</td><td>Pgh Tigers</td><td>1.0</td><td class="era-cell bad">7.00</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Feb 7</td><td>Outlaws V</td><td>3.0</td><td class="era-cell bad">9.33</td><td>0</td><td>2</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Feb 7</td><td>Silver Creek</td><td>3.1</td><td class="era-cell bad">6.77</td><td>1</td><td>2</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Feb 13</td><td>Pgh Tigers</td><td>2.0</td><td class="era-cell good">0.00</td><td>1</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Mar 7</td><td>River City</td><td>3.0</td><td class="era-cell warn">2.33</td><td>0</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Mar 8</td><td>SHE</td><td>2.0</td><td class="era-cell good">0.00</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Mar 14</td><td>Ohio Cobras</td><td>2.2</td><td class="era-cell bad">15.0+</td><td>1</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Mar 22</td><td>Pgh Power</td><td>1.1</td><td class="era-cell good">0.00</td><td>1</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Mar 29</td><td>Devil Dogs</td><td>1.0</td><td class="era-cell bad">7.00</td><td>0</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Apr 11</td><td>Finesse</td><td>2.0</td><td class="era-cell good">0.00</td><td>2</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Apr 11</td><td>Finesse</td><td>2.0</td><td class="era-cell good">0.00</td><td>3</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Apr 18</td><td>SHE Rush</td><td>2.0</td><td class="era-cell good">0.00</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Apr 19</td><td>Bracket</td><td>5.0</td><td class="era-cell good">0.00</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Apr 25</td><td>Steel City</td><td>1.2</td><td class="era-cell bad">15.0+</td><td>0</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Apr 26</td><td>All American</td><td>1.0</td><td class="era-cell bad">7.00</td><td>2</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">May 16</td><td>Pgh Power</td><td>4.1</td><td class="era-cell good">0.00</td><td>1</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">May 16</td><td>Pgh Power</td><td>2.1</td><td class="era-cell bad">13.33</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">May 23</td><td>Ohio Hawks</td><td>4.0</td><td class="era-cell bad">7.00</td><td>1</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Jun 6</td><td>Ohio Wolfpack</td><td>0.2</td><td class="era-cell good">0.00</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Jun 6</td><td>SHE</td><td>5.0</td><td class="era-cell warn">1.40</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Jun 7</td><td>Outlaws L</td><td>4.0</td><td class="era-cell bad">5.25</td><td>0</td><td>0</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+(function(){
+  const months_Glomb = ["Sep '25", "Oct '25", "Nov '25", "Jan '26", "Feb '26", "Mar '26", "Apr '26", "May '26", "Jun '26"];
+  const eras_Glomb = [6.22, 1.49, 0.0, 3.33, 6.05, 5.27, 4.77, 5.49, 3.04];
+  const ips_Glomb = [18.0, 9.4, 8.2, 8.4, 8.1, 9.3, 13.2, 10.2, 9.2];
+  const color_Glomb = '#9C27B0';
+
+  function makeEraChart() {
+    const ctx = document.getElementById('era-chart-Glomb');
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: months_Glomb,
+        datasets: [{
+          label: 'Monthly ERA',
+          data: eras_Glomb,
+          borderColor: color_Glomb,
+          backgroundColor: color_Glomb + '22',
+          borderWidth: 2.5,
+          pointRadius: 5,
+          pointHoverRadius: 7,
+          fill: true,
+          tension: 0.3,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false },
+          tooltip: { callbacks: { label: ctx => 'ERA: ' + ctx.raw.toFixed(2) } } },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: '#8A97A6', font: { size: 10 } } },
+          y: { beginAtZero: true, max: 16, reverse: false,
+            grid: { color: 'rgba(255,255,255,.06)' },
+            ticks: { color: '#8A97A6',
+              callback: v => v === 16 ? '15+' : v.toFixed(0) } }
+        }
+      }
+    });
+  }
+
+  function makeIpChart() {
+    const ctx = document.getElementById('ip-chart-Glomb');
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: months_Glomb,
+        datasets: [{
+          label: 'IP',
+          data: ips_Glomb,
+          backgroundColor: color_Glomb + '55',
+          borderColor: color_Glomb,
+          borderWidth: 1.5,
+          borderRadius: 3,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: '#8A97A6', font: { size: 10 } } },
+          y: { beginAtZero: true,
+            grid: { color: 'rgba(255,255,255,.06)' },
+            ticks: { color: '#8A97A6' } }
+        }
+      }
+    });
+  }
+
+  if (document.getElementById('section-Glomb').classList.contains('active')) {
+    makeEraChart(); makeIpChart();
+  }
+
+  window._initCharts_Glomb = function() { makeEraChart(); makeIpChart(); };
+})();
+</script>
+
+<div class="pitcher-section active" id="section-Rocco">
+  <div class="summary-row">
+    <div class="scard"><div class="scard-v" style="color:#FF5722;">4.9</div><div class="scard-l">Fall ERA</div></div>
+    <div class="scard"><div class="scard-v" style="color:#FF5722;">3.93</div><div class="scard-l">Spring ERA</div></div>
+    <div class="scard"><div class="scard-v">44.6</div><div class="scard-l">Total IP</div></div>
+    <div class="scard"><div class="scard-v">21</div><div class="scard-l">Total K</div></div>
+    <div class="scard"><div class="scard-v">26</div><div class="scard-l">Appearances</div></div>
+  </div>
+
+  <div class="insight"><div class="insight-label">📈 Trend analysis</div>Violet had the biggest positive trend on the staff. After a rough September (5.33 ERA) and a volatile October (near 15 ERA in limited work), she posted a 1.17 ERA in March across 7 appearances — the best month of any pitcher all season. She then ran into trouble in April (5.25 ERA). The March run is the signal: when she's on, she's the team's most effective arm. Fall 2026 focus: locking in that March form as her baseline.</div>
+
+  <div class="split-bar">
+    <div class="split-card" style="border-left:4px solid #E8A020;">
+      <div class="split-era" style="color:#E8A020;">4.9</div>
+      <div class="split-label">Fall ERA (Sep–Nov)</div>
+      <div class="split-note">Pre-winter · learning the team</div>
+    </div>
+    <div class="split-card" style="border-left:4px solid #E8A020;">
+      <div class="split-era" style="color:#E8A020;">3.93</div>
+      <div class="split-label">Spring ERA (Jan–Jun)</div>
+      <div class="split-note" style="color:#2DB87C;">Better in Spring — improved over the season</div>
+    </div>
+  </div>
+
+  <div class="chart-wrap">
+    <div class="chart-title">Monthly ERA trend (capped at 15)</div>
+    <div class="chart-canvas"><canvas id="era-chart-Rocco"></canvas></div>
+  </div>
+
+  <div class="chart-wrap">
+    <div class="chart-title">Innings pitched per month</div>
+    <div class="chart-canvas"><canvas id="ip-chart-Rocco"></canvas></div>
+  </div>
+
+  <div class="sl">Game-by-game log</div>
+  <table class="game-table">
+    <thead><tr><th>Date</th><th>Opponent</th><th>IP</th><th>ERA</th><th>K</th><th>BB</th></tr></thead>
+    <tbody><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Sep 6</td><td>Pgh Power</td><td>1.0</td><td class="era-cell bad">7.00</td><td>0</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Sep 6</td><td>All American</td><td>3.0</td><td class="era-cell bad">9.33</td><td>1</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Sep 11</td><td>Karas 9U</td><td>1.0</td><td class="era-cell good">0.00</td><td>1</td><td>2</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Sep 13</td><td>Athletix</td><td>0.2</td><td class="era-cell bad">15.0+</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Sep 27</td><td>Smash Palmer</td><td>4.0</td><td class="era-cell good">0.00</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Oct 4</td><td>Pgh Power</td><td>1.0</td><td class="era-cell good">0.00</td><td>0</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Oct 26</td><td>PLR Blue</td><td>0.1</td><td class="era-cell bad">15.0+</td><td>1</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Nov 14</td><td>SV Iron Maidens</td><td>2.0</td><td class="era-cell good">0.00</td><td>2</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Nov 21</td><td>Diamond Divas</td><td>1.0</td><td class="era-cell good">0.00</td><td>0</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Nov 22</td><td>Diamond Divas</td><td>1.0</td><td class="era-cell good">0.00</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Jan 17</td><td>Outlaws V</td><td>1.2</td><td class="era-cell bad">11.67</td><td>2</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Jan 17</td><td>Pgh Predators</td><td>2.0</td><td class="era-cell good">0.00</td><td>0</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Jan 17</td><td>Flood City</td><td>3.0</td><td class="era-cell good">0.00</td><td>1</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Jan 23</td><td>Pgh Tigers</td><td>1.0</td><td class="era-cell bad">15.0+</td><td>1</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Feb 1</td><td>PA Lady Knights</td><td>3.0</td><td class="era-cell good">0.00</td><td>3</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Feb 7</td><td>All American</td><td>0.1</td><td class="era-cell bad">15.0+</td><td>1</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Mar 7</td><td>River City</td><td>2.0</td><td class="era-cell good">0.00</td><td>2</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Mar 8</td><td>SHE</td><td>1.0</td><td class="era-cell good">0.00</td><td>1</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Mar 14</td><td>PA SLAY</td><td>1.0</td><td class="era-cell good">0.00</td><td>1</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Mar 14</td><td>Honey Badgers</td><td>5.0</td><td class="era-cell good">0.00</td><td>1</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Mar 15</td><td>Silver Creek</td><td>1.0</td><td class="era-cell bad">14.00</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Mar 22</td><td>Pgh Power</td><td>1.0</td><td class="era-cell good">0.00</td><td>1</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Mar 29</td><td>Devil Dogs</td><td>1.0</td><td class="era-cell good">0.00</td><td>1</td><td>2</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Apr 11</td><td>Finesse</td><td>4.0</td><td class="era-cell warn">3.50</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Apr 18</td><td>SHE Rush</td><td>2.0</td><td class="era-cell bad">7.00</td><td>1</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Apr 19</td><td>Pgh Power</td><td>2.0</td><td class="era-cell bad">7.00</td><td>0</td><td>0</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+(function(){
+  const months_Rocco = ["Sep '25", "Oct '25", "Nov '25", "Jan '26", "Feb '26", "Mar '26", "Apr '26"];
+  const eras_Rocco = [5.33, 15.0, 0.0, 4.86, 9.03, 1.17, 5.25];
+  const ips_Rocco = [9.2, 1.1, 4.0, 7.2, 3.1, 12.0, 8.0];
+  const color_Rocco = '#FF5722';
+
+  function makeEraChart() {
+    const ctx = document.getElementById('era-chart-Rocco');
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: months_Rocco,
+        datasets: [{
+          label: 'Monthly ERA',
+          data: eras_Rocco,
+          borderColor: color_Rocco,
+          backgroundColor: color_Rocco + '22',
+          borderWidth: 2.5,
+          pointRadius: 5,
+          pointHoverRadius: 7,
+          fill: true,
+          tension: 0.3,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false },
+          tooltip: { callbacks: { label: ctx => 'ERA: ' + ctx.raw.toFixed(2) } } },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: '#8A97A6', font: { size: 10 } } },
+          y: { beginAtZero: true, max: 16, reverse: false,
+            grid: { color: 'rgba(255,255,255,.06)' },
+            ticks: { color: '#8A97A6',
+              callback: v => v === 16 ? '15+' : v.toFixed(0) } }
+        }
+      }
+    });
+  }
+
+  function makeIpChart() {
+    const ctx = document.getElementById('ip-chart-Rocco');
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: months_Rocco,
+        datasets: [{
+          label: 'IP',
+          data: ips_Rocco,
+          backgroundColor: color_Rocco + '55',
+          borderColor: color_Rocco,
+          borderWidth: 1.5,
+          borderRadius: 3,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: '#8A97A6', font: { size: 10 } } },
+          y: { beginAtZero: true,
+            grid: { color: 'rgba(255,255,255,.06)' },
+            ticks: { color: '#8A97A6' } }
+        }
+      }
+    });
+  }
+
+  if (document.getElementById('section-Rocco').classList.contains('active')) {
+    makeEraChart(); makeIpChart();
+  }
+
+  window._initCharts_Rocco = function() { makeEraChart(); makeIpChart(); };
+})();
+</script>
+
+<div class="pitcher-section " id="section-Dantry">
+  <div class="summary-row">
+    <div class="scard"><div class="scard-v" style="color:#4CAF50;">3.18</div><div class="scard-l">Fall ERA</div></div>
+    <div class="scard"><div class="scard-v" style="color:#4CAF50;">5.82</div><div class="scard-l">Spring ERA</div></div>
+    <div class="scard"><div class="scard-v">62.3</div><div class="scard-l">Total IP</div></div>
+    <div class="scard"><div class="scard-v">15</div><div class="scard-l">Total K</div></div>
+    <div class="scard"><div class="scard-v">29</div><div class="scard-l">Appearances</div></div>
+  </div>
+
+  <div class="insight"><div class="insight-label">📈 Trend analysis</div>Autumn was excellent in the fall, peaked at 0.00 ERA January–February in limited work, then showed a concerning upward trend through spring — 3.08 in March, 4.31 in April, 12.42 in May, and a rough June. The late-season spike is the key development concern heading into 11U. Reduced workload and mechanics review recommended.</div>
+
+  <div class="split-bar">
+    <div class="split-card" style="border-left:4px solid #E8A020;">
+      <div class="split-era" style="color:#E8A020;">3.18</div>
+      <div class="split-label">Fall ERA (Sep–Nov)</div>
+      <div class="split-note">Pre-winter · learning the team</div>
+    </div>
+    <div class="split-card" style="border-left:4px solid #E24B4A;">
+      <div class="split-era" style="color:#E24B4A;">5.82</div>
+      <div class="split-label">Spring ERA (Jan–Jun)</div>
+      <div class="split-note" style="color:#E24B4A;">Better in Fall — sharp late-season decline</div>
+    </div>
+  </div>
+
+  <div class="chart-wrap">
+    <div class="chart-title">Monthly ERA trend (capped at 15)</div>
+    <div class="chart-canvas"><canvas id="era-chart-Dantry"></canvas></div>
+  </div>
+
+  <div class="chart-wrap">
+    <div class="chart-title">Innings pitched per month</div>
+    <div class="chart-canvas"><canvas id="ip-chart-Dantry"></canvas></div>
+  </div>
+
+  <div class="sl">Game-by-game log</div>
+  <table class="game-table">
+    <thead><tr><th>Date</th><th>Opponent</th><th>IP</th><th>ERA</th><th>K</th><th>BB</th></tr></thead>
+    <tbody><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Sep 11</td><td>Karas 9U</td><td>1.0</td><td class="era-cell bad">7.00</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Sep 13</td><td>FP Select</td><td>4.0</td><td class="era-cell good">0.00</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Sep 27</td><td>Queen Bee</td><td>1.2</td><td class="era-cell bad">15.0+</td><td>1</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Sep 28</td><td>Iron City</td><td>4.0</td><td class="era-cell warn">3.50</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Oct 4</td><td>Pgh Tigers</td><td>3.2</td><td class="era-cell good">0.00</td><td>1</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Oct 5</td><td>Pgh Tigers</td><td>1.0</td><td class="era-cell bad">14.00</td><td>1</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Oct 25</td><td>SHE</td><td>4.2</td><td class="era-cell bad">5.00</td><td>1</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Oct 26</td><td>All American</td><td>2.0</td><td class="era-cell bad">7.00</td><td>1</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Nov 14</td><td>SV Iron Maidens</td><td>2.0</td><td class="era-cell good">0.00</td><td>0</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Nov 21</td><td>FP Select</td><td>2.0</td><td class="era-cell good">0.00</td><td>1</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Nov 22</td><td>Ohio Cobras</td><td>4.0</td><td class="era-cell good">0.00</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Jan 17</td><td>Silver Creek</td><td>1.1</td><td class="era-cell good">0.00</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Jan 17</td><td>Outlaws V</td><td>1.1</td><td class="era-cell good">0.00</td><td>0</td><td>2</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Feb 13</td><td>Diamond Divas</td><td>2.0</td><td class="era-cell good">0.00</td><td>1</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Mar 8</td><td>SHE</td><td>2.0</td><td class="era-cell good">0.00</td><td>1</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Mar 14</td><td>Ohio Cobras</td><td>0.1</td><td class="era-cell good">0.00</td><td>2</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Mar 14</td><td>PA SLAY</td><td>2.0</td><td class="era-cell bad">7.00</td><td>0</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Mar 15</td><td>Silver Creek</td><td>3.0</td><td class="era-cell good">0.00</td><td>1</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Mar 22</td><td>Pgh Power</td><td>1.0</td><td class="era-cell good">0.00</td><td>0</td><td>2</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Mar 29</td><td>Devil Dogs</td><td>1.0</td><td class="era-cell bad">14.00</td><td>0</td><td>3</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Apr 11</td><td>Finesse</td><td>4.0</td><td class="era-cell warn">3.50</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Apr 18</td><td>AC River's Fury</td><td>4.0</td><td class="era-cell good">0.00</td><td>1</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Apr 19</td><td>Pgh Power</td><td>2.0</td><td class="era-cell bad">15.0+</td><td>0</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Apr 25</td><td>GAMA Storm</td><td>2.0</td><td class="era-cell warn">3.50</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Apr 26</td><td>Pgh Spirit</td><td>1.0</td><td class="era-cell good">0.00</td><td>1</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">May 16</td><td>Pgh Power</td><td>1.0</td><td class="era-cell bad">14.00</td><td>0</td><td>1</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">May 16</td><td>Pgh Power</td><td>1.2</td><td class="era-cell bad">15.0+</td><td>2</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">May 23</td><td>Ohio Stingrays</td><td>4.0</td><td class="era-cell bad">8.75</td><td>0</td><td>0</td></tr><tr><td style="color:#8A97A6;font-family:'DM Mono',monospace;">Jun 6</td><td>Ohio Wolfpack</td><td>1.2</td><td class="era-cell bad">15.0+</td><td>0</td><td>0</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+(function(){
+  const months_Dantry = ["Sep '25", "Oct '25", "Nov '25", "Jan '26", "Feb '26", "Mar '26", "Apr '26", "May '26", "Jun '26"];
+  const eras_Dantry = [4.12, 4.71, 0.0, 0.0, 0.0, 3.08, 4.31, 12.42, 15.0];
+  const ips_Dantry = [10.2, 10.4, 8.0, 2.2, 2.0, 9.1, 13.0, 6.2, 1.2];
+  const color_Dantry = '#4CAF50';
+
+  function makeEraChart() {
+    const ctx = document.getElementById('era-chart-Dantry');
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: months_Dantry,
+        datasets: [{
+          label: 'Monthly ERA',
+          data: eras_Dantry,
+          borderColor: color_Dantry,
+          backgroundColor: color_Dantry + '22',
+          borderWidth: 2.5,
+          pointRadius: 5,
+          pointHoverRadius: 7,
+          fill: true,
+          tension: 0.3,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false },
+          tooltip: { callbacks: { label: ctx => 'ERA: ' + ctx.raw.toFixed(2) } } },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: '#8A97A6', font: { size: 10 } } },
+          y: { beginAtZero: true, max: 16, reverse: false,
+            grid: { color: 'rgba(255,255,255,.06)' },
+            ticks: { color: '#8A97A6',
+              callback: v => v === 16 ? '15+' : v.toFixed(0) } }
+        }
+      }
+    });
+  }
+
+  function makeIpChart() {
+    const ctx = document.getElementById('ip-chart-Dantry');
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: months_Dantry,
+        datasets: [{
+          label: 'IP',
+          data: ips_Dantry,
+          backgroundColor: color_Dantry + '55',
+          borderColor: color_Dantry,
+          borderWidth: 1.5,
+          borderRadius: 3,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: '#8A97A6', font: { size: 10 } } },
+          y: { beginAtZero: true,
+            grid: { color: 'rgba(255,255,255,.06)' },
+            ticks: { color: '#8A97A6' } }
+        }
+      }
+    });
+  }
+
+  if (document.getElementById('section-Dantry').classList.contains('active')) {
+    makeEraChart(); makeIpChart();
+  }
+
+  window._initCharts_Dantry = function() { makeEraChart(); makeIpChart(); };
+})();
+</script>
+
+<script>
+const tabColors = {
+  'Rocco': '#FF5722', 'Porter': '#2196F3', 'Glomb': '#9C27B0', 'Dantry': '#4CAF50'
+};
+function showPitcher(key, btn) {
+  document.querySelectorAll('.pitcher-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.ptab').forEach(t => {
+    t.classList.remove('active');
+    t.style.borderColor = 'rgba(255,255,255,.1)';
+    t.style.color = '#8A97A6';
+  });
+  document.getElementById('section-' + key).classList.add('active');
+  btn.classList.add('active');
+  btn.style.borderColor = tabColors[key];
+  btn.style.color = tabColors[key];
+  const fn = window['_initCharts_' + key];
+  if (fn) { fn(); window['_initCharts_' + key] = null; }
+}
+</script>
+</div>
+</body>
+</html>
