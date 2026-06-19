@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Ohio Blast Father's Day Classic 12U — Tournament Predictor</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0A0A0F;--card:#111118;--border:rgba(255,255,255,.07);
+  --text:#F0F0F8;--muted:#666680;--body:#9090A8;
+  --red:#E8392A;--gold:#F5A623;--green:#22C55E;--blue:#3A8EE6;--purple:#9B59B6;
+}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* HERO */
+.hero{background:linear-gradient(180deg,#1A0000 0%,#0A0A0F 100%);border-bottom:2px solid var(--red);padding:0;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(232,57,42,.15) 0%,transparent 70%);pointer-events:none;}
+.hero-inner{max-width:980px;margin:0 auto;padding:2rem;display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:center;}
+.hero-logo{width:90px;height:90px;object-fit:contain;filter:drop-shadow(0 0 20px rgba(232,57,42,.5));}
+.hero-text{}
+.hero-eyebrow{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.18em;color:var(--red);margin-bottom:.35rem;}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:.03em;color:#fff;line-height:.95;margin-bottom:.35rem;}
+.hero-title span{color:var(--red);}
+.hero-meta{font-size:12px;color:var(--muted);}
+.hero-meta strong{color:var(--body);}
+
+/* TABS */
+.tabs-wrap{background:var(--bg);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.tabs{display:flex;max-width:980px;margin:0 auto;padding:0 2rem;overflow-x:auto;}
+.tab{padding:12px 18px;font-size:12px;font-weight:600;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;font-family:'Inter',sans-serif;white-space:nowrap;text-transform:uppercase;letter-spacing:.06em;transition:color .15s;}
+.tab.active{color:var(--red);border-bottom-color:var(--red);}
+.tab:hover:not(.active){color:var(--text);}
+
+/* SECTIONS */
+.section{display:none;max-width:980px;margin:0 auto;padding:2rem;}.section.active{display:block;}
+
+/* PREDICTION CARD */
+.champion-card{background:linear-gradient(135deg,#1A0000,#0D0D1A);border:1px solid rgba(232,57,42,.4);border-radius:12px;padding:2rem;margin-bottom:1.75rem;text-align:center;position:relative;overflow:hidden;}
+.champion-card::before{content:'';position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:200px;height:200px;background:radial-gradient(circle,rgba(232,57,42,.2),transparent 70%);pointer-events:none;}
+.champ-label{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.2em;color:var(--red);margin-bottom:.5rem;}
+.champ-trophy{font-size:36px;margin-bottom:.5rem;}
+.champ-name{font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:.04em;color:#fff;line-height:1;margin-bottom:.35rem;}
+.champ-sub{font-size:13px;color:var(--body);}
+.champ-runner{font-size:12px;color:var(--muted);margin-top:.4rem;}
+
+/* SL */
+.sl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--muted);margin:1.75rem 0 .75rem;padding-bottom:.35rem;border-bottom:1px solid var(--border);}.sl:first-child{margin-top:0;}
+.sl-red{color:var(--red);border-color:rgba(232,57,42,.3);}
+.sl-gold{color:var(--gold);border-color:rgba(245,166,35,.3);}
+.sl-blue{color:var(--blue);border-color:rgba(58,142,230,.3);}
+
+/* INSIGHT BOX */
+.insight{border-radius:8px;padding:.85rem 1rem;margin-bottom:.85rem;font-size:12px;line-height:1.7;}
+.insight-title{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.4rem;}
+.insight strong{color:var(--text);}
+.ins-r{background:rgba(232,57,42,.07);border-left:3px solid var(--red);border-radius:0 6px 6px 0;}.ins-r .insight-title{color:var(--red);}
+.ins-g{background:rgba(34,197,94,.07);border-left:3px solid var(--green);border-radius:0 6px 6px 0;}.ins-g .insight-title{color:var(--green);}
+.ins-a{background:rgba(245,166,35,.07);border-left:3px solid var(--gold);border-radius:0 6px 6px 0;}.ins-a .insight-title{color:var(--gold);}
+.ins-b{background:rgba(58,142,230,.07);border-left:3px solid var(--blue);border-radius:0 6px 6px 0;}.ins-b .insight-title{color:var(--blue);}
+
+/* STANDINGS TABLE */
+.stand-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:1rem;}
+.stand-table th{padding:8px 10px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);border-bottom:1px solid var(--border);text-align:left;}
+.stand-table th:not(:first-child):not(:nth-child(2)){text-align:center;}
+.stand-table td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:middle;}
+.stand-table td:not(:first-child):not(:nth-child(2)){text-align:center;font-family:'DM Mono',monospace;}
+.stand-table tr:hover td{background:rgba(255,255,255,.02);}
+.stand-table tr.dukes td{background:rgba(58,142,230,.06);border-left:2px solid var(--blue);}
+.stand-table tr.dukes:hover td{background:rgba(58,142,230,.1);}
+.rank-num{font-family:'DM Mono',monospace;font-size:12px;font-weight:700;}
+.team-name{font-weight:600;}
+.team-loc{font-size:10px;color:var(--muted);}
+.win-num{color:var(--green);font-weight:700;}
+.loss-num{color:var(--red);}
+.rd-pos{color:var(--green);}
+.rd-neg{color:var(--red);}
+.rd-zero{color:var(--muted);}
+.pill-sm{display:inline-block;font-size:8px;font-weight:700;padding:1px 5px;border-radius:3px;margin-left:4px;vertical-align:middle;}
+.pill-r{background:rgba(232,57,42,.2);color:#FF7066;}
+.pill-g{background:rgba(34,197,94,.15);color:var(--green);}
+.pill-b{background:rgba(58,142,230,.15);color:var(--blue);}
+.pill-a{background:rgba(245,166,35,.15);color:var(--gold);}
+
+/* RESULTS TABLE */
+.res-table{width:100%;border-collapse:collapse;font-size:12px;}
+.res-table th{padding:7px 10px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);border-bottom:1px solid var(--border);text-align:left;}
+.res-table td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.03);}
+.res-table tr:hover td{background:rgba(255,255,255,.02);}
+.res-table tr.dukes-row td{background:rgba(58,142,230,.06);}
+.game-id{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);}
+.score-w{font-family:'DM Mono',monospace;font-weight:700;color:var(--green);}
+.score-l{font-family:'DM Mono',monospace;color:var(--muted);}
+.res-win{font-size:10px;color:var(--green);font-weight:600;}
+.res-loss{font-size:10px;color:var(--red);}
+.res-tbd{font-size:10px;color:var(--muted);font-style:italic;}
+
+/* POWER RANKINGS */
+.pr-row{display:flex;align-items:center;gap:10px;padding:.6rem .85rem;background:var(--card);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;}
+.pr-num{font-family:'Bebas Neue',sans-serif;font-size:22px;width:32px;text-align:center;line-height:1;}
+.pr-body{flex:1;}
+.pr-name{font-size:13px;font-weight:600;}
+.pr-note{font-size:10px;color:var(--muted);margin-top:1px;}
+.pr-rd{font-family:'DM Mono',monospace;font-size:14px;font-weight:700;text-align:right;}
+
+/* DAY LABEL */
+.day-label{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.08em;color:var(--red);margin:1.25rem 0 .6rem;display:flex;align-items:center;gap:.5rem;}
+.day-label::after{content:'';flex:1;height:1px;background:rgba(232,57,42,.3);}
+
+@media(max-width:700px){
+  .hero-inner{grid-template-columns:auto 1fr;gap:1rem;padding:1.25rem;}
+  .hero-logo{width:64px;height:64px;}
+  .hero-title{font-size:30px;}
+  .champ-name{font-size:34px;}
+  .section{padding:1.25rem 1rem;}
+  .tabs{padding:0 1rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <img src="ohio-blast-logo.png" class="hero-logo" alt="Ohio Blast">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Tournament Predictor</div>
+      <h1 class="hero-title">Ohio Blast<br><span>Father's Day Classic</span></h1>
+      <div class="hero-meta">12U Division &middot; Jun 19&ndash;21, 2026 &middot; New Middletown, OH &middot; <strong>21 teams &middot; 18 Friday results confirmed</strong></div>
+    </div>
+  </div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="show('pred',this)">Prediction</button>
+    <button class="tab" onclick="show('power',this)">Power rankings</button>
+    <button class="tab" onclick="show('dukes',this)">&#11088; Lady Dukes</button>
+    <button class="tab" onclick="show('standings',this)">Standings</button>
+    <button class="tab" onclick="show('schedule',this)">Schedule</button>
+  </div>
+</div>
+<div class="section active" id="pred">
+  <div class="champion-card">
+    <div class="champ-label">Predicted Champion</div>
+    <div class="champ-trophy">&#127942;</div>
+    <div class="champ-name">River City Venom</div>
+    <div class="champ-sub">Valencia, PA &middot; 2-0 &middot; +14 Run Differential &middot; Best team in the field</div>
+    <div class="champ-runner">Runner-up: Thunder Elite 2K14-Baugher &middot; Dark horse: Silver Creek 12U-Tanner</div>
+  </div>
+
+  <div class="insight ins-r">
+    <div class="insight-title">&#128293; Why River City wins</div>
+    River City Venom is in a different tier than everyone else in this tournament. <strong>+14 run differential in 2 games</strong> — they beat Velocity Heat 8-2 (a team that scored 13 vs Ohio Blast) and shut out Lady Dukes 11U 8-0. Their dominance over Velocity Heat is the most telling result: Velocity went on to beat Ohio Blast Schreiber 13-4, so they are not a weak opponent. River City is playing a level above this field.
+  </div>
+
+  <div class="insight ins-a">
+    <div class="insight-title">&#128161; The title race</div>
+    Behind River City, <strong>Thunder Elite 2K14-Baugher</strong> (+8 RD) and <strong>Silver Creek 12U-Tanner</strong> (+11 RD) are the strongest challengers. Ohio RoadRunners is 2-0 but on +2 RD in close games — they win tight, which is valuable, but it means they haven't dominated. <strong>The championship path likely goes through River City vs one of the Thunder Elite teams on Sunday.</strong>
+  </div>
+
+  <div class="insight ins-a">
+    <div class="insight-title">&#9888; Two Thunder Elites — watch the seeding</div>
+    There are <strong>two separate Thunder Elite teams</strong> in this field — 2K14-Baugher (Warren, OH) and 12u-Slifka (Youngstown, OH). Both are 2-0. They have not played each other yet. If they finish 1st and 2nd in seeding, the Sunday bracket could set up a Thunder Elite civil war before the final.
+  </div>
+
+  <div class="sl sl-red">Championship path prediction</div>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.85rem 1rem;margin-bottom:8px;">
+    <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--red);margin-bottom:.4rem;">Sunday QF</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.35rem;">
+      <div style="font-size:13px;font-weight:600;">River City Venom</div>
+      <div style="font-size:10px;color:var(--muted);">vs</div>
+      <div style="font-size:12px;color:var(--muted);">vs ~5th or 6th seed</div>
+    </div>
+    <div style="font-size:11px;color:var(--green);font-weight:600;">&#10003; River City wins easily</div>
+    <div style="font-size:10px;color:var(--muted);margin-top:3px;">River City's ceiling hasn't been tested — expect a dominant QF performance.</div>
+  </div>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.85rem 1rem;margin-bottom:8px;">
+    <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--red);margin-bottom:.4rem;">Sunday SF</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.35rem;">
+      <div style="font-size:13px;font-weight:600;">River City Venom</div>
+      <div style="font-size:10px;color:var(--muted);">vs</div>
+      <div style="font-size:12px;color:var(--muted);">vs Thunder Elite Baugher or Silver Creek</div>
+    </div>
+    <div style="font-size:11px;color:var(--green);font-weight:600;">&#10003; River City wins — narrow</div>
+    <div style="font-size:10px;color:var(--muted);margin-top:3px;">This is the real final in spirit. Thunder Baugher showed they can score big (8-1 vs Ohio Blast). Could be the best game of the tournament.</div>
+  </div>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.85rem 1rem;margin-bottom:8px;">
+    <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--red);margin-bottom:.4rem;">Sunday Final</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.35rem;">
+      <div style="font-size:13px;font-weight:600;">River City Venom</div>
+      <div style="font-size:10px;color:var(--muted);">vs</div>
+      <div style="font-size:12px;color:var(--muted);">vs Ohio RoadRunners or Thunder Slifka</div>
+    </div>
+    <div style="font-size:11px;color:var(--green);font-weight:600;">&#10003; River City wins</div>
+    <div style="font-size:10px;color:var(--muted);margin-top:3px;">River City wins the championship — their run differential edge and Velocity Heat performance set them apart from the field.</div>
+  </div></div>
+<div class="section" id="power">
+  <div class="sl sl-red">Friday power rankings — based on confirmed results</div>
+  <div style="font-size:12px;color:var(--muted);margin-bottom:1rem;">Ranked by run differential with context. 3 Friday evening games still TBD.</div>
+  <div class="pr-row" style="">
+    <div class="pr-num" style="color:#E24B4A;">1</div>
+    <div class="pr-body">
+      <div class="pr-name">River City Venom 12U</div>
+      <div class="pr-note">Valencia, PA &middot; 2-0, +14 RD &middot; Best team in the field. Beat Velocity 8-2 and shut out Lady Dukes 8-0.</div>
+    </div>
+  </div>
+  <div class="pr-row" style="">
+    <div class="pr-num" style="color:#E24B4A;">2</div>
+    <div class="pr-body">
+      <div class="pr-name">Silver Creek 12U</div>
+      <div class="pr-note">New Castle, PA &middot; 2-0, +11 RD &middot; Dominated Honey Badgers 13-2. Then won a tighter one 4-3 vs Athletix.</div>
+    </div>
+  </div>
+  <div class="pr-row" style="">
+    <div class="pr-num" style="color:#E24B4A;">3</div>
+    <div class="pr-body">
+      <div class="pr-name">Thunder Elite 2K14</div>
+      <div class="pr-note">Warren, OH &middot; 2-0, +8 RD &middot; Beat Ohio Blast 8-1 and North Coast 4-3. Real scoring punch.</div>
+    </div>
+  </div>
+  <div class="pr-row" style="">
+    <div class="pr-num" style="color:#E24B4A;">4</div>
+    <div class="pr-body">
+      <div class="pr-name">Thunder Elite Slifka</div>
+      <div class="pr-note">Youngstown, OH &middot; 2-0, +2 RD &middot; Two close wins. Hasn't been tested vs elite. Watch Sat.</div>
+    </div>
+  </div>
+  <div class="pr-row" style="">
+    <div class="pr-num" style="color:#E24B4A;">5</div>
+    <div class="pr-body">
+      <div class="pr-name">Ohio RoadRunners</div>
+      <div class="pr-note">Massillon, OH &middot; 2-0, +2 RD &middot; Wins close games (3-2, 2-1). Grinders who could surprise.</div>
+    </div>
+  </div>
+  <div class="pr-row" style="">
+    <div class="pr-num" style="color:#E8A020;">6</div>
+    <div class="pr-body">
+      <div class="pr-name">Olean Synergy</div>
+      <div class="pr-note">Allegany, NY &middot; 1-0, +5 RD &middot; Only 1 game played. 9-4 win over Diamonds. Sat slate will tell us more.</div>
+    </div>
+  </div>
+  <div class="pr-row" style="">
+    <div class="pr-num" style="color:#E8A020;">7</div>
+    <div class="pr-body">
+      <div class="pr-name">Velocity Heat 12U</div>
+      <div class="pr-note">Paris, OH &middot; 1-1, +3 RD &middot; 13-4 vs Schreiber shows huge offense. Lost to River City 2-8. Real team.</div>
+    </div>
+  </div>
+  <div class="pr-row" style="">
+    <div class="pr-num" style="color:#E8A020;">8</div>
+    <div class="pr-body">
+      <div class="pr-name">Steel City Athletics</div>
+      <div class="pr-note">Monaca, PA &middot; 1-1, +4 RD &middot; Beat Force 6-0, but lost Lady Dukes 11U 4-6. Eye-opening.</div>
+    </div>
+  </div>
+  <div class="pr-row" style="">
+    <div class="pr-num" style="color:#E8A020;">9</div>
+    <div class="pr-body">
+      <div class="pr-name">FP Select 12U</div>
+      <div class="pr-note">Salem, OH &middot; 1-1, 0 RD &middot; Close results both ways. Mid-tier.</div>
+    </div>
+  </div>
+  <div class="pr-row" style="">
+    <div class="pr-num" style="color:#E8A020;">10</div>
+    <div class="pr-body">
+      <div class="pr-name">North Coast Crushers</div>
+      <div class="pr-note">Solon, OH &middot; 1-1, 0 RD &middot; Beat Ohio Blast, lost Thunder Baugher 3-4. Competitive.</div>
+    </div>
+  </div>
+  <div class="pr-row" style="">
+    <div class="pr-num" style="color:#E8A020;">11</div>
+    <div class="pr-body">
+      <div class="pr-name">Force 12U</div>
+      <div class="pr-note">— &middot; 1-1, 0 RD &middot; Beat Schreiber 8-2, lost Steel City 0-6. Inconsistent.</div>
+    </div>
+  </div>
+  <div class="pr-row" style="">
+    <div class="pr-num" style="color:#E8A020;">12</div>
+    <div class="pr-body">
+      <div class="pr-name">GAMA Storm 12U</div>
+      <div class="pr-note">Delmont, PA &middot; 1-1, 0 RD &middot; Close wins and losses. Mid-pack.</div>
+    </div>
+  </div>
+  <div class="pr-row" style="border-color:rgba(58,142,230,.3);background:rgba(58,142,230,.04);">
+    <div class="pr-num" style="color:#378ADD;">13</div>
+    <div class="pr-body">
+      <div class="pr-name">Lady Dukes WPA 11U<span class="pill-sm pill-b">OUR TEAM</span></div>
+      <div class="pr-note">McMurray, PA &middot; 1-1, -6 RD &middot; ⭐ OUR TEAM. Playing up at 12U. Beat Steel City 6-4 is the highlight result.</div>
+    </div>
+  </div></div>
+<div class="section" id="dukes">
+  <div class="sl sl-blue">&#11088; Lady Dukes WPA 11U — Ohio Blast update</div>
+
+  <div style="background:rgba(58,142,230,.07);border:1px solid rgba(58,142,230,.25);border-radius:12px;padding:1.25rem;margin-bottom:1.25rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;text-align:center;">
+    <div><div style="font-family:'DM Mono',monospace;font-size:28px;font-weight:700;color:#3A8EE6;line-height:1;">1-1</div><div style="font-size:10px;color:var(--muted);margin-top:3px;">Friday record</div></div>
+    <div><div style="font-family:'DM Mono',monospace;font-size:28px;font-weight:700;color:#E24B4A;line-height:1;">-6</div><div style="font-size:10px;color:var(--muted);margin-top:3px;">Run differential</div></div>
+    <div><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#9090A8;line-height:1.2;">~12th<br>place</div><div style="font-size:10px;color:var(--muted);margin-top:3px;">Bracket projection</div></div>
+  </div>
+
+  <div class="insight ins-g">
+    <div class="insight-title">&#9989; The win that matters — Lady Dukes 6, Steel City Athletics 12U 4</div>
+    <strong>The Dukes beat a 12U team while playing as an 11U program.</strong> Steel City Athletics 12U-Fitzgerald (Monaca, PA) is a legitimate 12U team — they had beaten Force 12U 6-0 earlier in the day. The Dukes came back to win 6-4. That is a genuine accomplishment and exactly the kind of experience this 11U group needs heading into next season.
+  </div>
+
+  <div class="insight ins-r">
+    <div class="insight-title">&#9888; The loss — River City Venom 8, Lady Dukes 0</div>
+    <strong>River City Venom is the predicted tournament champion.</strong> Losing to them 0-8 is not a shame — it's who they are. Velocity Heat (a 1-1 team with 13 runs scored in a game) also lost to River City 2-8. This was an information game more than a measuring stick. The Dukes saw elite 12U pitching and that experience is the takeaway.
+  </div>
+
+  <div class="sl sl-blue">Saturday — P29: Lady Dukes vs Landsharks 2K13</div>
+  <div class="insight ins-a">
+    <div class="insight-title">&#127919; Key game Saturday 11:00 AM</div>
+    <strong>Landsharks 2K13-Uncapher (Concord Township, OH)</strong> are 0-0 — they had two Friday evening games (P19, P20) scheduled that had no scores reported yet. The Dukes should be favored in this matchup — their 11U talent stack (Aria T, Caroline W, Melania K as pitchers) is competitive with a 12U developmental team. <strong>A win here gets the Dukes out of the bracket bottom and into Sunday's mid-bracket round.</strong>
+  </div>
+
+  <div class="sl sl-blue">Sunday bracket projection</div>
+  <div style="background:var(--card);border:1px solid rgba(58,142,230,.25);border-radius:8px;padding:1rem;font-size:12px;color:var(--body);line-height:1.8;">
+    At <strong style="color:var(--text);">1-1 heading into Saturday</strong>, the Dukes will finish somewhere in the 11th&ndash;14th range depending on Saturday results and run differential. Sunday bracket projects them into approximately <strong style="color:var(--text);">B1 or B2</strong> (8:00 AM bracket opener), fighting for 13th&ndash;16th place.
+    <br><br>
+    <strong style="color:#22C55E;">Best case:</strong> Win vs Landsharks Sat, finish ~10th, bracket into top-half of Sunday consolation runs.
+    <br>
+    <strong style="color:var(--gold);">Likely:</strong> 11th&ndash;13th place finish. Solid tournament performance for an 11U team in a 12U field.
+    <br>
+    <strong style="color:var(--muted);">Context:</strong> The Dukes are here to gain experience ahead of their 11U season. Every run scored and every inning against 12U competition is development.
+  </div>
+</div>
+<div class="section" id="standings">
+  <div class="sl">Current pool standings — after Friday confirmed games</div>
+  <div style="font-size:11px;color:var(--muted);margin-bottom:1rem;">&#9432; 3 Friday evening games (P19-P21) still pending. RD = Run Differential.</div>
+  <table class="stand-table">
+    <thead><tr><th>#</th><th>Team</th><th>W</th><th>L</th><th>RD</th><th>RS</th><th>RA</th></tr></thead>
+    <tbody>
+    <tr class="">
+      <td class="rank-num" style="color:#E24B4A;">1</td>
+      <td><div class="team-name">River City Venom 12U<span class="pill-sm pill-r">Top 5</span></div><div class="team-loc">Valencia, PA</div></td>
+      <td class="win-num">2</td><td class="loss-num" style="color:var(--muted);">0</td>
+      <td class="rd-pos">+14</td><td>16</td><td style="color:var(--muted);">2</td>
+    </tr>
+    <tr class="">
+      <td class="rank-num" style="color:#E24B4A;">2</td>
+      <td><div class="team-name">Ohio RoadRunners 12U<span class="pill-sm pill-r">Top 5</span></div><div class="team-loc">Massillon, OH</div></td>
+      <td class="win-num">2</td><td class="loss-num" style="color:var(--muted);">0</td>
+      <td class="rd-pos">+2</td><td>5</td><td style="color:var(--muted);">3</td>
+    </tr>
+    <tr class="">
+      <td class="rank-num" style="color:#E24B4A;">3</td>
+      <td><div class="team-name">Thunder Elite 2K14<span class="pill-sm pill-r">Top 5</span></div><div class="team-loc">Warren, OH</div></td>
+      <td class="win-num">2</td><td class="loss-num" style="color:var(--muted);">0</td>
+      <td class="rd-pos">+8</td><td>12</td><td style="color:var(--muted);">4</td>
+    </tr>
+    <tr class="">
+      <td class="rank-num" style="color:#E24B4A;">4</td>
+      <td><div class="team-name">Silver Creek 12U<span class="pill-sm pill-r">Top 5</span></div><div class="team-loc">New Castle, PA</div></td>
+      <td class="win-num">2</td><td class="loss-num" style="color:var(--muted);">0</td>
+      <td class="rd-pos">+11</td><td>17</td><td style="color:var(--muted);">5</td>
+    </tr>
+    <tr class="">
+      <td class="rank-num" style="color:#E24B4A;">5</td>
+      <td><div class="team-name">Thunder Elite 12u-Slifka<span class="pill-sm pill-r">Top 5</span></div><div class="team-loc">Youngstown, OH</div></td>
+      <td class="win-num">2</td><td class="loss-num" style="color:var(--muted);">0</td>
+      <td class="rd-pos">+2</td><td>7</td><td style="color:var(--muted);">5</td>
+    </tr>
+    <tr class="">
+      <td class="rank-num" style="color:#E8A020;">6</td>
+      <td><div class="team-name">Olean Synergy 12u</div><div class="team-loc">Allegany, NY</div></td>
+      <td class="win-num">1</td><td class="loss-num" style="color:var(--muted);">0</td>
+      <td class="rd-pos">+5</td><td>9</td><td style="color:var(--muted);">4</td>
+    </tr>
+    <tr class="">
+      <td class="rank-num" style="color:#E8A020;">7</td>
+      <td><div class="team-name">FP Select 12U</div><div class="team-loc">Salem, OH</div></td>
+      <td class="win-num">1</td><td class="loss-num" style="color:var(--red);">1</td>
+      <td class="rd-zero">0</td><td>4</td><td style="color:var(--muted);">4</td>
+    </tr>
+    <tr class="">
+      <td class="rank-num" style="color:#E8A020;">8</td>
+      <td><div class="team-name">Steel City Athletics 12U</div><div class="team-loc">Monaca, PA</div></td>
+      <td class="win-num">1</td><td class="loss-num" style="color:var(--red);">1</td>
+      <td class="rd-pos">+4</td><td>10</td><td style="color:var(--muted);">6</td>
+    </tr>
+    <tr class="">
+      <td class="rank-num" style="color:#E8A020;">9</td>
+      <td><div class="team-name">GAMA Storm 12U</div><div class="team-loc">Delmont, PA</div></td>
+      <td class="win-num">1</td><td class="loss-num" style="color:var(--red);">1</td>
+      <td class="rd-zero">0</td><td>6</td><td style="color:var(--muted);">6</td>
+    </tr>
+    <tr class="">
+      <td class="rank-num" style="color:#E8A020;">10</td>
+      <td><div class="team-name">North Coast Crushers 12U</div><div class="team-loc">Solon, OH</div></td>
+      <td class="win-num">1</td><td class="loss-num" style="color:var(--red);">1</td>
+      <td class="rd-zero">0</td><td>7</td><td style="color:var(--muted);">7</td>
+    </tr>
+    <tr class="">
+      <td class="rank-num" style="color:#E8A020;">11</td>
+      <td><div class="team-name">Force 12U</div><div class="team-loc">—</div></td>
+      <td class="win-num">1</td><td class="loss-num" style="color:var(--red);">1</td>
+      <td class="rd-zero">0</td><td>8</td><td style="color:var(--muted);">8</td>
+    </tr>
+    <tr class="">
+      <td class="rank-num" style="color:#E8A020;">12</td>
+      <td><div class="team-name">Velocity Heat 12U</div><div class="team-loc">Paris, OH</div></td>
+      <td class="win-num">1</td><td class="loss-num" style="color:var(--red);">1</td>
+      <td class="rd-pos">+3</td><td>15</td><td style="color:var(--muted);">12</td>
+    </tr>
+    <tr class="dukes">
+      <td class="rank-num" style="color:#378ADD;">13</td>
+      <td><div class="team-name">Lady Dukes WPA 11U<span class="pill-sm pill-b">OUR TEAM</span></div><div class="team-loc">McMurray, PA</div></td>
+      <td class="win-num">1</td><td class="loss-num" style="color:var(--red);">1</td>
+      <td class="rd-neg">-6</td><td>6</td><td style="color:var(--muted);">12</td>
+    </tr>
+    <tr class="">
+      <td class="rank-num" style="color:#8A97A6;">14</td>
+      <td><div class="team-name">Landsharks 2K13</div><div class="team-loc">Concord Twp, OH</div></td>
+      <td class="win-num">0</td><td class="loss-num" style="color:var(--muted);">0</td>
+      <td class="rd-zero">0</td><td>0</td><td style="color:var(--muted);">0</td>
+    </tr>
+    <tr class="">
+      <td class="rank-num" style="color:#8A97A6;">15</td>
+      <td><div class="team-name">Big Red 2013</div><div class="team-loc">Mentor, OH</div></td>
+      <td class="win-num">0</td><td class="loss-num" style="color:var(--muted);">0</td>
+      <td class="rd-zero">0</td><td>0</td><td style="color:var(--muted);">0</td>
+    </tr>
+    <tr class="">
+      <td class="rank-num" style="color:#8A97A6;">16</td>
+      <td><div class="team-name">Ohio Diamonds 12U</div><div class="team-loc">Glassport, PA</div></td>
+      <td class="win-num">0</td><td class="loss-num" style="color:var(--red);">1</td>
+      <td class="rd-neg">-5</td><td>4</td><td style="color:var(--muted);">9</td>
+    </tr>
+    <tr class="">
+      <td class="rank-num" style="color:#8A97A6;">17</td>
+      <td><div class="team-name">West Hills Softball 11U</div><div class="team-loc">Imperial, PA</div></td>
+      <td class="win-num">0</td><td class="loss-num" style="color:var(--red);">2</td>
+      <td class="rd-neg">-2</td><td>5</td><td style="color:var(--muted);">7</td>
+    </tr>
+    <tr class="">
+      <td class="rank-num" style="color:#8A97A6;">18</td>
+      <td><div class="team-name">Athletix 11U-Barber</div><div class="team-loc">Canfield, OH</div></td>
+      <td class="win-num">0</td><td class="loss-num" style="color:var(--red);">2</td>
+      <td class="rd-neg">-2</td><td>7</td><td style="color:var(--muted);">9</td>
+    </tr>
+    <tr class="">
+      <td class="rank-num" style="color:#8A97A6;">19</td>
+      <td><div class="team-name">Ohio Blast 12U-Majors</div><div class="team-loc">—</div></td>
+      <td class="win-num">0</td><td class="loss-num" style="color:var(--red);">2</td>
+      <td class="rd-neg">-8</td><td>4</td><td style="color:var(--muted);">12</td>
+    </tr>
+    <tr class="">
+      <td class="rank-num" style="color:#8A97A6;">20</td>
+      <td><div class="team-name">Honey Badgers 2k14</div><div class="team-loc">Youngstown, OH</div></td>
+      <td class="win-num">0</td><td class="loss-num" style="color:var(--red);">2</td>
+      <td class="rd-neg">-11</td><td>3</td><td style="color:var(--muted);">15</td>
+    </tr>
+    <tr class="">
+      <td class="rank-num" style="color:#8A97A6;">21</td>
+      <td><div class="team-name">Ohio Blast 11U-Schreiber</div><div class="team-loc">—</div></td>
+      <td class="win-num">0</td><td class="loss-num" style="color:var(--red);">2</td>
+      <td class="rd-neg">-15</td><td>6</td><td style="color:var(--muted);">21</td>
+    </tr>  </tbody></table></div>
+<div class="section" id="schedule">
+  <div class="day-label">Friday June 19 — Confirmed results</div>
+  <table class="res-table">
+    <thead><tr><th>Game</th><th>Team 1</th><th>Score</th><th>Team 2</th><th>Result</th></tr></thead>
+    <tbody><tr class=""><td class="game-id">P1</td><td style="font-weight:600;">Athletix 11U</td><td style="text-align:center;"><span class="score-l">4</span>-<span class="score-w">5</span></td><td style="font-weight:600;">Thunder Slifka</td><td><span class="res-win">&#10003; Thunder Slifka wins</span></td></tr><tr class=""><td class="game-id">P2</td><td style="font-weight:600;">Silver Creek 12U</td><td style="text-align:center;"><span class="score-w">13</span>-<span class="score-l">2</span></td><td style="font-weight:600;">Honey Badgers</td><td><span class="res-win">&#10003; Silver Creek 12U wins</span></td></tr><tr class=""><td class="game-id">P3</td><td style="font-weight:600;">Athletix 11U</td><td style="text-align:center;"><span class="score-l">3</span>-<span class="score-w">4</span></td><td style="font-weight:600;">Silver Creek 12U</td><td><span class="res-win">&#10003; Silver Creek 12U wins</span></td></tr><tr class=""><td class="game-id">P4</td><td style="font-weight:600;">Thunder Baugher</td><td style="text-align:center;"><span class="score-w">4</span>-<span class="score-l">3</span></td><td style="font-weight:600;">North Coast</td><td><span class="res-win">&#10003; Thunder Baugher wins</span></td></tr><tr class=""><td class="game-id">P5</td><td style="font-weight:600;">Ohio Blast Majors</td><td style="text-align:center;"><span class="score-l">1</span>-<span class="score-w">8</span></td><td style="font-weight:600;">Thunder Baugher</td><td><span class="res-win">&#10003; Thunder Baugher wins</span></td></tr><tr class=""><td class="game-id">P6</td><td style="font-weight:600;">Thunder Slifka</td><td style="text-align:center;"><span class="score-w">2</span>-<span class="score-l">1</span></td><td style="font-weight:600;">Honey Badgers</td><td><span class="res-win">&#10003; Thunder Slifka wins</span></td></tr><tr class=""><td class="game-id">P7</td><td style="font-weight:600;">Velocity Heat</td><td style="text-align:center;"><span class="score-l">2</span>-<span class="score-w">8</span></td><td style="font-weight:600;">River City Venom</td><td><span class="res-win">&#10003; River City Venom wins</span></td></tr><tr class=""><td class="game-id">P8</td><td style="font-weight:600;">Ohio Blast Majors</td><td style="text-align:center;"><span class="score-l">3</span>-<span class="score-w">4</span></td><td style="font-weight:600;">North Coast</td><td><span class="res-win">&#10003; North Coast wins</span></td></tr><tr class=""><td class="game-id">P9</td><td style="font-weight:600;">Force 12U</td><td style="text-align:center;"><span class="score-l">0</span>-<span class="score-w">6</span></td><td style="font-weight:600;">Steel City 12U</td><td><span class="res-win">&#10003; Steel City 12U wins</span></td></tr><tr class=""><td class="game-id">P10</td><td style="font-weight:600;">Velocity Heat</td><td style="text-align:center;"><span class="score-w">13</span>-<span class="score-l">4</span></td><td style="font-weight:600;">Ohio Blast 11U</td><td><span class="res-win">&#10003; Velocity Heat wins</span></td></tr><tr class="dukes-row"><td class="game-id">P11</td><td style="font-weight:600;">River City Venom</td><td style="text-align:center;"><span class="score-w">8</span>-<span class="score-l">0</span></td><td style="font-weight:600;">Lady Dukes 11U</td><td><span style="color:#3A8EE6;font-size:10px;font-weight:600;">&#9733; Dukes WIN! 0-8</span></td></tr><tr class=""><td class="game-id">P12</td><td style="font-weight:600;">FP Select 12U</td><td style="text-align:center;"><span class="score-l">2</span>-<span class="score-w">3</span></td><td style="font-weight:600;">Ohio RoadRunners</td><td><span class="res-win">&#10003; Ohio RoadRunners wins</span></td></tr><tr class=""><td class="game-id">P13</td><td style="font-weight:600;">GAMA Storm</td><td style="text-align:center;"><span class="score-w">5</span>-<span class="score-l">4</span></td><td style="font-weight:600;">West Hills 11U</td><td><span class="res-win">&#10003; GAMA Storm wins</span></td></tr><tr class=""><td class="game-id">P14</td><td style="font-weight:600;">Force 12U</td><td style="text-align:center;"><span class="score-w">8</span>-<span class="score-l">2</span></td><td style="font-weight:600;">Ohio Blast 11U</td><td><span class="res-win">&#10003; Force 12U wins</span></td></tr><tr class="dukes-row"><td class="game-id">P15</td><td style="font-weight:600;">Steel City 12U</td><td style="text-align:center;"><span class="score-l">4</span>-<span class="score-w">6</span></td><td style="font-weight:600;">Lady Dukes 11U</td><td><span class="res-loss">&#9733; Dukes lose 4-6</span></td></tr><tr class=""><td class="game-id">P16</td><td style="font-weight:600;">FP Select 12U</td><td style="text-align:center;"><span class="score-w">2</span>-<span class="score-l">1</span></td><td style="font-weight:600;">GAMA Storm</td><td><span class="res-win">&#10003; FP Select 12U wins</span></td></tr><tr class=""><td class="game-id">P17</td><td style="font-weight:600;">Ohio RoadRunners</td><td style="text-align:center;"><span class="score-w">2</span>-<span class="score-l">1</span></td><td style="font-weight:600;">West Hills 11U</td><td><span class="res-win">&#10003; Ohio RoadRunners wins</span></td></tr><tr class=""><td class="game-id">P18</td><td style="font-weight:600;">Olean Synergy</td><td style="text-align:center;"><span class="score-w">9</span>-<span class="score-l">4</span></td><td style="font-weight:600;">Ohio Diamonds</td><td><span class="res-win">&#10003; Olean Synergy wins</span></td></tr><tr><td class="game-id">P19</td><td>Big Red 2013</td><td style="color:var(--muted);font-style:italic;text-align:center;">TBD</td><td>Landsharks</td><td class="res-tbd">Evening — awaiting result</td></tr><tr><td class="game-id">P20</td><td>Olean Synergy</td><td style="color:var(--muted);font-style:italic;text-align:center;">TBD</td><td>Landsharks</td><td class="res-tbd">Evening — awaiting result</td></tr><tr><td class="game-id">P21</td><td>Big Red 2013</td><td style="color:var(--muted);font-style:italic;text-align:center;">TBD</td><td>Ohio Diamonds</td><td class="res-tbd">Evening — awaiting result</td></tr>  </tbody></table>
+  <div class="day-label">Saturday June 20 — Scheduled</div>
+  <table class="res-table">
+    <thead><tr><th>Game</th><th>Time</th><th>Team 1</th><th></th><th>Team 2</th></tr></thead>
+    <tbody><tr class=""><td class="game-id">P22</td><td style="color:var(--muted);white-space:nowrap;">8:00AM</td><td style="font-weight:600;">FP Select 12U</td><td style="text-align:center;color:var(--muted);font-size:11px;">vs</td><td style="font-weight:600;">West Hills 11U </td></tr><tr class=""><td class="game-id">P23</td><td style="color:var(--muted);white-space:nowrap;">8:00AM</td><td style="font-weight:600;">Ohio RoadRunners</td><td style="text-align:center;color:var(--muted);font-size:11px;">vs</td><td style="font-weight:600;">GAMA Storm </td></tr><tr class=""><td class="game-id">P24</td><td style="color:var(--muted);white-space:nowrap;">8:00AM</td><td style="font-weight:600;">Velocity Heat</td><td style="text-align:center;color:var(--muted);font-size:11px;">vs</td><td style="font-weight:600;">Force 12U </td></tr><tr class=""><td class="game-id">P25</td><td style="color:var(--muted);white-space:nowrap;">8:00AM</td><td style="font-weight:600;">River City Venom</td><td style="text-align:center;color:var(--muted);font-size:11px;">vs</td><td style="font-weight:600;">Steel City 12U </td></tr><tr class=""><td class="game-id">P26</td><td style="color:var(--muted);white-space:nowrap;">9:30AM</td><td style="font-weight:600;">Thunder Baugher</td><td style="text-align:center;color:var(--muted);font-size:11px;">vs</td><td style="font-weight:600;">FP Select 12U* </td></tr><tr class=""><td class="game-id">P27</td><td style="color:var(--muted);white-space:nowrap;">9:30AM</td><td style="font-weight:600;">Ohio Blast Majors</td><td style="text-align:center;color:var(--muted);font-size:11px;">vs</td><td style="font-weight:600;">Ohio Diamonds </td></tr><tr class=""><td class="game-id">P28</td><td style="color:var(--muted);white-space:nowrap;">11:00AM</td><td style="font-weight:600;">Olean Synergy</td><td style="text-align:center;color:var(--muted);font-size:11px;">vs</td><td style="font-weight:600;">Big Red 2013 </td></tr><tr class="dukes-row"><td class="game-id">P29</td><td style="color:var(--muted);white-space:nowrap;">11:00AM</td><td style="font-weight:600;">Lady Dukes 11U</td><td style="text-align:center;color:var(--muted);font-size:11px;">vs</td><td style="font-weight:600;">Landsharks <span style="color:#3A8EE6;font-size:10px;font-weight:600;">&#9733; Dukes game</span></td></tr><tr class=""><td class="game-id">P30</td><td style="color:var(--muted);white-space:nowrap;">12:30PM</td><td style="font-weight:600;">Athletix 11U</td><td style="text-align:center;color:var(--muted);font-size:11px;">vs</td><td style="font-weight:600;">Honey Badgers </td></tr><tr class=""><td class="game-id">P31</td><td style="color:var(--muted);white-space:nowrap;">12:30PM</td><td style="font-weight:600;">Thunder Slifka</td><td style="text-align:center;color:var(--muted);font-size:11px;">vs</td><td style="font-weight:600;">Silver Creek 12U </td></tr><tr class=""><td class="game-id">P32</td><td style="color:var(--muted);white-space:nowrap;">2:00PM</td><td style="font-weight:600;">North Coast</td><td style="text-align:center;color:var(--muted);font-size:11px;">vs</td><td style="font-weight:600;">Ohio Blast 11U </td></tr>  </tbody></table>
+</div>
+
+<script>
+function show(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body></html>
