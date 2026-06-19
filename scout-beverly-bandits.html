@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Beverly Bandits 10U Scouting — Lady Dukes Analytics</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',system-ui,sans-serif;background:#0B1E35;color:#F2EFE8;min-height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:52px;border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:0;background:#0B1E35;z-index:100;}
+.logo{font-size:14px;font-weight:600;color:#F2EFE8;text-decoration:none;}.logo span{color:#E8A020;}
+.back{font-size:12px;color:#8A97A6;text-decoration:none;font-family:'DM Mono',monospace;}.back:hover{color:#E8A020;}
+.tabs{display:flex;border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:52px;background:#0B1E35;z-index:90;padding:0 2rem;}
+.tab{padding:11px 16px;font-size:13px;cursor:pointer;color:#8A97A6;border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;font-family:'Inter',sans-serif;}
+.tab.active{color:#E8A020;border-bottom-color:#E8A020;}
+.section{display:none;max-width:920px;margin:0 auto;padding:2rem;}.section.active{display:block;}
+h1{font-size:22px;font-weight:600;margin-bottom:.3rem;}h1 span{color:#E8A020;}
+.sub{font-size:13px;color:#8A97A6;margin-bottom:1.5rem;}
+.sl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#8A97A6;margin:1.5rem 0 .75rem;padding-bottom:.4rem;border-bottom:1px solid rgba(255,255,255,.08);}.sl:first-child{margin-top:0;}
+.mg{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:1.25rem;}
+.mc{background:rgba(255,255,255,.05);border-radius:8px;padding:11px 13px;}
+.mc .l{font-size:11px;color:#8A97A6;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em;}
+.mc .v{font-size:19px;font-weight:600;font-family:'DM Mono',monospace;}
+.mc .s{font-size:10px;color:#8A97A6;margin-top:2px;}
+.alert{background:rgba(226,75,74,.08);border:1px solid rgba(226,75,74,.25);border-radius:8px;padding:.9rem 1.1rem;margin-bottom:1.25rem;}
+.alert-title{font-size:12px;font-weight:600;color:#E24B4A;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem;}
+.alert-body{font-size:12px;color:#B0BDC9;line-height:1.7;}.alert-body strong{color:#F2EFE8;}
+.staff-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:8px;margin-bottom:1.25rem;}
+.staff-card{background:rgba(226,75,74,.06);border:1px solid rgba(226,75,74,.18);border-radius:8px;padding:.85rem 1rem;}
+.staff-name{font-size:13px;font-weight:600;margin-bottom:.4rem;}
+.staff-stat{font-family:'DM Mono',monospace;font-size:22px;font-weight:500;color:#E24B4A;line-height:1;}
+.staff-sub{font-size:11px;color:#8A97A6;margin-top:3px;line-height:1.5;}
+.hc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;margin-bottom:10px;}
+.hc-hdr{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:.85rem 1.25rem;border-bottom:1px solid rgba(255,255,255,.07);}
+.hc-name{font-size:14px;font-weight:600;}.hc-pos{font-size:11px;color:#8A97A6;margin-top:2px;}
+.hc-t{font-size:22px;font-weight:600;font-family:'DM Mono',monospace;text-align:right;}
+.hc-tl{font-size:10px;color:#8A97A6;text-align:right;text-transform:uppercase;letter-spacing:.04em;}
+.hc-body{padding:.85rem 1.25rem;}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:.75rem;}
+.sr{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;}
+.sr:last-child{border-bottom:none;}.sl2{color:#8A97A6;}.sv{font-weight:600;font-family:'DM Mono',monospace;}
+.pill{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;margin:2px 2px 0 0;}
+.pr{background:rgba(226,75,74,.2);color:#E24B4A;}.pg{background:rgba(45,184,124,.15);color:#2DB87C;}
+.pw{background:rgba(232,160,32,.15);color:#E8A020;}.pb{background:rgba(55,138,221,.15);color:#378ADD;}
+.approach{background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.2);border-radius:6px;padding:.65rem .9rem;font-size:12px;color:#F2EFE8;line-height:1.65;margin-top:.75rem;}
+.al{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#E8A020;margin-bottom:3px;}
+.box{background:rgba(255,255,255,.04);border-radius:8px;padding:1rem;margin-bottom:1rem;}
+.box-item{font-size:12px;color:#B0BDC9;line-height:1.7;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.box-item:last-child{border-bottom:none;}.box-item strong{color:#F2EFE8;}
+.lineup-table{width:100%;border-collapse:collapse;font-size:12px;background:rgba(255,255,255,.03);border-radius:8px;overflow:hidden;}
+.lineup-table th{text-align:left;padding:7px 10px;font-size:11px;color:#8A97A6;border-bottom:1px solid rgba(255,255,255,.08);font-weight:500;text-transform:uppercase;letter-spacing:.04em;}
+.lineup-table th:not(:first-child){text-align:right;}.lineup-table td{padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04);}
+.lineup-table td:not(:first-child){text-align:right;font-family:'DM Mono',monospace;}.lineup-table tr:last-child td{border-bottom:none;}.lineup-table tr:hover td{background:rgba(255,255,255,.03);}
+@media(max-width:600px){.sg{grid-template-columns:1fr;}.section{padding:1.25rem 1rem;}.tabs{padding:0 1rem;}.mg{grid-template-columns:repeat(2,1fr);}}</style>
+</head>
+<body>
+<nav class="topbar">
+  <a href="index.html" class="logo">Lady Dukes <span>Analytics</span></a>
+  <a href="master-ranking.html" class="back">← Rankings</a>
+</nav>
+<div class="tabs">
+  <button class="tab active" onclick="show('overview',this)">Overview</button>
+  <button class="tab" onclick="show('lineup',this)">Full lineup</button>
+  <button class="tab" onclick="show('batters',this)">Batter cards</button>
+  <button class="tab" onclick="show('pitchers',this)">Pitchers</button>
+</div>
+<div class="section active" id="overview">
+  <h1>Scouting: <span>Beverly Bandits 10U</span></h1>
+  <p class="sub">#4 of 16 teams · Danger 11.9 · Dukes record: <span style="color:#8A97A6;">Not played</span></p>
+
+  <div class="alert">
+    <div class="alert-title">⚠ Elite Team — Kenleigh G Is the Most Dominant Pitcher in the Pool</div>
+    <div class="alert-body"><strong>Kenleigh G: 1.61 ERA in 147.2 innings with 278 strikeouts (17.0 K/9).</strong> That is the most innings and most strikeouts of any pitcher in this entire scouting pool. She also bats .439 with 54 RBI. The Bandits have four pitchers capable of starting — this team never has a weak arm in the circle. AND the lineup features <strong>Kaniah R with 73 RBI</strong> — the highest single-season RBI total in the pool.</div>
+  </div>
+
+  <div class="mg">
+    <div class="mc"><div class="l">Rank</div><div class="v" style="color:#E8A020;">#4</div><div class="s">of 16 teams</div></div>
+    <div class="mc"><div class="l">Tier</div><div class="v" style="font-size:13px;color:#E8A020;">STRONG</div></div>
+    <div class="mc"><div class="l">Team OBP</div><div class="v">.465</div></div>
+    <div class="mc"><div class="l">Team OPS</div><div class="v">.986</div></div>
+    <div class="mc"><div class="l">Best ERA</div><div class="v" style="color:#2DB87C;">1.61</div></div>
+    <div class="mc"><div class="l">Team K%</div><div class="v">20%</div></div>
+    <div class="mc"><div class="l">Staff K</div><div class="v">544</div><div class="s">340 IP</div></div>
+    <div class="mc"><div class="l">vs Dukes</div><div class="v" style="font-size:12px;color:#8A97A6;">Not played</div></div>
+  </div>
+
+  <div class="sl">Pitching staff — depth is the defining feature</div>
+  <div class="staff-grid">
+    <div class="staff-card">
+      <div class="staff-name">Kenleigh G</div>
+      <div class="staff-stat">1.61</div>
+      <div class="staff-sub">147.2 IP · 278 K (17.0/9)<br>WHIP 1.10 · Bats .439 / .518</div>
+    </div>
+    <div class="staff-card">
+      <div class="staff-name">Freya D</div>
+      <div class="staff-stat">3.07</div>
+      <div class="staff-sub">120.2 IP · 141 K (10.6/9)<br>WHIP 1.36 · Bats .342 / .425</div>
+    </div>
+    <div class="staff-card">
+      <div class="staff-name">Kenzleigh W</div>
+      <div class="staff-stat">3.03</div>
+      <div class="staff-sub">34.2 IP · 48 K (12.6/9)<br>WHIP 1.93 · Bats .446 / .507</div>
+    </div>
+    <div class="staff-card">
+      <div class="staff-name">Kaniah R</div>
+      <div class="staff-stat">4.20</div>
+      <div class="staff-sub">25.0 IP · 54 K (19.4/9)<br>WHIP 1.32 · Bats .484 / .568</div>
+    </div>
+  </div>
+
+  <div class="sl">Strengths</div>
+  <div class="box" style="border-left:3px solid #E24B4A;border-radius:0 8px 8px 0;">
+    <div class="box-item"><strong>Kenleigh G — the best pitcher in the pool.</strong> 278 Ks in 147 innings is the most strikeouts of any arm in this scouting report. 1.61 ERA. 17.0 K/9. She also hits .439 — a full two-way elite player.</div>
+    <div class="box-item"><strong>Kaniah R — 73 RBI.</strong> Highest single-season RBI total in the scouting pool. .484 BA. She is the primary run-producer and also has 54 Ks pitching in 25 IP (19.4 K/9).</div>
+    <div class="box-item"><strong>Four-arm pitching staff.</strong> No other team in the pool has four starters all below 4.25 ERA. There is never a weak link in the circle.</div>
+    <div class="box-item"><strong>Deep lineup.</strong> Five qualified hitters above .380 BA. No spot in the order is automatic.</div>
+  </div>
+
+  <div class="sl">Vulnerabilities</div>
+  <div class="box" style="border-left:3px solid #2DB87C;border-radius:0 8px 8px 0;">
+    <div class="box-item"><strong>Team K rate 20.2%</strong> — the lineup does strike out. Against command pitching that hits corners, they will miss bats. Don't try to overpower them — locate.</div>
+    <div class="box-item"><strong>Bottom of lineup falls off.</strong> Maddy M (.248, 44% K) and Karlan B (.288) are attackable. Force pressure on spots 8–9 aggressively.</div>
+    <div class="box-item"><strong>Not played — no head-to-head data.</strong> The danger score reflects their stats, not a history against the Dukes specifically.</div>
+  </div>
+
+  <div class="sl">Top threats</div>
+  <div class="hc"><div style="height:4px;background:#E24B4A;opacity:.7;"></div><div class="hc-hdr"><div><div class="hc-name">Kaniah R</div><div class="hc-pos">#1 — .484/.568 · 73 RBI · 19% K · 25IP 4.20ERA</div></div><div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat</div></div></div><div class="hc-body"><div class="approach"><div class="al">Pitch approach</div><strong>Extreme caution.</strong> .484 BA in 159 AB. Pitch exclusively up and away, change speeds every pitch. Never challenge middle-in. She also pitches — even after she's in the circle, she's dangerous at the plate.</div></div></div><div class="hc"><div style="height:4px;background:#E24B4A;opacity:.7;"></div><div class="hc-hdr"><div><div class="hc-name">Kenleigh G</div><div class="hc-pos">#2 — .439/.518 · 54 RBI · 9% K · 147IP 1.61ERA</div></div><div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat</div></div></div><div class="hc-body"><div class="approach"><div class="al">Pitch approach</div><strong>First-pitch strikes — no exceptions.</strong> .439 BA. Only 8% K rate — she makes contact, location is everything. </div></div></div><div class="hc"><div style="height:4px;background:#E24B4A;opacity:.7;"></div><div class="hc-hdr"><div><div class="hc-name">Kenzleigh W</div><div class="hc-pos">#3 — .446/.507 · 34 RBI · 20% K · 34IP 3.03ERA</div></div><div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat</div></div></div><div class="hc-body"><div class="approach"><div class="al">Pitch approach</div><strong>First-pitch strikes — no exceptions.</strong> .446 BA. Only 19% K rate — she makes contact, location is everything. </div></div></div><div class="hc"><div style="height:4px;background:#E24B4A;opacity:.7;"></div><div class="hc-hdr"><div><div class="hc-name">Ella A</div><div class="hc-pos">#4 — .435/.492 · 47 RBI · 6% K</div></div><div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat</div></div></div><div class="hc-body"><div class="approach"><div class="al">Pitch approach</div><strong>First-pitch strikes — no exceptions.</strong> .435 BA. Only 5% K rate — she makes contact, location is everything. </div></div></div>
+</div>
+
+<div class="section" id="lineup">
+  <h1>Full lineup</h1>
+  <p class="sub">Beverly Bandits 10U · qualified hitters (50+ AB) sorted by OPS</p>
+  <table class="lineup-table">
+    <thead><tr><th>Player</th><th>AB</th><th>BA</th><th>OBP</th><th>OPS</th><th>K%</th><th>BB%</th><th>RBI</th><th>R</th><th>Pit</th></tr></thead>
+    <tbody><tr><td><strong>Kaniah R</strong></td><td>159</td><td style="color:#2DB87C;">.484</td><td>.568</td><td>1.221</td><td style="color:#F2EFE8;">19%</td><td>16%</td><td>73</td><td>81</td><td>⚾</td></tr><tr><td><strong>Kenleigh G</strong></td><td>164</td><td style="color:#2DB87C;">.439</td><td>.518</td><td>1.111</td><td style="color:#2DB87C;">9%</td><td>14%</td><td>54</td><td>48</td><td>⚾</td></tr><tr><td><strong>Kenzleigh W</strong></td><td>186</td><td style="color:#2DB87C;">.446</td><td>.507</td><td>1.109</td><td style="color:#F2EFE8;">20%</td><td>11%</td><td>34</td><td>97</td><td>⚾</td></tr><tr><td><strong>Ella A</strong></td><td>170</td><td style="color:#2DB87C;">.435</td><td>.492</td><td>1.079</td><td style="color:#2DB87C;">6%</td><td>10%</td><td>47</td><td>71</td><td></td></tr><tr><td><strong>Giuliana M</strong></td><td>149</td><td style="color:#E8A020;">.383</td><td>.500</td><td>1.017</td><td style="color:#F2EFE8;">26%</td><td>19%</td><td>53</td><td>57</td><td></td></tr><tr><td><strong>Freya D</strong></td><td>146</td><td style="color:#E8A020;">.342</td><td>.425</td><td>0.887</td><td style="color:#F2EFE8;">30%</td><td>13%</td><td>36</td><td>34</td><td>⚾</td></tr><tr><td><strong>Lynnleigh S</strong></td><td>167</td><td style="color:#E8A020;">.347</td><td>.408</td><td>0.876</td><td style="color:#F2EFE8;">29%</td><td>9%</td><td>37</td><td>65</td><td></td></tr><tr><td><strong>Aria B</strong></td><td>111</td><td style="color:#F2EFE8;">.306</td><td>.394</td><td>0.807</td><td style="color:#F2EFE8;">22%</td><td>13%</td><td>39</td><td>44</td><td></td></tr><tr><td><strong>Karlan B</strong></td><td>146</td><td style="color:#F2EFE8;">.288</td><td>.381</td><td>0.770</td><td style="color:#F2EFE8;">21%</td><td>13%</td><td>32</td><td>49</td><td>⚾</td></tr><tr><td><strong>Maddy M</strong></td><td>117</td><td style="color:#F2EFE8;">.248</td><td>.313</td><td>0.648</td><td style="color:#E24B4A;">44%</td><td>9%</td><td>23</td><td>39</td><td></td></tr></tbody>
+  </table>
+</div>
+
+<div class="section" id="batters">
+  <h1>Batter-by-batter approach</h1>
+  <p class="sub">Beverly Bandits 10U · threat rating and pitch approach for each hitter</p>
+  <div class="hc">
+  <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+  <div class="hc-hdr">
+    <div><div class="hc-name">Kaniah R</div><div class="hc-pos">#1 by OPS · 84 games · 25IP 4.20ERA 54K</div></div>
+    <div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div>
+  </div>
+  <div class="hc-body">
+    <div class="sg">
+      <div>
+        <div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E24B4A;">.484</span></div>
+        <div class="sr"><span class="sl2">OBP</span><span class="sv">.568</span></div>
+        <div class="sr"><span class="sl2">AB</span><span class="sv">159</span></div>
+        <div class="sr"><span class="sl2">RBI</span><span class="sv">73</span></div>
+        <div class="sr"><span class="sl2">Runs</span><span class="sv">81</span></div>
+      </div>
+      <div>
+        <div class="sr"><span class="sl2">K rate</span><span class="sv"><span>19%</span></span></div>
+        <div class="sr"><span class="sl2">BB rate</span><span class="sv">16%</span></div>
+        <div class="sr"><span class="sl2">BB</span><span class="sv">31</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">31</span></div>
+        <div style="margin-top:.5rem;"><span class="pill pr">ELITE BA</span><span class="pill pr">73 RBI</span><span class="pill pw">Two-way</span></div>
+      </div>
+    </div>
+    <div class="approach"><div class="al">Pitch approach</div><strong>Extreme caution.</strong> .484 BA in 159 AB. Pitch exclusively up and away, change speeds every pitch. Never challenge middle-in. She also pitches — even after she's in the circle, she's dangerous at the plate.</div>
+  </div>
+</div><div class="hc">
+  <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+  <div class="hc-hdr">
+    <div><div class="hc-name">Kenleigh G</div><div class="hc-pos">#2 by OPS · 84 games · 147IP 1.61ERA 278K</div></div>
+    <div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div>
+  </div>
+  <div class="hc-body">
+    <div class="sg">
+      <div>
+        <div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E24B4A;">.439</span></div>
+        <div class="sr"><span class="sl2">OBP</span><span class="sv">.518</span></div>
+        <div class="sr"><span class="sl2">AB</span><span class="sv">164</span></div>
+        <div class="sr"><span class="sl2">RBI</span><span class="sv">54</span></div>
+        <div class="sr"><span class="sl2">Runs</span><span class="sv">48</span></div>
+      </div>
+      <div>
+        <div class="sr"><span class="sl2">K rate</span><span class="sv"><span style='color:#2DB87C'>9%</span></span></div>
+        <div class="sr"><span class="sl2">BB rate</span><span class="sv">14%</span></div>
+        <div class="sr"><span class="sl2">BB</span><span class="sv">27</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">14</span></div>
+        <div style="margin-top:.5rem;"><span class="pill pw">Danger hitter</span><span class="pill pr">Elite contact (9% K)</span><span class="pill pr">54 RBI</span><span class="pill pw">Two-way</span></div>
+      </div>
+    </div>
+    <div class="approach"><div class="al">Pitch approach</div><strong>First-pitch strikes — no exceptions.</strong> .439 BA. Only 8% K rate — she makes contact, location is everything. </div>
+  </div>
+</div><div class="hc">
+  <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+  <div class="hc-hdr">
+    <div><div class="hc-name">Kenzleigh W</div><div class="hc-pos">#3 by OPS · 81 games · 34IP 3.03ERA 48K</div></div>
+    <div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div>
+  </div>
+  <div class="hc-body">
+    <div class="sg">
+      <div>
+        <div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E24B4A;">.446</span></div>
+        <div class="sr"><span class="sl2">OBP</span><span class="sv">.507</span></div>
+        <div class="sr"><span class="sl2">AB</span><span class="sv">186</span></div>
+        <div class="sr"><span class="sl2">RBI</span><span class="sv">34</span></div>
+        <div class="sr"><span class="sl2">Runs</span><span class="sv">97</span></div>
+      </div>
+      <div>
+        <div class="sr"><span class="sl2">K rate</span><span class="sv"><span>20%</span></span></div>
+        <div class="sr"><span class="sl2">BB rate</span><span class="sv">11%</span></div>
+        <div class="sr"><span class="sl2">BB</span><span class="sv">23</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">37</span></div>
+        <div style="margin-top:.5rem;"><span class="pill pw">Danger hitter</span><span class="pill pw">Two-way</span></div>
+      </div>
+    </div>
+    <div class="approach"><div class="al">Pitch approach</div><strong>First-pitch strikes — no exceptions.</strong> .446 BA. Only 19% K rate — she makes contact, location is everything. </div>
+  </div>
+</div><div class="hc">
+  <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+  <div class="hc-hdr">
+    <div><div class="hc-name">Ella A</div><div class="hc-pos">#4 by OPS · 84 games</div></div>
+    <div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div>
+  </div>
+  <div class="hc-body">
+    <div class="sg">
+      <div>
+        <div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E24B4A;">.435</span></div>
+        <div class="sr"><span class="sl2">OBP</span><span class="sv">.492</span></div>
+        <div class="sr"><span class="sl2">AB</span><span class="sv">170</span></div>
+        <div class="sr"><span class="sl2">RBI</span><span class="sv">47</span></div>
+        <div class="sr"><span class="sl2">Runs</span><span class="sv">71</span></div>
+      </div>
+      <div>
+        <div class="sr"><span class="sl2">K rate</span><span class="sv"><span style='color:#2DB87C'>6%</span></span></div>
+        <div class="sr"><span class="sl2">BB rate</span><span class="sv">10%</span></div>
+        <div class="sr"><span class="sl2">BB</span><span class="sv">19</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">10</span></div>
+        <div style="margin-top:.5rem;"><span class="pill pw">Danger hitter</span><span class="pill pr">Elite contact (6% K)</span></div>
+      </div>
+    </div>
+    <div class="approach"><div class="al">Pitch approach</div><strong>First-pitch strikes — no exceptions.</strong> .435 BA. Only 5% K rate — she makes contact, location is everything. </div>
+  </div>
+</div><div class="hc">
+  <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+  <div class="hc-hdr">
+    <div><div class="hc-name">Giuliana M</div><div class="hc-pos">#5 by OPS · 82 games</div></div>
+    <div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div>
+  </div>
+  <div class="hc-body">
+    <div class="sg">
+      <div>
+        <div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E24B4A;">.383</span></div>
+        <div class="sr"><span class="sl2">OBP</span><span class="sv">.500</span></div>
+        <div class="sr"><span class="sl2">AB</span><span class="sv">149</span></div>
+        <div class="sr"><span class="sl2">RBI</span><span class="sv">53</span></div>
+        <div class="sr"><span class="sl2">Runs</span><span class="sv">57</span></div>
+      </div>
+      <div>
+        <div class="sr"><span class="sl2">K rate</span><span class="sv"><span>26%</span></span></div>
+        <div class="sr"><span class="sl2">BB rate</span><span class="sv">19%</span></div>
+        <div class="sr"><span class="sl2">BB</span><span class="sv">35</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">39</span></div>
+        <div style="margin-top:.5rem;"><span class="pill pr">53 RBI</span></div>
+      </div>
+    </div>
+    <div class="approach"><div class="al">Pitch approach</div><strong>Attack early.</strong> .383 BA. Contact hitter — keep her off the barrel, work outer half.</div>
+  </div>
+</div><div class="hc">
+  <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+  <div class="hc-hdr">
+    <div><div class="hc-name">Freya D</div><div class="hc-pos">#6 by OPS · 81 games · 120IP 3.07ERA 141K</div></div>
+    <div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div>
+  </div>
+  <div class="hc-body">
+    <div class="sg">
+      <div>
+        <div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E24B4A;">.342</span></div>
+        <div class="sr"><span class="sl2">OBP</span><span class="sv">.425</span></div>
+        <div class="sr"><span class="sl2">AB</span><span class="sv">146</span></div>
+        <div class="sr"><span class="sl2">RBI</span><span class="sv">36</span></div>
+        <div class="sr"><span class="sl2">Runs</span><span class="sv">34</span></div>
+      </div>
+      <div>
+        <div class="sr"><span class="sl2">K rate</span><span class="sv"><span>30%</span></span></div>
+        <div class="sr"><span class="sl2">BB rate</span><span class="sv">13%</span></div>
+        <div class="sr"><span class="sl2">BB</span><span class="sv">21</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">44</span></div>
+        <div style="margin-top:.5rem;"><span class="pill pw">Two-way</span></div>
+      </div>
+    </div>
+    <div class="approach"><div class="al">Pitch approach</div><strong>Attack early.</strong> .342 BA. K rate 30% — get ahead and expand off the plate.</div>
+  </div>
+</div><div class="hc">
+  <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+  <div class="hc-hdr">
+    <div><div class="hc-name">Lynnleigh S</div><div class="hc-pos">#7 by OPS · 84 games</div></div>
+    <div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div>
+  </div>
+  <div class="hc-body">
+    <div class="sg">
+      <div>
+        <div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E24B4A;">.347</span></div>
+        <div class="sr"><span class="sl2">OBP</span><span class="sv">.408</span></div>
+        <div class="sr"><span class="sl2">AB</span><span class="sv">167</span></div>
+        <div class="sr"><span class="sl2">RBI</span><span class="sv">37</span></div>
+        <div class="sr"><span class="sl2">Runs</span><span class="sv">65</span></div>
+      </div>
+      <div>
+        <div class="sr"><span class="sl2">K rate</span><span class="sv"><span>29%</span></span></div>
+        <div class="sr"><span class="sl2">BB rate</span><span class="sv">9%</span></div>
+        <div class="sr"><span class="sl2">BB</span><span class="sv">17</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">49</span></div>
+        <div style="margin-top:.5rem;"></div>
+      </div>
+    </div>
+    <div class="approach"><div class="al">Pitch approach</div><strong>Attack early.</strong> .347 BA. K rate 29% — get ahead and expand off the plate.</div>
+  </div>
+</div><div class="hc">
+  <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+  <div class="hc-hdr">
+    <div><div class="hc-name">Aria B</div><div class="hc-pos">#8 by OPS · 66 games</div></div>
+    <div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div>
+  </div>
+  <div class="hc-body">
+    <div class="sg">
+      <div>
+        <div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E24B4A;">.306</span></div>
+        <div class="sr"><span class="sl2">OBP</span><span class="sv">.394</span></div>
+        <div class="sr"><span class="sl2">AB</span><span class="sv">111</span></div>
+        <div class="sr"><span class="sl2">RBI</span><span class="sv">39</span></div>
+        <div class="sr"><span class="sl2">Runs</span><span class="sv">44</span></div>
+      </div>
+      <div>
+        <div class="sr"><span class="sl2">K rate</span><span class="sv"><span>22%</span></span></div>
+        <div class="sr"><span class="sl2">BB rate</span><span class="sv">13%</span></div>
+        <div class="sr"><span class="sl2">BB</span><span class="sv">16</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">24</span></div>
+        <div style="margin-top:.5rem;"></div>
+      </div>
+    </div>
+    <div class="approach"><div class="al">Pitch approach</div><strong>Challenge aggressively.</strong> .306 BA, 22% K rate — throw strikes and she will make outs. </div>
+  </div>
+</div><div class="hc">
+  <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+  <div class="hc-hdr">
+    <div><div class="hc-name">Karlan B</div><div class="hc-pos">#9 by OPS · 82 games · 5IP 5.60ERA 6K</div></div>
+    <div><div class="hc-t" style="color:#E24B4A;">9.6</div><div class="hc-tl">Threat/10</div></div>
+  </div>
+  <div class="hc-body">
+    <div class="sg">
+      <div>
+        <div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E24B4A;">.288</span></div>
+        <div class="sr"><span class="sl2">OBP</span><span class="sv">.381</span></div>
+        <div class="sr"><span class="sl2">AB</span><span class="sv">146</span></div>
+        <div class="sr"><span class="sl2">RBI</span><span class="sv">32</span></div>
+        <div class="sr"><span class="sl2">Runs</span><span class="sv">49</span></div>
+      </div>
+      <div>
+        <div class="sr"><span class="sl2">K rate</span><span class="sv"><span>21%</span></span></div>
+        <div class="sr"><span class="sl2">BB rate</span><span class="sv">13%</span></div>
+        <div class="sr"><span class="sl2">BB</span><span class="sv">22</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">30</span></div>
+        <div style="margin-top:.5rem;"><span class="pill pw">Two-way</span></div>
+      </div>
+    </div>
+    <div class="approach"><div class="al">Pitch approach</div><strong>Challenge aggressively.</strong> .288 BA, 21% K rate — throw strikes and she will make outs. </div>
+  </div>
+</div><div class="hc">
+  <div style="height:4px;background:#E8A020;opacity:.7;"></div>
+  <div class="hc-hdr">
+    <div><div class="hc-name">Maddy M</div><div class="hc-pos">#10 by OPS · 73 games</div></div>
+    <div><div class="hc-t" style="color:#E8A020;">7.6</div><div class="hc-tl">Threat/10</div></div>
+  </div>
+  <div class="hc-body">
+    <div class="sg">
+      <div>
+        <div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E8A020;">.248</span></div>
+        <div class="sr"><span class="sl2">OBP</span><span class="sv">.313</span></div>
+        <div class="sr"><span class="sl2">AB</span><span class="sv">117</span></div>
+        <div class="sr"><span class="sl2">RBI</span><span class="sv">23</span></div>
+        <div class="sr"><span class="sl2">Runs</span><span class="sv">39</span></div>
+      </div>
+      <div>
+        <div class="sr"><span class="sl2">K rate</span><span class="sv"><span style='color:#E24B4A'>44%</span></span></div>
+        <div class="sr"><span class="sl2">BB rate</span><span class="sv">9%</span></div>
+        <div class="sr"><span class="sl2">BB</span><span class="sv">11</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">52</span></div>
+        <div style="margin-top:.5rem;"><span class="pill pg">High K — attack</span></div>
+      </div>
+    </div>
+    <div class="approach"><div class="al">Pitch approach</div><strong>Challenge aggressively.</strong> .248 BA, 44% K rate — throw strikes and she will make outs. </div>
+  </div>
+</div>
+</div>
+
+<div class="section" id="pitchers">
+  <h1>Pitching staff</h1>
+  <p class="sub">Beverly Bandits 10U · 4 qualified arms — deepest staff in the pool</p>
+  <div class="hc">
+  <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+  <div class="hc-hdr">
+    <div><div class="hc-name">Kenleigh G</div><div class="hc-pos">147.2 IP · Also bats: .439 BA / .518 OBP</div></div>
+    <div><div class="hc-t" style="color:#2DB87C;">1.61</div><div class="hc-tl">ERA</div></div>
+  </div>
+  <div class="hc-body">
+    <div class="sg">
+      <div>
+        <div class="sr"><span class="sl2">ERA</span><span class="sv" style="color:#2DB87C;">1.61</span></div>
+        <div class="sr"><span class="sl2">WHIP</span><span class="sv">1.10</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">278</span></div>
+        <div class="sr"><span class="sl2">IP</span><span class="sv">147.2</span></div>
+      </div>
+      <div>
+        <div class="sr"><span class="sl2">K/9</span><span class="sv">17.0</span></div>
+        <div class="sr"><span class="sl2">BB/inn</span><span class="sv">0.55</span></div>
+        <div class="sr"><span class="sl2">H allowed</span><span class="sv">82</span></div>
+        <div class="sr"><span class="sl2">BB allowed</span><span class="sv">81</span></div>
+      </div>
+    </div>
+    <div class="approach"><div class="al">How to attack</div><strong>Survival mode.</strong> 1.61 ERA, 17.0 K/9. This is one of the elite arms in the pool. Take every pitch — do not expand the zone. Make her throw 20+ pitches per inning. Patience is the only weapon.</div>
+  </div>
+</div><div class="hc">
+  <div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+  <div class="hc-hdr">
+    <div><div class="hc-name">Nyla G</div><div class="hc-pos">8.1 IP · Also bats: —</div></div>
+    <div><div class="hc-t" style="color:#2DB87C;">1.68</div><div class="hc-tl">ERA</div></div>
+  </div>
+  <div class="hc-body">
+    <div class="sg">
+      <div>
+        <div class="sr"><span class="sl2">ERA</span><span class="sv" style="color:#2DB87C;">1.68</span></div>
+        <div class="sr"><span class="sl2">WHIP</span><span class="sv">0.72</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">17</span></div>
+        <div class="sr"><span class="sl2">IP</span><span class="sv">8.1</span></div>
+      </div>
+      <div>
+        <div class="sr"><span class="sl2">K/9</span><span class="sv">18.9</span></div>
+        <div class="sr"><span class="sl2">BB/inn</span><span class="sv">0.37</span></div>
+        <div class="sr"><span class="sl2">H allowed</span><span class="sv">3</span></div>
+        <div class="sr"><span class="sl2">BB allowed</span><span class="sv">3</span></div>
+      </div>
+    </div>
+    <div class="approach"><div class="al">How to attack</div><strong>Survival mode.</strong> 1.68 ERA, 18.9 K/9. This is one of the elite arms in the pool. Take every pitch — do not expand the zone. Make her throw 20+ pitches per inning. Patience is the only weapon.</div>
+  </div>
+</div><div class="hc">
+  <div style="height:4px;background:#E8A020;opacity:.7;"></div>
+  <div class="hc-hdr">
+    <div><div class="hc-name">Kenzleigh W</div><div class="hc-pos">34.2 IP · Also bats: .446 BA / .507 OBP</div></div>
+    <div><div class="hc-t" style="color:#E8A020;">3.03</div><div class="hc-tl">ERA</div></div>
+  </div>
+  <div class="hc-body">
+    <div class="sg">
+      <div>
+        <div class="sr"><span class="sl2">ERA</span><span class="sv" style="color:#E8A020;">3.03</span></div>
+        <div class="sr"><span class="sl2">WHIP</span><span class="sv">1.93</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">48</span></div>
+        <div class="sr"><span class="sl2">IP</span><span class="sv">34.2</span></div>
+      </div>
+      <div>
+        <div class="sr"><span class="sl2">K/9</span><span class="sv">12.6</span></div>
+        <div class="sr"><span class="sl2">BB/inn</span><span class="sv">1.02</span></div>
+        <div class="sr"><span class="sl2">H allowed</span><span class="sv">32</span></div>
+        <div class="sr"><span class="sl2">BB allowed</span><span class="sv">35</span></div>
+      </div>
+    </div>
+    <div class="approach"><div class="al">How to attack</div><strong>Attack first-pitch strikes.</strong> 3.03 ERA — hittable. 1.93 WHIP means she gives up baserunners. Swing early in counts.</div>
+  </div>
+</div><div class="hc">
+  <div style="height:4px;background:#E8A020;opacity:.7;"></div>
+  <div class="hc-hdr">
+    <div><div class="hc-name">Freya D</div><div class="hc-pos">120.2 IP · Also bats: .342 BA / .425 OBP</div></div>
+    <div><div class="hc-t" style="color:#E8A020;">3.07</div><div class="hc-tl">ERA</div></div>
+  </div>
+  <div class="hc-body">
+    <div class="sg">
+      <div>
+        <div class="sr"><span class="sl2">ERA</span><span class="sv" style="color:#E8A020;">3.07</span></div>
+        <div class="sr"><span class="sl2">WHIP</span><span class="sv">1.36</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">141</span></div>
+        <div class="sr"><span class="sl2">IP</span><span class="sv">120.2</span></div>
+      </div>
+      <div>
+        <div class="sr"><span class="sl2">K/9</span><span class="sv">10.6</span></div>
+        <div class="sr"><span class="sl2">BB/inn</span><span class="sv">0.59</span></div>
+        <div class="sr"><span class="sl2">H allowed</span><span class="sv">93</span></div>
+        <div class="sr"><span class="sl2">BB allowed</span><span class="sv">71</span></div>
+      </div>
+    </div>
+    <div class="approach"><div class="al">How to attack</div><strong>Attack first-pitch strikes.</strong> 3.07 ERA — hittable. 1.36 WHIP means she gives up baserunners. Swing early in counts.</div>
+  </div>
+</div><div class="hc">
+  <div style="height:4px;background:#378ADD;opacity:.7;"></div>
+  <div class="hc-hdr">
+    <div><div class="hc-name">Kaniah R</div><div class="hc-pos">25.0 IP · Also bats: .484 BA / .568 OBP</div></div>
+    <div><div class="hc-t" style="color:#E8A020;">4.20</div><div class="hc-tl">ERA</div></div>
+  </div>
+  <div class="hc-body">
+    <div class="sg">
+      <div>
+        <div class="sr"><span class="sl2">ERA</span><span class="sv" style="color:#E8A020;">4.20</span></div>
+        <div class="sr"><span class="sl2">WHIP</span><span class="sv">1.32</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">54</span></div>
+        <div class="sr"><span class="sl2">IP</span><span class="sv">25.0</span></div>
+      </div>
+      <div>
+        <div class="sr"><span class="sl2">K/9</span><span class="sv">19.4</span></div>
+        <div class="sr"><span class="sl2">BB/inn</span><span class="sv">1.08</span></div>
+        <div class="sr"><span class="sl2">H allowed</span><span class="sv">6</span></div>
+        <div class="sr"><span class="sl2">BB allowed</span><span class="sv">27</span></div>
+      </div>
+    </div>
+    <div class="approach"><div class="al">How to attack</div><strong>Attack first-pitch strikes.</strong> 4.20 ERA — hittable. 1.32 WHIP means she gives up baserunners. Swing early in counts.</div>
+  </div>
+</div><div class="hc">
+  <div style="height:4px;background:#2DB87C;opacity:.7;"></div>
+  <div class="hc-hdr">
+    <div><div class="hc-name">Karlan B</div><div class="hc-pos">5.0 IP · Also bats: .288 BA / .381 OBP</div></div>
+    <div><div class="hc-t" style="color:#E24B4A;">5.60</div><div class="hc-tl">ERA</div></div>
+  </div>
+  <div class="hc-body">
+    <div class="sg">
+      <div>
+        <div class="sr"><span class="sl2">ERA</span><span class="sv" style="color:#E24B4A;">5.60</span></div>
+        <div class="sr"><span class="sl2">WHIP</span><span class="sv">1.80</span></div>
+        <div class="sr"><span class="sl2">K</span><span class="sv">6</span></div>
+        <div class="sr"><span class="sl2">IP</span><span class="sv">5.0</span></div>
+      </div>
+      <div>
+        <div class="sr"><span class="sl2">K/9</span><span class="sv">10.8</span></div>
+        <div class="sr"><span class="sl2">BB/inn</span><span class="sv">0.60</span></div>
+        <div class="sr"><span class="sl2">H allowed</span><span class="sv">6</span></div>
+        <div class="sr"><span class="sl2">BB allowed</span><span class="sv">3</span></div>
+      </div>
+    </div>
+    <div class="approach"><div class="al">How to attack</div><strong>Aggressive from pitch one.</strong> 5.60 ERA — score early and stay ahead.</div>
+  </div>
+</div>
+</div>
+
+<script>function show(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active');btn.classList.add('active');}</script>
+</body></html>
