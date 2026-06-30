@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>North American All-Sanctioned World Series — Coach Brian Craig</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',system-ui,sans-serif;background:#0A0E1A;color:#F0F2F8;min-height:100vh;}
+.hero{background:linear-gradient(180deg,#11182B 0%,#0A0E1A 100%);border-bottom:2px solid rgba(212,175,55,.4);padding:2rem;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,rgba(212,175,55,.12) 0%,transparent 60%);pointer-events:none;}
+.hero-eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:#D4AF37;margin-bottom:.5rem;}
+.hero-title{font-size:30px;font-weight:800;color:#fff;line-height:1.1;margin-bottom:.4rem;}
+.hero-title span{color:#D4AF37;}
+.hero-sub{font-size:13px;color:#7A8499;}
+.hero-coach{font-size:12px;color:#D4AF37;margin-top:.5rem;font-weight:600;}
+.tabs-wrap{background:#0A0E1A;border-bottom:1px solid rgba(255,255,255,.07);position:sticky;top:0;z-index:100;}
+.tabs{display:flex;max-width:980px;margin:0 auto;padding:0 2rem;overflow-x:auto;}
+.tab{padding:11px 16px;font-size:11px;font-weight:700;cursor:pointer;color:#7A8499;border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;white-space:nowrap;text-transform:uppercase;letter-spacing:.08em;}
+.tab.active{color:#D4AF37;border-bottom-color:#D4AF37;}
+.section{display:none;max-width:980px;margin:0 auto;padding:1.75rem 2rem;}.section.active{display:block;}
+.sl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.13em;color:#7A8499;margin:1.5rem 0 .65rem;padding-bottom:.3rem;border-bottom:1px solid rgba(255,255,255,.07);}.sl:first-child{margin-top:0;}
+.sl-gold{color:#D4AF37;border-color:rgba(212,175,55,.25);}
+.alert{border-radius:0 8px 8px 0;padding:.85rem 1.1rem;margin-bottom:.85rem;font-size:12px;line-height:1.7;border-left:3px solid;}
+.alert-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem;}
+.alert strong{color:#F0F2F8;}
+.ins-g{background:rgba(212,175,55,.07);border-color:#D4AF37;}.ins-g .alert-title{color:#D4AF37;}
+.ins-r{background:rgba(226,75,74,.07);border-color:#E24B4A;}.ins-r .alert-title{color:#E24B4A;}
+.ins-b{background:rgba(55,138,221,.07);border-color:#378ADD;}.ins-b .alert-title{color:#378ADD;}
+.team-card{display:block;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;margin-bottom:10px;text-decoration:none;color:inherit;transition:background .15s;}
+.team-card:hover{background:rgba(255,255,255,.06);}
+.tc-bar{height:3px;}
+.tc-main{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:.85rem 1.1rem;}
+.tc-name{font-size:14px;font-weight:700;}
+.tc-tier{font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em;display:inline-block;margin-top:4px;}
+.tc-danger{text-align:right;}
+.tc-d-val{font-family:'DM Mono',monospace;font-size:20px;font-weight:700;line-height:1;}
+.tc-d-lbl{font-size:9px;color:#7A8499;text-transform:uppercase;}
+.tc-note{font-size:11px;color:#7A8499;padding:0 1.1rem .85rem;line-height:1.55;border-top:1px solid rgba(255,255,255,.05);padding-top:.6rem;}
+.pending-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;}
+.pending-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:6px;padding:.6rem .8rem;font-size:12px;color:#7A8499;}
+.pending-item .coach{font-size:10px;color:#5E7A9A;margin-top:2px;}
+.craig-flag{background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.4);color:#D4AF37;}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:1.25rem;font-size:11px;color:#7A8499;}
+.legend-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:middle;}
+@media(max-width:700px){.hero{padding:1.25rem 1rem;}.hero-title{font-size:22px;}.section{padding:1.25rem 1rem;}.tabs{padding:0 1rem;}}</style>
+</head>
+<body>
+<div class="hero">
+  <div class="hero-eyebrow">Coaching Staff Confidential</div>
+  <h1 class="hero-title">North American All-Sanctioned<br><span>World Series</span></h1>
+  <div class="hero-sub">8U &middot; 10U &middot; 12U &middot; July 31 &ndash; Aug 2, 2026 &middot; Lou Berliner Park, Columbus, OH</div>
+  <div class="hero-coach">Prepared for Head Coach Brian Craig &middot; 39 teams in 10U field &middot; 9 already scouted</div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="show('overview',this)">Overview</button>
+    <button class="tab" onclick="show('scouted',this)">Scouted teams</button>
+    <button class="tab" onclick="show('pending',this)">Not yet scouted</button>
+  </div>
+</div>
+
+<div class="section active" id="overview">
+  <div class="sl sl-gold">Tournament snapshot</div>
+
+  <div class="alert ins-g">
+    <div class="alert-title">&#127942; 9 of 39 teams already in our scouting database</div>
+    We have existing scouting reports on <strong>9 teams</strong> from this 39-team field — built from prior tournament work this season. That's a real head start heading into Columbus. Full reports linked in the Scouted tab.
+  </div>
+
+  <div class="alert ins-r">
+    <div class="alert-title">&#9888; Last Ride 2K15 — Coach Craig</div>
+    One of the unscouted teams is <strong>"Last Ride 2K15," coached by Craig.</strong> Worth confirming whether this is a connection worth knowing about before the bracket comes out — same last name as our head coach.
+  </div>
+
+  <div class="alert ins-b">
+    <div class="alert-title">&#128161; Two elite arms to know before we get there</div>
+    <strong>Ohio Stingrays Jellison (Piper C: 1.22 ERA, 264K)</strong> and <strong>Central Ohio Dynamites (Tegan L: 3.55 ERA, 365K in 163 IP)</strong> are both in this field and both rank among the most dominant arms we've scouted all season. If either lands in our pool, that's the priority prep.
+  </div>
+
+  <div class="sl sl-gold">Danger ranking — teams already scouted</div>
+  <div class="legend">
+    <span><span class="legend-dot" style="background:#E24B4A;"></span>ELITE (12+)</span>
+    <span><span class="legend-dot" style="background:#E8A020;"></span>STRONG (9-11.9)</span>
+    <span><span class="legend-dot" style="background:#378ADD;"></span>AVERAGE (7-8.9)</span>
+    <span><span class="legend-dot" style="background:#2DB87C;"></span>BEATABLE (&lt;7)</span>
+  </div>
+  <a href="scout-ohio-stingrays.html" class="team-card">
+    <div class="tc-bar" style="background:#E24B4A;"></div>
+    <div class="tc-main">
+      <div><div class="tc-name">Ohio Stingrays 2033 - Jellison</div><span class="tc-tier" style="background:rgba(255,255,255,.06);color:#E24B4A;">ELITE</span></div>
+      <div class="tc-danger"><div class="tc-d-val" style="color:#E24B4A;">13.6</div><div class="tc-d-lbl">Danger</div></div>
+    </div>
+    <div class="tc-note">Piper C: 1.22 ERA, 264K in 154 IP. .423 BA. Elite two-way ace.</div>
+  </a>
+  <a href="scout-all-american.html" class="team-card">
+    <div class="tc-bar" style="background:#E24B4A;"></div>
+    <div class="tc-main">
+      <div><div class="tc-name">Team All American 10U - Red</div><span class="tc-tier" style="background:rgba(255,255,255,.06);color:#E24B4A;">ELITE</span></div>
+      <div class="tc-danger"><div class="tc-d-val" style="color:#E24B4A;">13.0</div><div class="tc-d-lbl">Danger</div></div>
+    </div>
+    <div class="tc-note">Avry G: .500 BA + 1.22 ERA, 188K. Dukes nemesis (0-5-1 historically).</div>
+  </a>
+  <a href="scout-big-red.html" class="team-card">
+    <div class="tc-bar" style="background:#E8A020;"></div>
+    <div class="tc-main">
+      <div><div class="tc-name">Big Red 10U</div><span class="tc-tier" style="background:rgba(255,255,255,.06);color:#E8A020;">STRONG</span></div>
+      <div class="tc-danger"><div class="tc-d-val" style="color:#E8A020;">11.8</div><div class="tc-d-lbl">Danger</div></div>
+    </div>
+    <div class="tc-note">⚠ Schedule caveat — 7/10 hitters above .360 BA. Treat as STRONG not ELITE.</div>
+  </a>
+  <a href="scout-queen-bee-hewitt.html" class="team-card">
+    <div class="tc-bar" style="background:#E8A020;"></div>
+    <div class="tc-main">
+      <div><div class="tc-name">Queen Bee 10U-Hewitt</div><span class="tc-tier" style="background:rgba(255,255,255,.06);color:#E8A020;">STRONG</span></div>
+      <div class="tc-danger"><div class="tc-d-val" style="color:#E8A020;">10.6</div><div class="tc-d-lbl">Danger</div></div>
+    </div>
+    <div class="tc-note">Raegan H: .474 BA AND 2.23 ERA/232K. Dukes nemesis (0-2 historically).</div>
+  </a>
+  <a href="scout-premier-weiland.html" class="team-card">
+    <div class="tc-bar" style="background:#E8A020;"></div>
+    <div class="tc-main">
+      <div><div class="tc-name">Premier 2015 Weiland</div><span class="tc-tier" style="background:rgba(255,255,255,.06);color:#E8A020;">STRONG</span></div>
+      <div class="tc-danger"><div class="tc-d-val" style="color:#E8A020;">10.4</div><div class="tc-d-lbl">Danger</div></div>
+    </div>
+    <div class="tc-note">Quinn T: .452 BA + 3.28 ERA/105K. 3-arm staff, 278 combined Ks.</div>
+  </a>
+  <a href="scout-pittsburgh-tigers.html" class="team-card">
+    <div class="tc-bar" style="background:#E8A020;"></div>
+    <div class="tc-main">
+      <div><div class="tc-name">Pittsburgh Tigers</div><span class="tc-tier" style="background:rgba(255,255,255,.06);color:#E8A020;">STRONG</span></div>
+      <div class="tc-danger"><div class="tc-d-val" style="color:#E8A020;">10.0</div><div class="tc-d-lbl">Danger</div></div>
+    </div>
+    <div class="tc-note">Amelia H: 310 Ks — most of any single arm in our pool. Two elite arms.</div>
+  </a>
+  <a href="scout-ohio-wolfpack-miller.html" class="team-card">
+    <div class="tc-bar" style="background:#378ADD;"></div>
+    <div class="tc-main">
+      <div><div class="tc-name">Ohio Wolfpack 2015 Miller</div><span class="tc-tier" style="background:rgba(255,255,255,.06);color:#378ADD;">AVERAGE</span></div>
+      <div class="tc-danger"><div class="tc-d-val" style="color:#378ADD;">7.7</div><div class="tc-d-lbl">Danger</div></div>
+    </div>
+    <div class="tc-note">Riley S (.431/.557) is real. Team K rate 36% — beatable bottom of order.</div>
+  </a></div>
+
+<div class="section" id="scouted">
+  <div class="sl sl-gold">Full scouting reports — click to open</div>
+  <a href="scout-ohio-stingrays.html" class="team-card">
+    <div class="tc-bar" style="background:#E24B4A;"></div>
+    <div class="tc-main">
+      <div><div class="tc-name">Ohio Stingrays 2033 - Jellison</div><span class="tc-tier" style="background:rgba(255,255,255,.06);color:#E24B4A;">ELITE</span></div>
+      <div class="tc-danger"><div class="tc-d-val" style="color:#E24B4A;">13.6</div><div class="tc-d-lbl">Danger</div></div>
+    </div>
+    <div class="tc-note">Piper C: 1.22 ERA, 264K in 154 IP. .423 BA. Elite two-way ace.</div>
+  </a>
+  <a href="scout-all-american.html" class="team-card">
+    <div class="tc-bar" style="background:#E24B4A;"></div>
+    <div class="tc-main">
+      <div><div class="tc-name">Team All American 10U - Red</div><span class="tc-tier" style="background:rgba(255,255,255,.06);color:#E24B4A;">ELITE</span></div>
+      <div class="tc-danger"><div class="tc-d-val" style="color:#E24B4A;">13.0</div><div class="tc-d-lbl">Danger</div></div>
+    </div>
+    <div class="tc-note">Avry G: .500 BA + 1.22 ERA, 188K. Dukes nemesis (0-5-1 historically).</div>
+  </a>
+  <a href="scout-big-red.html" class="team-card">
+    <div class="tc-bar" style="background:#E8A020;"></div>
+    <div class="tc-main">
+      <div><div class="tc-name">Big Red 10U</div><span class="tc-tier" style="background:rgba(255,255,255,.06);color:#E8A020;">STRONG</span></div>
+      <div class="tc-danger"><div class="tc-d-val" style="color:#E8A020;">11.8</div><div class="tc-d-lbl">Danger</div></div>
+    </div>
+    <div class="tc-note">⚠ Schedule caveat — 7/10 hitters above .360 BA. Treat as STRONG not ELITE.</div>
+  </a>
+  <a href="scout-queen-bee-hewitt.html" class="team-card">
+    <div class="tc-bar" style="background:#E8A020;"></div>
+    <div class="tc-main">
+      <div><div class="tc-name">Queen Bee 10U-Hewitt</div><span class="tc-tier" style="background:rgba(255,255,255,.06);color:#E8A020;">STRONG</span></div>
+      <div class="tc-danger"><div class="tc-d-val" style="color:#E8A020;">10.6</div><div class="tc-d-lbl">Danger</div></div>
+    </div>
+    <div class="tc-note">Raegan H: .474 BA AND 2.23 ERA/232K. Dukes nemesis (0-2 historically).</div>
+  </a>
+  <a href="scout-premier-weiland.html" class="team-card">
+    <div class="tc-bar" style="background:#E8A020;"></div>
+    <div class="tc-main">
+      <div><div class="tc-name">Premier 2015 Weiland</div><span class="tc-tier" style="background:rgba(255,255,255,.06);color:#E8A020;">STRONG</span></div>
+      <div class="tc-danger"><div class="tc-d-val" style="color:#E8A020;">10.4</div><div class="tc-d-lbl">Danger</div></div>
+    </div>
+    <div class="tc-note">Quinn T: .452 BA + 3.28 ERA/105K. 3-arm staff, 278 combined Ks.</div>
+  </a>
+  <a href="scout-pittsburgh-tigers.html" class="team-card">
+    <div class="tc-bar" style="background:#E8A020;"></div>
+    <div class="tc-main">
+      <div><div class="tc-name">Pittsburgh Tigers</div><span class="tc-tier" style="background:rgba(255,255,255,.06);color:#E8A020;">STRONG</span></div>
+      <div class="tc-danger"><div class="tc-d-val" style="color:#E8A020;">10.0</div><div class="tc-d-lbl">Danger</div></div>
+    </div>
+    <div class="tc-note">Amelia H: 310 Ks — most of any single arm in our pool. Two elite arms.</div>
+  </a>
+  <a href="scout-ohio-wolfpack-miller.html" class="team-card">
+    <div class="tc-bar" style="background:#378ADD;"></div>
+    <div class="tc-main">
+      <div><div class="tc-name">Ohio Wolfpack 2015 Miller</div><span class="tc-tier" style="background:rgba(255,255,255,.06);color:#378ADD;">AVERAGE</span></div>
+      <div class="tc-danger"><div class="tc-d-val" style="color:#378ADD;">7.7</div><div class="tc-d-lbl">Danger</div></div>
+    </div>
+    <div class="tc-note">Riley S (.431/.557) is real. Team K rate 36% — beatable bottom of order.</div>
+  </a><div class="sl sl-gold">Additional scouted teams — no standalone page yet</div>
+  <div class="team-card" style="cursor:default;">
+    <div class="tc-bar" style="background:#E24B4A;"></div>
+    <div class="tc-main">
+      <div><div class="tc-name">Central Ohio Dynamites 10u</div><span class="tc-tier" style="background:rgba(255,255,255,.06);color:#E24B4A;">DATA AVAILABLE</span></div>
+    </div>
+    <div class="tc-note">Tegan L: 3.55 ERA, 365 Ks in 163.2 IP (20.1 K/9). .490 BA. Best individual arm scouted all season. &mdash; <em>Full standalone scout page can be built on request.</em></div>
+  </div>
+  <div class="team-card" style="cursor:default;">
+    <div class="tc-bar" style="background:#E8A020;"></div>
+    <div class="tc-main">
+      <div><div class="tc-name">Unity 2033 - Sheridan</div><span class="tc-tier" style="background:rgba(255,255,255,.06);color:#E8A020;">DATA AVAILABLE</span></div>
+    </div>
+    <div class="tc-note">Natalie D (.541/.632), Brooklyn S (101K in 60 IP, 15.1 K/9). Scouted for Coach Greg McWilliams. &mdash; <em>Full standalone scout page can be built on request.</em></div>
+  </div></div>
+
+<div class="section" id="pending">
+  <div class="sl sl-gold">Not yet scouted — 30 teams</div>
+  <div style="font-size:12px;color:#7A8499;margin-bottom:1rem;">Upload GameChanger CSV exports for any of these teams and we'll build full scouting reports.</div>
+  <div class="pending-grid"><div class="pending-item"><div>Buckeye Elite Fastpitch</div><div class="coach">Coach Pierce</div></div><div class="pending-item"><div>Chardon Storm</div><div class="coach">Coach Hamilton</div></div><div class="pending-item"><div>Cutting Edge Elite</div><div class="coach">Coach Alexander</div></div><div class="pending-item"><div>CWV ELITE BANDITS</div><div class="coach">Coach Hall</div></div><div class="pending-item"><div>Finesse 10u Kochan</div><div class="coach">Coach Apkarian</div></div><div class="pending-item"><div>FP Select 10u</div><div class="coach">Coach Hamley</div></div><div class="pending-item"><div>Indiana Aces 2K15</div><div class="coach">Coach Garza</div></div><div class="pending-item"><div>Kent Lady Colonels</div><div class="coach">Coach Lewis</div></div><div class="pending-item"><div>Lady Rebels -Erwin</div><div class="coach">Coach Erwin</div></div><div class="craig-flag"><div>Last Ride 2K15 &#9888;</div><div class="coach">Coach Craig</div></div><div class="pending-item"><div>Miami Valley Xpress 2033</div><div class="coach">Coach Beach</div></div><div class="pending-item"><div>Michigan Mambas 10u</div><div class="coach">Coach Reaume</div></div><div class="pending-item"><div>Next Level Ohio</div><div class="coach">Coach Biser</div></div><div class="pending-item"><div>Ohio Cobras 10U</div><div class="coach">Coach Hines</div></div><div class="pending-item"><div>Ohio Fever Elite- Cullumber</div><div class="coach">Coach Cullumber</div></div><div class="pending-item"><div>Ohio Hawks 2033</div><div class="coach">Coach Wegman</div></div><div class="pending-item"><div>Ohio Jags</div><div class="coach">Coach Hochstetler</div></div><div class="pending-item"><div>Ohio Lasers 2034 Boden</div><div class="coach">Coach Boden</div></div><div class="pending-item"><div>Ohio MOJO - Wall</div><div class="coach">Coach Scott</div></div><div class="pending-item"><div>Ohio Sox 10U-Piscioneri</div><div class="coach">Coach Piscioneri</div></div><div class="pending-item"><div>Ohio Stingrays 2k33-Lilly</div><div class="coach">Coach Lilly</div></div><div class="pending-item"><div>PGH Heat</div><div class="coach">Coach Carpenter</div></div><div class="pending-item"><div>Pittsburgh Lady Roadrunners Gold</div><div class="coach">Coach Cutri</div></div><div class="pending-item"><div>Premier Ohio Dobrowolski 9u</div><div class="coach">Coach Dobrowolski</div></div><div class="pending-item"><div>TN Mojo Ferguson 2033</div><div class="coach">Coach Ferguson</div></div><div class="pending-item"><div>TN MOJO TROTTER-2034</div><div class="coach">Coach Trotter</div></div><div class="pending-item"><div>Vikings Elite 2015 - KELLY</div><div class="coach">Coach Kelly</div></div><div class="pending-item"><div>Willoughby Starzz 10u Busch</div><div class="coach">Coach Busch</div></div><div class="pending-item"><div>Wizards 10u Devine</div><div class="coach">Coach Devine</div></div><div class="pending-item"><div>Wizards Robinson 10u</div><div class="coach">Coach Robinson</div></div>  </div>
+</div>
+
+<script>
+function show(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body></html>
