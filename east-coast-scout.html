@@ -87,6 +87,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:#060B14;color:#F0F4FF;m
     <button class="tab" onclick="show('dynamites',this)">Dynamites &#9888;</button>
     <button class="tab" onclick="show('orion',this)">Orion Hunter</button>
     <button class="tab" onclick="show('sparkz',this)">Sparkz &#9432;</button>
+    <button class="tab" onclick="show('vaelite',this)">VA Elite</button>
   </div>
 </div>
 <div class="section active" id="overview">
@@ -215,6 +216,47 @@ body{font-family:'Inter',system-ui,sans-serif;background:#060B14;color:#F0F4FF;m
   </div>
 </div>
 
+
+<div class="section" id="vaelite">
+  <div style="border-left:3px solid #378ADD;padding-left:.75rem;margin-bottom:1.25rem;">
+    <div style="font-size:20px;font-weight:800;color:#378ADD;">VA Legacy Elite 10U</div>
+    <div style="font-size:12px;color:#5E7A9A;">Danger 7.56 &middot; Combined fall+spring &middot; Most hittable pitching in the pool &middot; Respect top 3 bats</div>
+  </div>
+  <div class="alert ins-g">
+    <div class="alert-title">&#9989; Most hittable staff in our pool</div>
+    VA Elite's main workhorse Harley D has a <strong>10.02 ERA in 65 innings</strong>. Their best ERA is Harper R at 6.42 but only in 12 innings (small sample). <strong>Our offense should score on VA Elite — attack early, swing first pitch, don't let them settle in.</strong>
+  </div>
+  <div class="alert ins-a">
+    <div class="alert-title">&#9888; Respect spots 1-3 — top of order is real</div>
+    <strong>Addy M C (.469), Layla G (.450, 34 RBI), and Bailee B (.430)</strong> are all legitimate threats. After the top 3, it falls off sharply — Charli S (.083) and Penelope M (.133) are automatic outs.
+  </div>
+  <div class="sl" style="color:#378ADD;border-color:rgba(255,255,255,.1);">Top batters</div>
+  <table class="htable">
+    <thead><tr><th>Player</th><th>BA</th><th>OBP</th><th>RBI</th><th>K%</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td style="font-weight:700;color:#378ADD;">Addy M C</td><td style="color:#E8A020;font-family:'DM Mono',monospace;font-weight:600;">.469</td><td style="font-family:'DM Mono',monospace;">.535</td><td>16</td><td>31%</td><td style="font-size:11px;color:#8A97A6;">Best hitter. Work outer half.</td></tr>
+      <tr><td style="font-weight:600;">Layla G</td><td style="color:#E8A020;font-family:'DM Mono',monospace;font-weight:600;">.450</td><td style="font-family:'DM Mono',monospace;">.555</td><td>34</td><td>30%</td><td style="font-size:11px;color:#8A97A6;">RBI leader (34). Clutch hitter.</td></tr>
+      <tr><td style="font-weight:600;">Bailee B</td><td style="color:#E8A020;font-family:'DM Mono',monospace;font-weight:600;">.430</td><td style="font-family:'DM Mono',monospace;">.537</td><td>15</td><td>31%</td><td style="font-size:11px;color:#8A97A6;">Also pitches. Respect all of 1-3.</td></tr>
+      <tr><td style="font-weight:600;">Harper R</td><td style="color:#F0F4FF;font-family:'DM Mono',monospace;">.352</td><td style="font-family:'DM Mono',monospace;">.450</td><td>4</td><td>24%</td><td style="font-size:11px;color:#8A97A6;">Best ERA pitcher (6.42 in 12 IP).</td></tr>
+      <tr><td style="font-weight:600;">Emma S</td><td style="color:#F0F4FF;font-family:'DM Mono',monospace;">.280</td><td style="font-family:'DM Mono',monospace;">.467</td><td>13</td><td style="color:#E24B4A;">51%</td><td style="font-size:11px;color:#8A97A6;">51% K — attack the zone.</td></tr>
+      <tr><td style="font-weight:600;">Charli S</td><td style="color:#8A97A6;font-family:'DM Mono',monospace;">.083</td><td style="font-family:'DM Mono',monospace;">.083</td><td>1</td><td style="color:#E24B4A;">60%</td><td style="font-size:11px;color:#8A97A6;">Automatic out.</td></tr>
+      <tr><td style="font-weight:600;">Penelope M</td><td style="color:#8A97A6;font-family:'DM Mono',monospace;">.133</td><td style="font-family:'DM Mono',monospace;">.458</td><td>2</td><td style="color:#E24B4A;">40%</td><td style="font-size:11px;color:#8A97A6;">High walk OBP but .133 BA — throw strikes.</td></tr>
+    </tbody>
+  </table>
+  <div class="sl" style="color:#378ADD;border-color:rgba(255,255,255,.1);">Pitching staff</div>
+  <table class="htable">
+    <thead><tr><th>Pitcher</th><th>ERA</th><th>K</th><th>IP</th><th>K/9</th><th>How to attack</th></tr></thead>
+    <tbody>
+      <tr><td style="font-weight:600;">Harper R</td><td style="color:#E8A020;font-family:'DM Mono',monospace;font-weight:600;">6.42</td><td>26</td><td style="color:#5E7A9A;">12</td><td style="font-family:'DM Mono',monospace;">19.5</td><td style="font-size:11px;color:#8A97A6;">Small sample. Work counts.</td></tr>
+      <tr><td style="font-weight:600;">Harley D</td><td style="color:#E24B4A;font-family:'DM Mono',monospace;font-weight:600;">10.02</td><td>117</td><td style="color:#5E7A9A;">65</td><td style="font-family:'DM Mono',monospace;">16.2</td><td style="font-size:11px;color:#8A97A6;">Workhorse (65 IP). Score early.</td></tr>
+      <tr><td style="font-weight:600;">Bailee B</td><td style="color:#E24B4A;font-family:'DM Mono',monospace;font-weight:600;">12.14</td><td>41</td><td style="color:#5E7A9A;">30</td><td style="font-family:'DM Mono',monospace;">12.3</td><td style="font-size:11px;color:#8A97A6;">Score now.</td></tr>
+      <tr><td style="font-weight:600;">Alexis A</td><td style="color:#E24B4A;font-family:'DM Mono',monospace;font-weight:600;">14.09</td><td>38</td><td style="color:#5E7A9A;">25</td><td style="font-family:'DM Mono',monospace;">13.5</td><td style="font-size:11px;color:#8A97A6;">Most hittable arm.</td></tr>
+    </tbody>
+  </table>
+  <div class="approach"><div class="approach-lbl">Gameplan vs VA Legacy Elite</div>
+    Score early — their pitching is the most hittable in our pool. Attack first pitches against Harley D and Bailee B. Trust our staff to hold their lineup — their 43% team K rate means throw strikes. Respect spots 1-3 at the plate (all .430+). After the top 3, attack aggressively.
+  </div>
+</div>
 <script>
 function show(id,btn){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
