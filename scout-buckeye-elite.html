@@ -1,0 +1,245 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Buckeye Elite Fastpitch 10U Scouting</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0;}body{font-family:'Inter',system-ui,sans-serif;background:#0B1E35;color:#F2EFE8;min-height:100vh;}.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:52px;border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:0;background:#0B1E35;z-index:100;}.logo{font-size:14px;font-weight:600;color:#F2EFE8;text-decoration:none;}.logo span{color:#E8A020;}.back{font-size:12px;color:#8A97A6;text-decoration:none;font-family:'DM Mono',monospace;}.back:hover{color:#E8A020;}.tabs{display:flex;border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:52px;background:#0B1E35;z-index:90;padding:0 2rem;overflow-x:auto;}.tab{padding:11px 16px;font-size:13px;cursor:pointer;color:#8A97A6;border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;font-family:'Inter',sans-serif;white-space:nowrap;}.tab.active{color:#E8A020;border-bottom-color:#E8A020;}.section{display:none;max-width:920px;margin:0 auto;padding:2rem;}.section.active{display:block;}h1{font-size:22px;font-weight:600;margin-bottom:.3rem;}h1 span{color:#E8A020;}.sub{font-size:13px;color:#8A97A6;margin-bottom:1.5rem;}.sl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#8A97A6;margin:1.5rem 0 .75rem;padding-bottom:.4rem;border-bottom:1px solid rgba(255,255,255,.08);}.sl:first-child{margin-top:0;}.note-banner{background:rgba(232,160,32,.06);border:1px solid rgba(232,160,32,.2);border-radius:8px;padding:.8rem 1rem;margin-bottom:1.25rem;font-size:12px;color:#B0BDC9;line-height:1.6;}.note-banner strong{color:#F2EFE8;}.mg{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:1.25rem;}.mc{background:rgba(255,255,255,.05);border-radius:8px;padding:11px 13px;}.mc .l{font-size:11px;color:#8A97A6;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em;}.mc .v{font-size:19px;font-weight:600;font-family:'DM Mono',monospace;}.mc .s{font-size:10px;color:#8A97A6;margin-top:2px;}.hc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;margin-bottom:10px;}.hc-hdr{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:.85rem 1.25rem;border-bottom:1px solid rgba(255,255,255,.07);}.hc-name{font-size:14px;font-weight:600;}.hc-pos{font-size:11px;color:#8A97A6;margin-top:2px;}.hc-t{font-size:22px;font-weight:600;font-family:'DM Mono',monospace;text-align:right;}.hc-tl{font-size:10px;color:#8A97A6;text-align:right;text-transform:uppercase;letter-spacing:.04em;}.hc-body{padding:.85rem 1.25rem;}.sg{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:.75rem;}.sr{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;}.sr:last-child{border-bottom:none;}.sl2{color:#8A97A6;}.sv{font-weight:600;font-family:'DM Mono',monospace;}.pill{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;margin:2px 2px 0 0;}.pr{background:rgba(226,75,74,.2);color:#E24B4A;}.pg{background:rgba(45,184,124,.15);color:#2DB87C;}.pw{background:rgba(232,160,32,.15);color:#E8A020;}.box{background:rgba(255,255,255,.04);border-radius:8px;padding:1rem;margin-bottom:1rem;}.box-item{font-size:12px;color:#B0BDC9;line-height:1.7;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);}.box-item:last-child{border-bottom:none;}.box-item strong{color:#F2EFE8;}.lineup-table{width:100%;border-collapse:collapse;font-size:12px;background:rgba(255,255,255,.03);border-radius:8px;overflow:hidden;}.lineup-table th{text-align:left;padding:7px 10px;font-size:11px;color:#8A97A6;border-bottom:1px solid rgba(255,255,255,.08);font-weight:500;text-transform:uppercase;letter-spacing:.04em;}.lineup-table th:not(:first-child){text-align:right;}.lineup-table td{padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04);}.lineup-table td:not(:first-child){text-align:right;font-family:'DM Mono',monospace;}.lineup-table tr:last-child td{border-bottom:none;}.lineup-table tr:hover td{background:rgba(255,255,255,.03);}@media(max-width:600px){.sg{grid-template-columns:1fr;}.section{padding:1.25rem 1rem;}.tabs{padding:0 1rem;}.mg{grid-template-columns:repeat(2,1fr);}}</style></head><body>
+<nav class="topbar"><a href="index.html" class="logo">Lady Dukes <span>Analytics</span></a><a href="world-series-craig.html" class="back">&larr; World Series</a></nav>
+<div class="tabs"><button class="tab active" onclick="show('overview',this)">Overview</button><button class="tab" onclick="show('lineup',this)">Full lineup</button><button class="tab" onclick="show('batters',this)">Batter cards</button><button class="tab" onclick="show('pitchers',this)">Pitchers</button></div>
+<div class="section active" id="overview">
+<h1>Scouting: <span>Buckeye Elite Fastpitch 2015 10U</span></h1>
+<p class="sub">Danger 8.74 &middot; STRONG tier &middot; Kyndyl is the workhorse ace</p>
+<div class="note-banner"><strong>Note:</strong> Q T posted a 0.00 ERA in just 1 inning — excluded from best-ERA calculation as a small-sample artifact. Gizelle (2.86 ERA, 44 IP) is the real best-ERA arm on the staff.</div>
+<div class="mg">
+<div class="mc"><div class="l">Tier</div><div class="v" style="color:#E8A020;">STRONG</div></div>
+<div class="mc"><div class="l">Team OBP</div><div class="v">.411</div></div>
+<div class="mc"><div class="l">Team OPS</div><div class="v">.842</div></div>
+<div class="mc"><div class="l">Best ERA</div><div class="v" style="color:#2DB87C;">2.86</div></div>
+<div class="mc"><div class="l">Team K%</div><div class="v">33%</div></div>
+<div class="mc"><div class="l">Ace K/9</div><div class="v" style="color:#2DB87C;">17.2</div></div>
+</div>
+<div class="sl">Strengths</div>
+<div class="box" style="border-left:3px solid #E8A020;border-radius:0 8px 8px 0;">
+<div class="box-item"><strong>Kyndyl is the workhorse — 178 Ks in 93.1 innings (17.2 K/9), 3.90 ERA.</strong> She also bats .378 with 36 RBI (most on the team). True two-way anchor.</div>
+<div class="box-item"><strong>Gizelle has the best ERA (2.86)</strong> in 44 innings with 84 Ks — a legitimate #2 arm behind Kyndyl.</div>
+<div class="box-item"><strong>Top of the order is real.</strong> Emery (.418), Tori (.408), Charlotte (.357) all hit for real average.</div>
+</div>
+<div class="sl">Vulnerabilities</div>
+<div class="box" style="border-left:3px solid #2DB87C;border-radius:0 8px 8px 0;">
+<div class="box-item"><strong>Team K rate 33%</strong> — disciplined at-bats and command pitching will generate strikeouts throughout the order.</div>
+<div class="box-item"><strong>Addie (.073 BA, 53% K) and Kenzie (.204, 57% K)</strong> are automatic outs at the bottom of the lineup.</div>
+<div class="box-item"><strong>Three real arms but heavy reliance on Kyndyl</strong> — wear down her pitch count and attack Reese (10.20 ERA) if she enters.</div>
+</div>
+<div class="sl">Top threats</div><div class="hc"><div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+<div class="hc-hdr"><div><div class="hc-name">Emery</div><div class="hc-pos">91 AB</div></div>
+<div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div></div>
+<div class="hc-body"><div class="sg"><div>
+<div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E24B4A;">.418</span></div>
+<div class="sr"><span class="sl2">OBP</span><span class="sv">.531</span></div>
+<div class="sr"><span class="sl2">RBI</span><span class="sv">22</span></div>
+</div><div>
+<div class="sr"><span class="sl2">K rate</span><span class="sv" style="color:#F2EFE8;">32%</span></div>
+<div class="sr"><span class="sl2">AB</span><span class="sv">91</span></div>
+</div></div>
+<div style="margin-bottom:.6rem;"><span class="pill pr">Danger hitter</span></div></div></div><div class="hc"><div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+<div class="hc-hdr"><div><div class="hc-name">Kyndyl</div><div class="hc-pos">90 AB &middot; 93IP 3.90ERA 178K</div></div>
+<div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div></div>
+<div class="hc-body"><div class="sg"><div>
+<div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E24B4A;">.378</span></div>
+<div class="sr"><span class="sl2">OBP</span><span class="sv">.472</span></div>
+<div class="sr"><span class="sl2">RBI</span><span class="sv">36</span></div>
+</div><div>
+<div class="sr"><span class="sl2">K rate</span><span class="sv" style="color:#2DB87C;">19%</span></div>
+<div class="sr"><span class="sl2">AB</span><span class="sv">90</span></div>
+</div></div>
+<div style="margin-bottom:.6rem;"><span class="pill pg">Elite contact</span><span class="pill pw">36 RBI</span><span class="pill pw">Two-way</span></div></div></div><div class="hc"><div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+<div class="hc-hdr"><div><div class="hc-name">Tori</div><div class="hc-pos">71 AB &middot; 21IP 4.59ERA 15K</div></div>
+<div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div></div>
+<div class="hc-body"><div class="sg"><div>
+<div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E24B4A;">.408</span></div>
+<div class="sr"><span class="sl2">OBP</span><span class="sv">.488</span></div>
+<div class="sr"><span class="sl2">RBI</span><span class="sv">9</span></div>
+</div><div>
+<div class="sr"><span class="sl2">K rate</span><span class="sv" style="color:#2DB87C;">13%</span></div>
+<div class="sr"><span class="sl2">AB</span><span class="sv">71</span></div>
+</div></div>
+<div style="margin-bottom:.6rem;"><span class="pill pr">Danger hitter</span><span class="pill pg">Elite contact</span><span class="pill pw">Two-way</span></div></div></div><div class="hc"><div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+<div class="hc-hdr"><div><div class="hc-name">Charlotte</div><div class="hc-pos">84 AB</div></div>
+<div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div></div>
+<div class="hc-body"><div class="sg"><div>
+<div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E24B4A;">.357</span></div>
+<div class="sr"><span class="sl2">OBP</span><span class="sv">.443</span></div>
+<div class="sr"><span class="sl2">RBI</span><span class="sv">23</span></div>
+</div><div>
+<div class="sr"><span class="sl2">K rate</span><span class="sv" style="color:#F2EFE8;">33%</span></div>
+<div class="sr"><span class="sl2">AB</span><span class="sv">84</span></div>
+</div></div>
+<div style="margin-bottom:.6rem;"></div></div></div>
+</div>
+<div class="section" id="lineup"><h1>Full lineup</h1><p class="sub">Buckeye Elite Fastpitch &middot; 30+ AB &middot; sorted by OPS</p>
+<table class="lineup-table"><thead><tr><th>Player</th><th>AB</th><th>BA</th><th>OBP</th><th>K%</th><th>RBI</th><th>Pit</th></tr></thead><tbody><tr><td><strong>Emery</strong></td><td>91</td><td style="color:#2DB87C;">.418</td><td>.531</td><td style="color:#F2EFE8;">32%</td><td>22</td><td></td></tr><tr><td><strong>Tori</strong></td><td>71</td><td style="color:#2DB87C;">.408</td><td>.488</td><td style="color:#2DB87C;">13%</td><td>9</td><td>⚾</td></tr><tr><td><strong>Kyndyl</strong></td><td>90</td><td style="color:#E8A020;">.378</td><td>.472</td><td style="color:#2DB87C;">19%</td><td>36</td><td>⚾</td></tr><tr><td><strong>Charlotte</strong></td><td>84</td><td style="color:#E8A020;">.357</td><td>.443</td><td style="color:#F2EFE8;">33%</td><td>23</td><td></td></tr><tr><td><strong>Reese</strong></td><td>32</td><td style="color:#E8A020;">.375</td><td>.412</td><td style="color:#F2EFE8;">28%</td><td>9</td><td>⚾</td></tr><tr><td><strong>Rae</strong></td><td>69</td><td style="color:#E8A020;">.261</td><td>.346</td><td style="color:#F2EFE8;">39%</td><td>7</td><td></td></tr><tr><td><strong>Gizelle</strong></td><td>61</td><td style="color:#F2EFE8;">.246</td><td>.313</td><td style="color:#F2EFE8;">41%</td><td>10</td><td>⚾</td></tr><tr><td><strong>Kendall</strong></td><td>75</td><td style="color:#F2EFE8;">.213</td><td>.352</td><td style="color:#F2EFE8;">44%</td><td>10</td><td></td></tr><tr><td><strong>Athena</strong></td><td>46</td><td style="color:#F2EFE8;">.217</td><td>.345</td><td style="color:#E24B4A;">52%</td><td>11</td><td>⚾</td></tr><tr><td><strong>Kenzie</strong></td><td>54</td><td style="color:#F2EFE8;">.204</td><td>.338</td><td style="color:#E24B4A;">57%</td><td>5</td><td></td></tr><tr><td><strong>Addie</strong></td><td>55</td><td style="color:#E24B4A;">.073</td><td>.282</td><td style="color:#E24B4A;">53%</td><td>3</td><td></td></tr></tbody></table></div>
+<div class="section" id="batters"><h1>Batter-by-batter approach</h1><p class="sub">Buckeye Elite Fastpitch</p><div class="hc"><div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+<div class="hc-hdr"><div><div class="hc-name">Emery</div><div class="hc-pos">91 AB</div></div>
+<div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div></div>
+<div class="hc-body"><div class="sg"><div>
+<div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E24B4A;">.418</span></div>
+<div class="sr"><span class="sl2">OBP</span><span class="sv">.531</span></div>
+<div class="sr"><span class="sl2">RBI</span><span class="sv">22</span></div>
+</div><div>
+<div class="sr"><span class="sl2">K rate</span><span class="sv" style="color:#F2EFE8;">32%</span></div>
+<div class="sr"><span class="sl2">AB</span><span class="sv">91</span></div>
+</div></div>
+<div style="margin-bottom:.6rem;"><span class="pill pr">Danger hitter</span></div></div></div><div class="hc"><div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+<div class="hc-hdr"><div><div class="hc-name">Tori</div><div class="hc-pos">71 AB &middot; 21IP 4.59ERA 15K</div></div>
+<div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div></div>
+<div class="hc-body"><div class="sg"><div>
+<div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E24B4A;">.408</span></div>
+<div class="sr"><span class="sl2">OBP</span><span class="sv">.488</span></div>
+<div class="sr"><span class="sl2">RBI</span><span class="sv">9</span></div>
+</div><div>
+<div class="sr"><span class="sl2">K rate</span><span class="sv" style="color:#2DB87C;">13%</span></div>
+<div class="sr"><span class="sl2">AB</span><span class="sv">71</span></div>
+</div></div>
+<div style="margin-bottom:.6rem;"><span class="pill pr">Danger hitter</span><span class="pill pg">Elite contact</span><span class="pill pw">Two-way</span></div></div></div><div class="hc"><div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+<div class="hc-hdr"><div><div class="hc-name">Kyndyl</div><div class="hc-pos">90 AB &middot; 93IP 3.90ERA 178K</div></div>
+<div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div></div>
+<div class="hc-body"><div class="sg"><div>
+<div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E24B4A;">.378</span></div>
+<div class="sr"><span class="sl2">OBP</span><span class="sv">.472</span></div>
+<div class="sr"><span class="sl2">RBI</span><span class="sv">36</span></div>
+</div><div>
+<div class="sr"><span class="sl2">K rate</span><span class="sv" style="color:#2DB87C;">19%</span></div>
+<div class="sr"><span class="sl2">AB</span><span class="sv">90</span></div>
+</div></div>
+<div style="margin-bottom:.6rem;"><span class="pill pg">Elite contact</span><span class="pill pw">36 RBI</span><span class="pill pw">Two-way</span></div></div></div><div class="hc"><div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+<div class="hc-hdr"><div><div class="hc-name">Charlotte</div><div class="hc-pos">84 AB</div></div>
+<div><div class="hc-t" style="color:#E24B4A;">10.0</div><div class="hc-tl">Threat/10</div></div></div>
+<div class="hc-body"><div class="sg"><div>
+<div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E24B4A;">.357</span></div>
+<div class="sr"><span class="sl2">OBP</span><span class="sv">.443</span></div>
+<div class="sr"><span class="sl2">RBI</span><span class="sv">23</span></div>
+</div><div>
+<div class="sr"><span class="sl2">K rate</span><span class="sv" style="color:#F2EFE8;">33%</span></div>
+<div class="sr"><span class="sl2">AB</span><span class="sv">84</span></div>
+</div></div>
+<div style="margin-bottom:.6rem;"></div></div></div><div class="hc"><div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+<div class="hc-hdr"><div><div class="hc-name">Reese</div><div class="hc-pos">32 AB &middot; 11IP 10.20ERA 11K</div></div>
+<div><div class="hc-t" style="color:#E24B4A;">9.6</div><div class="hc-tl">Threat/10</div></div></div>
+<div class="hc-body"><div class="sg"><div>
+<div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E24B4A;">.375</span></div>
+<div class="sr"><span class="sl2">OBP</span><span class="sv">.412</span></div>
+<div class="sr"><span class="sl2">RBI</span><span class="sv">9</span></div>
+</div><div>
+<div class="sr"><span class="sl2">K rate</span><span class="sv" style="color:#F2EFE8;">28%</span></div>
+<div class="sr"><span class="sl2">AB</span><span class="sv">32</span></div>
+</div></div>
+<div style="margin-bottom:.6rem;"><span class="pill pw">Two-way</span></div></div></div><div class="hc"><div style="height:4px;background:#E8A020;opacity:.7;"></div>
+<div class="hc-hdr"><div><div class="hc-name">Rae</div><div class="hc-pos">69 AB</div></div>
+<div><div class="hc-t" style="color:#E8A020;">7.5</div><div class="hc-tl">Threat/10</div></div></div>
+<div class="hc-body"><div class="sg"><div>
+<div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E8A020;">.261</span></div>
+<div class="sr"><span class="sl2">OBP</span><span class="sv">.346</span></div>
+<div class="sr"><span class="sl2">RBI</span><span class="sv">7</span></div>
+</div><div>
+<div class="sr"><span class="sl2">K rate</span><span class="sv" style="color:#F2EFE8;">39%</span></div>
+<div class="sr"><span class="sl2">AB</span><span class="sv">69</span></div>
+</div></div>
+<div style="margin-bottom:.6rem;"></div></div></div><div class="hc"><div style="height:4px;background:#E8A020;opacity:.7;"></div>
+<div class="hc-hdr"><div><div class="hc-name">Gizelle</div><div class="hc-pos">61 AB &middot; 44IP 2.86ERA 84K</div></div>
+<div><div class="hc-t" style="color:#E8A020;">7.1</div><div class="hc-tl">Threat/10</div></div></div>
+<div class="hc-body"><div class="sg"><div>
+<div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E8A020;">.246</span></div>
+<div class="sr"><span class="sl2">OBP</span><span class="sv">.313</span></div>
+<div class="sr"><span class="sl2">RBI</span><span class="sv">10</span></div>
+</div><div>
+<div class="sr"><span class="sl2">K rate</span><span class="sv" style="color:#F2EFE8;">41%</span></div>
+<div class="sr"><span class="sl2">AB</span><span class="sv">61</span></div>
+</div></div>
+<div style="margin-bottom:.6rem;"><span class="pill pw">Two-way</span></div></div></div><div class="hc"><div style="height:4px;background:#E8A020;opacity:.7;"></div>
+<div class="hc-hdr"><div><div class="hc-name">Kendall</div><div class="hc-pos">75 AB</div></div>
+<div><div class="hc-t" style="color:#E8A020;">7.0</div><div class="hc-tl">Threat/10</div></div></div>
+<div class="hc-body"><div class="sg"><div>
+<div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#E8A020;">.213</span></div>
+<div class="sr"><span class="sl2">OBP</span><span class="sv">.352</span></div>
+<div class="sr"><span class="sl2">RBI</span><span class="sv">10</span></div>
+</div><div>
+<div class="sr"><span class="sl2">K rate</span><span class="sv" style="color:#F2EFE8;">44%</span></div>
+<div class="sr"><span class="sl2">AB</span><span class="sv">75</span></div>
+</div></div>
+<div style="margin-bottom:.6rem;"></div></div></div><div class="hc"><div style="height:4px;background:#378ADD;opacity:.7;"></div>
+<div class="hc-hdr"><div><div class="hc-name">Athena</div><div class="hc-pos">46 AB &middot; 34IP 3.06ERA 56K</div></div>
+<div><div class="hc-t" style="color:#378ADD;">6.8</div><div class="hc-tl">Threat/10</div></div></div>
+<div class="hc-body"><div class="sg"><div>
+<div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#378ADD;">.217</span></div>
+<div class="sr"><span class="sl2">OBP</span><span class="sv">.345</span></div>
+<div class="sr"><span class="sl2">RBI</span><span class="sv">11</span></div>
+</div><div>
+<div class="sr"><span class="sl2">K rate</span><span class="sv" style="color:#E24B4A;">52%</span></div>
+<div class="sr"><span class="sl2">AB</span><span class="sv">46</span></div>
+</div></div>
+<div style="margin-bottom:.6rem;"><span class="pill pg">High K — attack</span><span class="pill pw">Two-way</span></div></div></div><div class="hc"><div style="height:4px;background:#378ADD;opacity:.7;"></div>
+<div class="hc-hdr"><div><div class="hc-name">Kenzie</div><div class="hc-pos">54 AB</div></div>
+<div><div class="hc-t" style="color:#378ADD;">6.2</div><div class="hc-tl">Threat/10</div></div></div>
+<div class="hc-body"><div class="sg"><div>
+<div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#378ADD;">.204</span></div>
+<div class="sr"><span class="sl2">OBP</span><span class="sv">.338</span></div>
+<div class="sr"><span class="sl2">RBI</span><span class="sv">5</span></div>
+</div><div>
+<div class="sr"><span class="sl2">K rate</span><span class="sv" style="color:#E24B4A;">57%</span></div>
+<div class="sr"><span class="sl2">AB</span><span class="sv">54</span></div>
+</div></div>
+<div style="margin-bottom:.6rem;"><span class="pill pg">High K — attack</span></div></div></div><div class="hc"><div style="height:4px;background:#2DB87C;opacity:.7;"></div>
+<div class="hc-hdr"><div><div class="hc-name">Addie</div><div class="hc-pos">55 AB</div></div>
+<div><div class="hc-t" style="color:#2DB87C;">4.5</div><div class="hc-tl">Threat/10</div></div></div>
+<div class="hc-body"><div class="sg"><div>
+<div class="sr"><span class="sl2">BA</span><span class="sv" style="color:#2DB87C;">.073</span></div>
+<div class="sr"><span class="sl2">OBP</span><span class="sv">.282</span></div>
+<div class="sr"><span class="sl2">RBI</span><span class="sv">3</span></div>
+</div><div>
+<div class="sr"><span class="sl2">K rate</span><span class="sv" style="color:#E24B4A;">53%</span></div>
+<div class="sr"><span class="sl2">AB</span><span class="sv">55</span></div>
+</div></div>
+<div style="margin-bottom:.6rem;"><span class="pill pg">High K — attack</span></div></div></div></div>
+<div class="section" id="pitchers"><h1>Pitching staff</h1><p class="sub">Buckeye Elite Fastpitch &middot; Kyndyl carries the workload</p><div class="hc"><div style="height:4px;background:#2DB87C;opacity:.7;"></div>
+<div class="hc-hdr"><div><div class="hc-name">Kyndyl</div><div class="hc-pos">93.1 IP</div></div>
+<div><div class="hc-t" style="color:#2DB87C;">3.90</div><div class="hc-tl">ERA</div></div></div>
+<div class="hc-body"><div class="sg"><div>
+<div class="sr"><span class="sl2">ERA</span><span class="sv" style="color:#2DB87C;">3.90</span></div>
+<div class="sr"><span class="sl2">K</span><span class="sv">178</span></div>
+</div><div>
+<div class="sr"><span class="sl2">IP</span><span class="sv">93.1</span></div>
+<div class="sr"><span class="sl2">K/9</span><span class="sv">17.2</span></div>
+</div></div></div></div><div class="hc"><div style="height:4px;background:#2DB87C;opacity:.7;"></div>
+<div class="hc-hdr"><div><div class="hc-name">Gizelle</div><div class="hc-pos">44.0 IP</div></div>
+<div><div class="hc-t" style="color:#2DB87C;">2.86</div><div class="hc-tl">ERA</div></div></div>
+<div class="hc-body"><div class="sg"><div>
+<div class="sr"><span class="sl2">ERA</span><span class="sv" style="color:#2DB87C;">2.86</span></div>
+<div class="sr"><span class="sl2">K</span><span class="sv">84</span></div>
+</div><div>
+<div class="sr"><span class="sl2">IP</span><span class="sv">44.0</span></div>
+<div class="sr"><span class="sl2">K/9</span><span class="sv">17.2</span></div>
+</div></div></div></div><div class="hc"><div style="height:4px;background:#2DB87C;opacity:.7;"></div>
+<div class="hc-hdr"><div><div class="hc-name">Athena</div><div class="hc-pos">34.1 IP</div></div>
+<div><div class="hc-t" style="color:#2DB87C;">3.06</div><div class="hc-tl">ERA</div></div></div>
+<div class="hc-body"><div class="sg"><div>
+<div class="sr"><span class="sl2">ERA</span><span class="sv" style="color:#2DB87C;">3.06</span></div>
+<div class="sr"><span class="sl2">K</span><span class="sv">56</span></div>
+</div><div>
+<div class="sr"><span class="sl2">IP</span><span class="sv">34.1</span></div>
+<div class="sr"><span class="sl2">K/9</span><span class="sv">14.7</span></div>
+</div></div></div></div><div class="hc"><div style="height:4px;background:#E8A020;opacity:.7;"></div>
+<div class="hc-hdr"><div><div class="hc-name">Tori</div><div class="hc-pos">21.1 IP</div></div>
+<div><div class="hc-t" style="color:#E8A020;">4.59</div><div class="hc-tl">ERA</div></div></div>
+<div class="hc-body"><div class="sg"><div>
+<div class="sr"><span class="sl2">ERA</span><span class="sv" style="color:#E8A020;">4.59</span></div>
+<div class="sr"><span class="sl2">K</span><span class="sv">15</span></div>
+</div><div>
+<div class="sr"><span class="sl2">IP</span><span class="sv">21.1</span></div>
+<div class="sr"><span class="sl2">K/9</span><span class="sv">6.3</span></div>
+</div></div></div></div><div class="hc"><div style="height:4px;background:#E24B4A;opacity:.7;"></div>
+<div class="hc-hdr"><div><div class="hc-name">Reese</div><div class="hc-pos">11.2 IP</div></div>
+<div><div class="hc-t" style="color:#E24B4A;">10.20</div><div class="hc-tl">ERA</div></div></div>
+<div class="hc-body"><div class="sg"><div>
+<div class="sr"><span class="sl2">ERA</span><span class="sv" style="color:#E24B4A;">10.20</span></div>
+<div class="sr"><span class="sl2">K</span><span class="sv">11</span></div>
+</div><div>
+<div class="sr"><span class="sl2">IP</span><span class="sv">11.2</span></div>
+<div class="sr"><span class="sl2">K/9</span><span class="sv">8.5</span></div>
+</div></div></div></div></div>
+<script>function show(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active');btn.classList.add('active');}</script>
+</body></html>
